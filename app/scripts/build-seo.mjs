@@ -15,7 +15,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { ROUTES, SITE_URL, sitemapRoutes, validateRoutes, REDIRECTING_PREFIXES } from "../server/seo/routes.js";
+import { ROUTES, SITE_URL, sitemapRoutes, validateRoutes, REDIRECTING_PREFIXES, DEFAULT_OG_IMAGE } from "../server/seo/routes.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(__dirname, "..", "public");
@@ -80,15 +80,23 @@ const MARK_END = "<!-- seo:auto:end -->";
 function seoBlock(route) {
   const url = `${SITE_URL}${route.path}`;
   const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+  // ⚠️ URL ABSOLUE obligatoire pour og:image : les aperçus de lien (Slack,
+  // iMessage, WhatsApp…) ne résolvent pas les chemins relatifs — bug
+  // silencieux, la page reste parfaite, seul l'aperçu partagé est vide.
+  const ogImage = route.ogImage || DEFAULT_OG_IMAGE;
   return [
     MARK_START,
     `  <link rel="manifest" href="/manifest.json">`,
+    `  <link rel="apple-touch-icon" href="/apple-touch-icon.png">`,
     `  <link rel="canonical" href="${url}">`,
     `  <meta property="og:site_name" content="MANAfamily">`,
     `  <meta property="og:type" content="${route.ogType || "website"}">`,
     `  <meta property="og:title" content="${esc(route.title)}">`,
     `  <meta property="og:description" content="${esc(route.description)}">`,
     `  <meta property="og:url" content="${url}">`,
+    `  <meta property="og:image" content="${ogImage}">`,
+    `  <meta property="og:image:width" content="1200">`,
+    `  <meta property="og:image:height" content="630">`,
     MARK_END,
   ].join("\n");
 }

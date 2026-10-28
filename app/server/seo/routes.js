@@ -21,6 +21,13 @@ const PUBLIC_DIR = path.join(__dirname, "..", "..", "public");
 
 export const SITE_URL = "https://manafamily.org";
 
+// Valeur par défaut d'og:image — une seule déclaration, chaque route peut la
+// surcharger (`ogImage` sur l'entrée) le jour où une page veut sa propre
+// image plutôt que celle-ci. Absente jusqu'au 28/10/2026 : un lien partagé
+// affichait un titre juste et aucun aperçu visuel — exactement la moitié
+// invisible du bug (la page reste parfaite, seul l'aperçu de lien est vide).
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
+
 // ⚠️ Un préfixe privé ne redirige réellement vers /connexion QUE s'il a une
 // page de liste à sa racine (public/<préfixe>.html) — sinon le chemin brut
 // rend 404, pas une redirection. L'affirmer quand même dans robots.txt ou
