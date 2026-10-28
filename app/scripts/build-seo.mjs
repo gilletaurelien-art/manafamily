@@ -15,7 +15,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { ROUTES, SITE_URL, sitemapRoutes, validateRoutes } from "../server/seo/routes.js";
+import { ROUTES, SITE_URL, sitemapRoutes, validateRoutes, REDIRECTING_PREFIXES } from "../server/seo/routes.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(__dirname, "..", "public");
@@ -34,9 +34,9 @@ function htmlFileFor(route) {
 
 // ── robots.txt ───────────────────────────────────────────────────────────
 const robots = `# ${SITE_URL} — règles d'exploration
-# Pas une barrière de sécurité : les pages privées (/souvenirs, /famille,
-# /agenda, /creer, /albums, /recits) redirigent déjà en 302 vers /connexion
-# pour qui n'a pas de session — c'est le compte qui protège, pas ce fichier.
+# Pas une barrière de sécurité : les pages privées (${REDIRECTING_PREFIXES.join(", ")})
+# redirigent déjà en 302 vers /connexion pour qui n'a pas de session — c'est
+# le compte qui protège, pas ce fichier.
 User-agent: *
 Allow: /
 Sitemap: ${SITE_URL}/sitemap.xml
@@ -54,13 +54,13 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://w
 // ── llms.txt — décrit CE produit, pas l'ancien Carnet qu'il remplace ────
 const llms = `# MANAfamily
 
-> Maison numérique familiale privée : souvenirs, agenda, albums et récits — un espace réservé aux membres d'une même famille, jamais un réseau public.
+> Maison numérique familiale privée — un espace réservé aux membres d'une même famille, jamais un réseau public.
 
 MANAfamily est une application autonome (Node.js, SQLite), distincte du
 reste de l'écosystème MANA (mana.bzh, mana.love). Aucune page de ce domaine
 n'est publique au-delà de l'inscription et de la connexion : le contenu
-familial (souvenirs, agenda, albums, récits) n'existe qu'après
-authentification et appartenance à une famille.
+familial (${REDIRECTING_PREFIXES.map((p) => p.slice(1)).join(", ")}) n'existe
+qu'après authentification et appartenance à une famille.
 
 ## Pages publiques
 

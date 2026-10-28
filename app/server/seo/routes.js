@@ -11,7 +11,27 @@
 // destinations qu'on cherche à faire remonter dans un moteur de recherche.
 // Même logique que la correction du 28/10 sur manatimebank : une URL de
 // transition n'a rien à faire dans un plan de site.
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { AUTH_PAGE_PREFIXES } from "../index.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const PUBLIC_DIR = path.join(__dirname, "..", "..", "public");
+
 export const SITE_URL = "https://manafamily.org";
+
+// ⚠️ Un préfixe privé ne redirige réellement vers /connexion QUE s'il a une
+// page de liste à sa racine (public/<préfixe>.html) — sinon le chemin brut
+// rend 404, pas une redirection. L'affirmer quand même dans robots.txt ou
+// llms.txt est faux : relevé par la session KS-5 le 28/10/2026 (/albums et
+// /recits annoncés comme protégés, 404 réel — même nature de piège que
+// l'ancien llms.txt qui décrivait un produit disparu, mais côté détail
+// plutôt que côté identité). On filtre sur le disque, jamais sur une copie
+// de la liste : ajouter la page suffit à faire réapparaître le préfixe.
+export const REDIRECTING_PREFIXES = AUTH_PAGE_PREFIXES.filter((p) =>
+  fs.existsSync(path.join(PUBLIC_DIR, `${p.slice(1)}.html`))
+);
 
 export const ROUTES = [
   {

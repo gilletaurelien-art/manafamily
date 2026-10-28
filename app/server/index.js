@@ -26,7 +26,17 @@ const MIME = {
   ".json": "application/json; charset=utf-8",
 };
 
-const AUTH_PAGE_PREFIXES = ["/souvenirs", "/famille", "/agenda", "/creer", "/albums", "/recits"];
+// ⚠️ Chaque préfixe suppose une page de LISTE à la racine du préfixe
+// (ex. public/souvenirs.html pour /souvenirs). /albums et /recits n'ont
+// qu'une page de DÉTAIL (/albums/:id → album.html, /recits/:id → recit.html,
+// via DETAIL_ROUTES ci-dessous) : la liste n'existe pas encore, donc
+// /albums et /recits bruts rendent 404, pas une redirection vers
+// /connexion. Les avoir listés quand même dans robots.txt/llms.txt a fait
+// annoncer une redirection qui n'existait pas — relevé par la session KS-5
+// le 28/10/2026. `build-seo.mjs` filtre cette liste sur l'existence réelle
+// du fichier `public/<préfixe>.html` : ajouter la page suffit à faire
+// réapparaître le préfixe dans robots.txt/llms.txt, sans rien à éditer ici.
+export const AUTH_PAGE_PREFIXES = ["/souvenirs", "/famille", "/agenda", "/creer", "/albums", "/recits"];
 const AUTH_PAGES = new Set(["/parametres"]);
 function needsAuth(pathname) {
   return AUTH_PAGES.has(pathname) || AUTH_PAGE_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + "/"));
