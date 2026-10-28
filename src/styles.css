@@ -379,105 +379,6 @@ html {
   margin: 0 0 var(--sp-3);
 }
 
-/* ===== Hero-moteur : la porte d'entrée EST le produit ===== */
-.moteur { max-width: 680px; margin: 0 auto var(--sp-2); }
-.moteur-categories {
-  display: flex;
-  gap: 6px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: var(--sp-2);
-}
-.moteur-categorie-btn {
-  font: inherit;
-  font-size: var(--t-xs);
-  color: var(--ink);
-  background: rgb(255 255 255 / 55%);
-  border: 1px solid var(--ecume);
-  border-radius: 999px;
-  padding: 6px 16px;
-  cursor: pointer;
-  transition: all 160ms ease;
-}
-.moteur-categorie-btn:hover { border-color: var(--or); }
-.moteur-categorie-btn.on {
-  background: var(--ink);
-  color: var(--sand);
-  border-color: var(--ink);
-}
-.moteur-barre {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-1);
-  background: var(--blanc-chaud);
-  border: 1px solid var(--ecume);
-  border-radius: 999px;
-  padding: 6px 6px 6px 18px;
-  box-shadow:
-    inset 0 2px 6px rgb(255 255 255 / 85%),
-    0 4px 12px rgb(27 42 74 / 8%),
-    0 0 0 4px rgb(201 162 39 / 10%);
-}
-.moteur-loupe {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 auto;
-  fill: none;
-  stroke: var(--primary);
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  opacity: 0.8;
-}
-.moteur-barre input {
-  flex: 1 1 auto;
-  min-width: 0;
-  font: inherit;
-  font-size: var(--t-m);
-  border: none;
-  background: transparent;
-  padding: 10px 4px;
-}
-.moteur-barre input:focus { outline: none; }
-.moteur-barre:focus-within {
-  box-shadow:
-    inset 0 2px 6px rgb(255 255 255 / 85%),
-    0 4px 12px rgb(27 42 74 / 8%),
-    0 0 0 4px rgb(201 162 39 / 28%);
-}
-.moteur-note { font-size: var(--t-xs); opacity: 0.6; margin: var(--sp-2) 0 0; }
-@media (max-width: 720px) {
-  .moteur-barre { flex-wrap: nowrap; border-radius: 999px; padding: 6px; }
-  .moteur-loupe { display: none; }
-  .moteur-barre input { flex: 1 1 auto; min-width: 0; font-size: var(--t-s); padding: 10px 10px; border: none; }
-  .moteur-fleche { width: 44px; height: 44px; flex: 0 0 44px; }
-}
-/* Flèche de recherche : pilule or ronde, dans la barre après le champ */
-.moteur-fleche {
-  flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  background: var(--or);
-  cursor: pointer;
-  transition: transform 160ms ease, box-shadow 160ms ease;
-}
-.moteur-fleche svg {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: #fff;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.moteur-fleche:hover {
-  transform: translateX(2px);
-  box-shadow: 0 4px 14px rgb(201 162 39 / 45%);
-}
-
 /* ===== Pages éditoriales ===== */
 .page { padding: var(--sp-6) 0 var(--sp-12); }
 .page-titre {
@@ -683,7 +584,6 @@ html {
 .swipe-meta { font-size: var(--t-xs); opacity: 0.65; margin: 0; }
 
 /* Moteur de localité dans le hero : la barre dans la bulle */
-.hero-moteur .moteur-barre { max-width: 520px; margin: 0 auto var(--sp-2); }
 
 /* Header : brand centré dans la nav */
 .nav .brand { white-space: nowrap; padding: 0 var(--sp-1); }
@@ -843,3 +743,10 @@ body { padding-bottom: 84px; }
   .footer-colonnes > div:first-child { max-width: 60%; }
 }
 .footer-note { max-width: 44ch; }
+
+/* ===== Connexion (hero) : porte de la maison, plus grand que les CTA ===== */
+.hero-connexion { justify-content: center; margin: var(--sp-2) 0 var(--sp-3); }
+.btn-grand {
+  font-size: var(--t-m);
+  padding: 16px 44px;
+}

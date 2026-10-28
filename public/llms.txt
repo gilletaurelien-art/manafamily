@@ -11,6 +11,7 @@ MANAfamily est la maison numérique familiale de l'écosystème MANA. Cinq espac
 - [Famille](https://gilletaurelien-art.github.io/manafamily/famille) : personnes, relations, arbre générationnel, protections des enfants
 - [Agenda](https://gilletaurelien-art.github.io/manafamily/agenda) : anniversaires calculés, événements, participants, rappels
 - [Créer](https://gilletaurelien-art.github.io/manafamily/creer) : albums, récits, livre de famille en PDF
+- [Connexion](https://gilletaurelien-art.github.io/manafamily/connexion) : la porte de la maison familiale — accès via l'application privée de chaque famille
 - [Mentions légales](https://gilletaurelien-art.github.io/manafamily/mentions-legales) : éditeur, hébergement, données personnelles
 
 ## Réponses aux questions fréquentes

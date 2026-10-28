@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { usePath, baseUrl } from "./router";
 import {
   GlyphFamille,
@@ -12,6 +11,7 @@ import { Famille } from "./Famille";
 import { Agenda } from "./Agenda";
 import { Creer } from "./Creer";
 import { MentionsLegales } from "./MentionsLegales";
+import { Connexion } from "./Connexion";
 import { ContactForm } from "./ContactForm";
 
 const B = baseUrl();
@@ -62,12 +62,6 @@ const MODULES = [
 
 export default function App() {
   const path = usePath();
-  const [q, setQ] = useState("");
-
-  const chercher = () => {
-    const query = q.trim();
-    window.location.assign(`${B}/souvenirs${query ? `?q=${encodeURIComponent(query)}` : ""}`);
-  };
 
   return (
     <>
@@ -106,6 +100,8 @@ export default function App() {
         <Agenda />
       ) : path === "/creer" ? (
         <Creer />
+      ) : path === "/connexion" ? (
+        <Connexion />
       ) : path === "/mentions-legales" ? (
         <MentionsLegales />
       ) : path === "/contact" ? (
@@ -131,32 +127,11 @@ export default function App() {
               <h1 className="brand-grand">En famille</h1>
               <p className="hero-label">souvenirs, générations & transmission</p>
 
-              {/* Moteur de recherche de souvenir */}
-              <div className="moteur-barre" role="search" aria-label="Rechercher un souvenir">
-                <svg className="moteur-loupe" viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="10.5" cy="10.5" r="6.5" />
-                  <path d="m15.5 15.5 4.5 4.5" />
-                </svg>
-                <input
-                  id="moteur-lieu"
-                  type="search"
-                  autoComplete="off"
-                  placeholder="Dans les souvenirs…"
-                  value={q}
-                  onChange={(e) => setQ(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && chercher()}
-                />
-                <button
-                  type="button"
-                  className="moteur-fleche"
-                  aria-label="Rechercher"
-                  onClick={chercher}
-                >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M4 12h15" />
-                    <path d="m13 6 6 6-6 6" />
-                  </svg>
-                </button>
+              {/* Porte d'entrée de la maison familiale */}
+              <div className="est-actions hero-connexion">
+                <a className="btn btn-primary btn-grand" href={`${B}/connexion`}>
+                  Connexion
+                </a>
               </div>
 
               <p className="lede">
