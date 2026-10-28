@@ -52,8 +52,16 @@ export function applyMigrations(db) {
   }
 }
 
+// ⚠️ Import DYNAMIQUE et NON ATTENDU au niveau module, délibérément.
+// db.js importe `applyMigrations` de ce fichier de façon statique ; si cette
+// ligne attendait l'import de db.js par un `await` au niveau module (top-level
+// await), Node détecte le cycle comme un deadlock (« Detected unsettled
+// top-level await ») et quitte en erreur (exit 13) — mesuré le 28/10/2026 en
+// déploiement. Sans `await` ici, l'évaluation de CE module se termine
+// d'abord ; l'import de db.js ne reprend qu'ensuite, une fois le cycle résolu.
 if (process.argv[1] && process.argv[1].endsWith("migrate.js")) {
-  const { getDb } = await import("./db.js");
-  applyMigrations(getDb());
-  console.log("[migrate] base à jour");
+  import("./db.js").then(({ getDb }) => {
+    applyMigrations(getDb());
+    console.log("[migrate] base à jour");
+  });
 }
