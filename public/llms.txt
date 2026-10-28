@@ -1,23 +1,22 @@
 # MANA.family (gilletaurelien-art.github.io/manafamily)
 
-> Balades & découvertes en famille en Bretagne : parcours courts et accessibles poussette/PMR, hors ligne (PWA), GPS et alerte hors-sentier, export GPX — avec MANAradio, la voix du territoire, au centre.
+> La maison numérique familiale privée : partager la vie de famille, conserver les souvenirs, relier les générations, transmettre une histoire.
 
-MANA.family est la déclinaison familiale de l'écosystème MANA : des promenades bretonnes pensées pour les familles — enfants, poussettes, accessibilité PMR, rythmes doux. Les parcours sont courts (≤ 2 h), souvent en boucle, avec aires de jeux et pauses gourmandes à proximité (données réelles uniquement). Fonctionnalités client-side, sans backend : PWA hors ligne (service worker), GPS temps réel avec boussole, alerte hors-sentier à 50 m, profil d'altitude, export GPX, SOS par SMS avec position GPS. Pas d'audio-guide, pas de visites guidées, pas de monétisation, pas d'espace membre. MANAradio, au centre du site, est « Hors antenne » — aucune émission simulée. Règles : gratuité des services grand public, aucune revente de données ou de leads, aucun traceur publicitaire, données territoriales réelles et sourcées (geo.api.gouv.fr), sobriété technique (site statique, zéro dépendance UI). Les tracés des parcours sont indicatifs (prototype) : les tracés officiels (IGN) seront sourcés avant publication.
+MANAfamily est la maison numérique familiale de l'écosystème MANA. Cinq espaces : Accueil (la vie familiale — publications, derniers souvenirs, anniversaires, anciens souvenirs à redécouvrir), Souvenirs (la mémoire — photos, vidéos, textes, audio, lettres, recettes, avec dates, lieux, personnes, albums, recherche et brouillons), Famille (les personnes et les générations — fiches, relations parent-enfant et couples, familles recomposées, arbre généalogique dérivé des relations), Agenda (les moments — anniversaires calculés depuis les dates de naissance, événements, participants, rappels configurables), Créer (la transmission — albums, chronologies, récits avec sources, livre de famille exportable en PDF). Règles : privé par défaut, aucune donnée ni lead revendu, aucun traceur publicitaire, pas de fil algorithmique, pas de likes, pas de gamification, export des données à tout moment, aucun contenu envoyé à un fournisseur externe sans autorisation explicite. L'IA « MANA » n'est pas branchée : le socle fonctionne intégralement sans elle, aucune capacité n'est simulée. Cette vitrine ne collecte aucune donnée personnelle ; l'application familiale héberge les données de chaque famille dans un périmètre d'accès explicite.
 
 ## Pages publiques
 
-- [Accueil](https://gilletaurelien-art.github.io/manafamily/) : hub MANAradio + les modules de la balade familiale
-- [Balades](https://gilletaurelien-art.github.io/manafamily/promenades) : index des parcours avec filtres concrets (poussette/PMR en premier, durée courte, boucle, chiens)
-- [Pointe du Raz — aller-retour](https://gilletaurelien-art.github.io/manafamily/promenade/pointe-du-raz) : parcours accessible poussette/PMR, carte, profil d'altitude, GPS, GPX, SOS
-- [Cap Fréhel — falaises & lande](https://gilletaurelien-art.github.io/manafamily/promenade/cap-frehel) : boucle courte, aire de jeux au départ, GPS, GPX, SOS
-- [Le territoire](https://gilletaurelien-art.github.io/manafamily/territoire) : page éditoriale Bretagne — paysages, villes, culture
-- [Radio](https://gilletaurelien-art.github.io/manafamily/radio) : MANAradio — état « Hors antenne », aucun flux simulé
-- [Mentions légales](https://gilletaurelien-art.github.io/manafamily/mentions-legales) : éditeur, hébergement GitHub Pages, données personnelles
+- [Accueil](https://gilletaurelien-art.github.io/manafamily/) : les cinq espaces de la maison familiale
+- [Souvenirs](https://gilletaurelien-art.github.io/manafamily/souvenirs) : la mémoire familiale — types de contenus, albums, recherche
+- [Famille](https://gilletaurelien-art.github.io/manafamily/famille) : personnes, relations, arbre générationnel, protections des enfants
+- [Agenda](https://gilletaurelien-art.github.io/manafamily/agenda) : anniversaires calculés, événements, participants, rappels
+- [Créer](https://gilletaurelien-art.github.io/manafamily/creer) : albums, récits, livre de famille en PDF
+- [Mentions légales](https://gilletaurelien-art.github.io/manafamily/mentions-legales) : éditeur, hébergement, données personnelles
 
 ## Réponses aux questions fréquentes
 
-- Les balades fonctionnent-elles sans réseau ? Oui — PWA : le parcours est mis en cache avant le départ.
-- Les parcours conviennent-ils aux poussettes et aux PMR ? Un filtre dédié les met en avant ; chaque parcours affiche son accessibilité réelle.
-- MANA.family revend-il des données ? Non — aucune donnée ni lead n'est revendu, aucun traceur publicitaire.
-- MANAradio émet-elle ? Pas encore — hors antenne, aucune émission simulée.
-- Les parcours sont-ils définitifs ? Non — tracés indicatifs (prototype) ; les tracés officiels (IGN) seront sourcés avant publication.
+- Mes souvenirs sont-ils privés ? Oui — tout est privé par défaut ; les contenus ne sortent jamais de l'espace familial.
+- MANAfamily revend-il des données ? Non — aucune donnée ni lead n'est revendu, aucun traceur publicitaire.
+- Puis-je récupérer mes données ? Oui — export intégral à tout moment ; vos souvenirs ne dépendent d'aucun fournisseur.
+- Y a-t-il une IA ? Pas encore — aucune fonction IA n'est livrée et aucune capacité n'est simulée ; le socle fonctionne sans elle.
+- Le livre de famille fonctionne-t-il hors ligne ? Le livre se compose depuis les souvenirs réels et s'exporte en PDF — sans service tiers.

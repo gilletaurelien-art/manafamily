@@ -10,7 +10,7 @@ export function MentionsLegales() {
   useEffect(() => {
     document.title = "Mentions légales — MANA.family";
     return () => {
-      document.title = "MANA.family — Balades & découvertes en famille en Bretagne";
+      document.title = "MANA.family — La maison numérique familiale";
     };
   }, []);
 
@@ -25,9 +25,7 @@ export function MentionsLegales() {
         <section className="page-panel">
           <p className="apercu-label">Éditeur</p>
           <p className="page-intro">
-            MANA.family est édité par l'écosystème MANA, dans le cadre
-            de la déclinaison familiale de la vitrine territoriale
-            bretonne. Les coordonnées
+            MANA.family est édité par l'écosystème MANA. Les coordonnées
             complètes de l'éditeur seront publiées avec la structure
             juridique définitive du projet.
           </p>
@@ -36,20 +34,21 @@ export function MentionsLegales() {
         <section className="page-panel">
           <p className="apercu-label">Hébergement</p>
           <p className="page-intro">
-            Site statique hébergé sur GitHub Pages (GitHub, Inc.). Aucune
-            donnée personnelle n'est collectée par le site en l'état :
-            MANA.family est une vitrine territoriale, sans compte ni
-            backend.
+            Site statique hébergé sur GitHub Pages (GitHub, Inc.). Cette
+            vitrine ne collecte aucune donnée personnelle. L'application
+            familiale, elle, héberge les données de chaque famille dans un
+            espace privé — jamais partagé, jamais revendu.
           </p>
         </section>
 
         <section className="page-panel">
           <p className="apercu-label">Nature du service</p>
           <p className="page-intro">
-            MANA.family est une vitrine de balades et de découvertes
-            en famille en Bretagne. Les parcours sont indicatifs
-            (prototype) :
-            consultez les sources officielles avant de partir.
+            MANA.family est la maison numérique familiale privée :
+            souvenirs, famille, agenda, transmission. La vitrine
+            présente le produit ; l'application porte les contenus
+            réels de chaque famille, dans un périmètre d'accès
+            explicite.
           </p>
         </section>
 

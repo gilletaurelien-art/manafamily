@@ -1,12 +1,29 @@
 # MANA.family
 
-Balades & découvertes **en famille** en Bretagne : parcours courts, accessibles poussette/PMR, aires de jeux et pauses gourmandes à proximité — hors ligne (PWA), GPS et sécurité, export GPX. MANAradio au centre, la voix du territoire.
+**La maison numérique familiale privée** : partager la vie de famille,
+conserver les souvenirs, relier les générations, transmettre une
+histoire. Privé par défaut — aucune donnée revendue, aucun fil
+algorithmique, aucun traceur.
+
+Cinq espaces :
+
+- **Accueil** — la vie familiale : publications, derniers souvenirs,
+  anniversaires, anciens souvenirs à redécouvrir ;
+- **Souvenirs** — la mémoire : photos, vidéos, textes, audio, lettres,
+  recettes, albums, recherche ;
+- **Famille** — les personnes et les générations : fiches, relations,
+  arbre généalogique dérivé des relations ;
+- **Agenda** — les moments : anniversaires calculés, événements,
+  participants, rappels ;
+- **Créer** — la transmission : albums, récits avec sources, livre de
+  famille exportable en PDF.
 
 ## Développement
 
 React/TS + Vite, zéro dépendance UI, routeur maison, charte
-« Terre, Mer & Lumière » (fond bleu nuit `#1b2a4a`, bulles blanches
-bordées d'or, polices self-hostées Marelle Bâton 2 + Rubik, OFL).
+« Terre, Mer & Lumière » : fond ivoire, bande de vagues bleu nuit,
+bulles blanches bordées d'or, polices self-hostées Marelle Bâton 2 +
+Rubik (OFL).
 
 ```bash
 npm install
@@ -14,21 +31,12 @@ npm run dev      # dev local
 npm run build    # build dans site/
 ```
 
-## Familles d'abord
-
-- Parcours courts (≤ 2 h), boucles, accessibilité poussette/PMR en premier filtre ;
-- Aires de jeux et pauses gourmandes à proximité — données réelles uniquement ;
-- Pas d'audio-guide, pas de visites guidées, pas de monétisation, pas d'espace membre ;
-- Fonctionnalités client-side : PWA offline (SW), GPS/boussole, alerte hors-sentier 50 m, profil d'altitude, export GPX, SOS SMS ;
-- Page radio : état « Hors antenne » honnête — aucun flux simulé ;
-- Tracés indicatifs (prototype) : tracés officiels IGN à sourcer avant publication.
-
 ## Règles non négociables
 
-Gratuité · jamais de revente de données/leads · aucun tracking
-publicitaire · données réelles uniquement (geo.api.gouv.fr) · sobriété ·
-pas de compteur factice, pas d'urgence artificielle, pas de carrousel
-auto, pas d'emoji UI.
+Privé par défaut · jamais de revente de données/leads · aucun tracking
+publicitaire · pas de fil algorithmique, pas de likes, pas de
+gamification · export des données à tout moment · aucune capacité
+simulée (l'IA « MANA » n'est pas branchée).
 
 ## Déploiement
 
@@ -39,5 +47,4 @@ Auto à chaque push sur `main` → https://gilletaurelien-art.github.io/manafami
   `.github/workflows/deploy.yml` uniquement, jamais en local ;
 - Service worker : network-first sur le HTML, bump du cache à chaque
   changement de thème ;
-- Après le premier push : Settings → Pages → Source : **GitHub Actions**
-  (sinon l'erreur est `Resource not accessible by integration`).
+- Settings → Pages → Source : **GitHub Actions**.

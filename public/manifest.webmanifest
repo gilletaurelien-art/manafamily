@@ -1,7 +1,7 @@
 {
-  "name": "MANA.family — Balades en famille en Bretagne",
+  "name": "MANA.family — La maison numérique familiale",
   "short_name": "MANA.family",
-  "description": "La déclinaison familiale de l'écosystème MANA en Bretagne : balades courtes, accessibles poussette/PMR, découvertes et territoire.",
+  "description": "La maison numérique familiale privée : souvenirs, famille, agenda, transmission.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
