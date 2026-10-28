@@ -21,6 +21,9 @@ const MIME = {
   ".ttf": "font/ttf",
   ".png": "image/png",
   ".ico": "image/x-icon",
+  ".txt": "text/plain; charset=utf-8",
+  ".xml": "application/xml; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
 };
 
 const AUTH_PAGE_PREFIXES = ["/souvenirs", "/famille", "/agenda", "/creer", "/albums", "/recits"];
@@ -34,7 +37,12 @@ function serveFile(res, filePath, status = 200) {
   res.writeHead(status, {
     "content-type": MIME[ext] || "application/octet-stream",
     "cache-control": ext === ".html" ? "no-store" : "private, max-age=3600",
-    "x-content-type-options": "nosniff",
+    // ⚠️ PAS de x-content-type-options ici : le bloc Caddy du KS-5 le pose
+    // déjà (avec les 4 autres en-têtes de sécurité). Mesuré le 28/10/2026 :
+    // les deux couches le posaient, le visiteur le recevait en double —
+    // même valeur donc sans effet aujourd'hui, mais deux en-têtes identiques
+    // posés par deux couches différentes divergeraient silencieusement au
+    // premier changement de l'un des deux côtés. Un seul point de pose.
   });
   fs.createReadStream(filePath).pipe(res);
 }

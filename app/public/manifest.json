@@ -1,0 +1,13 @@
+{
+  "name": "MANAfamily",
+  "short_name": "MANAfamily",
+  "description": "Maison numérique familiale privée : souvenirs, famille, agenda et transmission.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    { "src": "/logo.png", "sizes": "256x256", "type": "image/png", "purpose": "any" },
+    { "src": "/favicon.svg", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

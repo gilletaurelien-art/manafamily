@@ -1,0 +1,7 @@
+# https://manafamily.org — règles d'exploration
+# Pas une barrière de sécurité : les pages privées (/souvenirs, /famille,
+# /agenda, /creer, /albums, /recits) redirigent déjà en 302 vers /connexion
+# pour qui n'a pas de session — c'est le compte qui protège, pas ce fichier.
+User-agent: *
+Allow: /
+Sitemap: https://manafamily.org/sitemap.xml
