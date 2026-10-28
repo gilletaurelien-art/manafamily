@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { usePath, baseUrl } from "./router";
 import {
-  GlyphRecherche,
   GlyphFamille,
   GlyphSouvenirs,
   GlyphAgenda,
@@ -75,10 +74,6 @@ export default function App() {
       <header className="site-header">
         <div className="wrap">
           <nav className="nav">
-            <a href={`${B}/`} aria-label="Rechercher — accueil" title="Rechercher">
-              <GlyphRecherche />
-              <span className="sr-only">Rechercher</span>
-            </a>
             <a className="brand" href={`${B}/`} aria-label="MANA.family — accueil">
               <img src={`${B}/logo.png`} alt="" className="brand-logo" />
               MANA<em>.family</em>

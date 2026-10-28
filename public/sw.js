@@ -5,7 +5,7 @@
 // Cache-first pour les assets hashés (polices, bundles).
 // Règle : bump du cache à chaque changement de thème.
 
-const CACHE = "mana-family-v2";
+const CACHE = "mana-family-v3";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
