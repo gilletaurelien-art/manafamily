@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MANAfamily — Créer une famille</title>
+  <meta name="description" content="MANAfamily — Créer une famille">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">MANA<em>family</em></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="/souvenirs">Souvenirs</a>
+        <a href="/famille">Famille</a>
+        <a href="/agenda">Agenda</a>
+        <a href="/creer">Créer</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="bulle" style="max-width:520px;margin:2rem auto">
+      <h1 style="margin-top:0">Créer votre espace familial</h1>
+      <p>Un espace privé pour votre famille. Vous en serez administrateur : vous pourrez inviter les membres.</p>
+      <form id="form-famille">
+        <label for="name">Nom de la famille</label>
+        <input type="text" id="name" required placeholder="Les Martin">
+        <div class="actions" style="margin-top:1rem">
+          <button class="btn" type="submit">Créer la famille</button>
+        </div>
+        <p class="erreur" id="err" hidden role="alert"></p>
+      </form>
+      <p class="meta">Vous avez reçu une invitation ? <a href="/rejoindre">Rejoindre une famille</a>.</p>
+    </section></main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>MANA<em style="color:var(--or);font-style:normal">.family</em> — privé par défaut</span>
+      <nav class="nav"><a href="/mentions-legales">Mentions légales</a></nav>
+    </div>
+  </footer>
+  <script src="/app.js"></script>
+  <script src="/js/page-auth.js"></script>
+</body>
+</html>

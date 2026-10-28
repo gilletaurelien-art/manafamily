@@ -1,0 +1,258 @@
+/* ===== MANAfamily — charte « Terre, Mer & Lumière » ===== */
+
+:root {
+  --encre: #1b2a4a;
+  --or: #c9a227;
+  --sable: #faf8f3;
+  --ecume: #e5e0d6;
+  --largeur: 1080px;
+  --sp-1: 0.5rem;
+  --sp-2: 1rem;
+  --sp-3: 1.75rem;
+  --sp-4: 3rem;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 16px; }
+
+body {
+  margin: 0;
+  font-family: Rubik, sans-serif;
+  color: var(--encre);
+  background-color: var(--sable);
+  background-image: linear-gradient(var(--ecume) 50%, var(--sable) 50%);
+  background-size: 100% 88px;
+  min-height: 100vh;
+}
+
+h1, h2, h3, .brand, .titre-hero, button, label, .btn {
+  font-family: "Marelle Bâton 2", Rubik, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.wrap {
+  max-width: var(--largeur);
+  margin: 0 auto;
+  padding: 0 var(--sp-2);
+}
+
+main { display: block; padding: var(--sp-4) 0 var(--sp-4); }
+
+a { color: var(--encre); }
+
+/* --- header --- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--encre);
+  color: var(--sable);
+}
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  min-height: 64px;
+}
+.brand {
+  font-size: 1.4rem;
+  color: var(--sable);
+  text-decoration: none;
+}
+.brand em { color: var(--or); font-style: normal; }
+.nav {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+.nav a {
+  color: var(--ecume);
+  text-decoration: none;
+  padding: 0.35rem 0.6rem;
+  border-radius: 20px;
+}
+.nav a.active, .nav a:hover { background: rgba(201, 162, 39, 0.25); color: var(--or); }
+
+/* --- bulles --- */
+.bulle {
+  background: #fff;
+  border: 2px solid var(--or);
+  border-radius: 44px 56px 40px 52px / 52px 42px 56px 46px;
+  box-shadow: 0 4px 14px rgba(27, 42, 74, 0.08), inset 0 0 0 4px rgba(201, 162, 39, 0.15);
+  padding: var(--sp-3);
+  margin: 0 0 var(--sp-3);
+}
+.panel {
+  background: #fff;
+  border: 1px solid var(--ecume);
+  border-radius: 16px;
+  padding: var(--sp-2) var(--sp-3);
+  margin: 0 0 var(--sp-2);
+}
+
+/* --- formulaires --- */
+form { margin: 0; }
+label { display: block; margin: var(--sp-1) 0 var(--sp-1); font-weight: 700; font-size: 0.95rem; }
+input[type="text"], input[type="email"], input[type="password"], input[type="search"],
+input[type="date"], input[type="datetime-local"], select, textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--ecume);
+  border-radius: 10px;
+  font-family: Rubik, sans-serif;
+  font-size: 1rem;
+  background: var(--sable);
+  color: var(--encre);
+}
+textarea { min-height: 8rem; resize: vertical; }
+input:focus, select:focus, textarea:focus, button:focus-visible {
+  outline: 2px solid var(--or);
+  outline-offset: 1px;
+}
+
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 999px;
+  padding: 0.55rem 1.4rem;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  background: var(--or);
+  color: var(--encre);
+  font-weight: 700;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn-ghost { background: transparent; border: 2px solid var(--or); }
+.btn-clair { background: var(--ecume); }
+.btn-danger { background: #b33; color: #fff; }
+.btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+.actions { display: flex; gap: var(--sp-1); flex-wrap: wrap; align-items: center; }
+
+/* --- états --- */
+.vide {
+  text-align: center;
+  padding: var(--sp-4) var(--sp-2);
+  color: var(--encre);
+}
+.vide .glyphe { font-size: 2.4rem; display: block; margin-bottom: var(--sp-1); }
+.chargement { text-align: center; padding: var(--sp-3); color: var(--encre); opacity: 0.7; }
+.erreur {
+  background: #fdeaea;
+  border: 1px solid #d88;
+  color: #711;
+  border-radius: 10px;
+  padding: var(--sp-1) var(--sp-2);
+  margin: var(--sp-1) 0;
+}
+.succes {
+  background: #e8f5e9;
+  border: 1px solid #8c8;
+  color: #275;
+  border-radius: 10px;
+  padding: var(--sp-1) var(--sp-2);
+  margin: var(--sp-1) 0;
+}
+
+/* --- cartes souvenirs / personnes --- */
+.grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--sp-2);
+}
+.carte {
+  background: #fff;
+  border: 1px solid var(--ecume);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.carte img, .carte .ph-media {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  background: var(--ecume);
+}
+.carte .corps { padding: var(--sp-1) var(--sp-2) var(--sp-2); flex: 1; }
+.carte h3 { margin: 0.2rem 0; font-size: 1.05rem; }
+.meta { color: #667; font-size: 0.85rem; }
+.badge {
+  display: inline-block;
+  background: var(--ecume);
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.75rem;
+  margin-right: 0.3rem;
+}
+.badge-or { background: rgba(201, 162, 39, 0.2); color: #8a6d10; }
+
+/* --- arbre --- */
+.arbre-gen { margin-bottom: var(--sp-3); }
+.gen-titre { color: var(--or); margin: var(--sp-2) 0 var(--sp-1); }
+.gen-ligne { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
+.noeud {
+  background: #fff;
+  border: 2px solid var(--or);
+  border-radius: 12px;
+  padding: 0.5rem 0.9rem;
+  text-decoration: none;
+  display: inline-block;
+}
+.noeud:hover { background: var(--ecume); }
+.noeud .dates { display: block; font-size: 0.75rem; color: #667; }
+
+/* --- agenda --- */
+.jour {
+  background: #fff;
+  border-left: 4px solid var(--or);
+  border-radius: 8px;
+  padding: var(--sp-1) var(--sp-2);
+  margin-bottom: var(--sp-1);
+}
+
+/* --- dialog modale --- */
+dialog {
+  border: 2px solid var(--or);
+  border-radius: 20px;
+  padding: var(--sp-3);
+  max-width: 640px;
+  width: min(92vw, 640px);
+  background: var(--sable);
+}
+dialog::backdrop { background: rgba(27, 42, 74, 0.45); }
+
+/* --- footer --- */
+.site-footer {
+  background: var(--encre);
+  color: var(--ecume);
+  padding: var(--sp-3) 0;
+  margin-top: var(--sp-4);
+}
+.site-footer a { color: var(--ecume); }
+.site-footer .wrap { display: flex; justify-content: space-between; gap: var(--sp-2); flex-wrap: wrap; }
+
+/* --- responsive --- */
+@media (max-width: 700px) {
+  .site-header .wrap { flex-direction: column; padding: var(--sp-1) 0; }
+  .bulle { padding: var(--sp-2); border-radius: 24px; }
+  .grille { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .grille { grid-template-columns: 1fr; }
+}
+
+/* --- accessibilité --- */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+}
+:focus-visible { outline: 2px solid var(--or); outline-offset: 2px; }

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MANAfamily — Inscription</title>
+  <meta name="description" content="MANAfamily — Inscription">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">MANA<em>family</em></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="/souvenirs">Souvenirs</a>
+        <a href="/famille">Famille</a>
+        <a href="/agenda">Agenda</a>
+        <a href="/creer">Créer</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="bulle" style="max-width:520px;margin:2rem auto">
+      <h1 style="margin-top:0">Créer un compte</h1>
+      <form id="form-inscription">
+        <label for="display_name">Votre nom</label>
+        <input type="text" id="display_name" required autocomplete="name">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" required autocomplete="email">
+        <label for="password">Mot de passe (8 caractères minimum)</label>
+        <input type="password" id="password" required minlength="8" autocomplete="new-password">
+        <div class="actions" style="margin-top:1rem">
+          <button class="btn" type="submit">Créer mon compte</button>
+        </div>
+        <p class="erreur" id="err" hidden role="alert"></p>
+      </form>
+      <p class="meta">Déjà un compte ? <a href="/connexion">Se connecter</a>. Vous avez reçu une invitation ? <a href="/rejoindre">La saisir ici</a>.</p>
+    </section></main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>MANA<em style="color:var(--or);font-style:normal">.family</em> — privé par défaut</span>
+      <nav class="nav"><a href="/mentions-legales">Mentions légales</a></nav>
+    </div>
+  </footer>
+  <script src="/app.js"></script>
+  <script src="/js/page-auth.js"></script>
+</body>
+</html>
