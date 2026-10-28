@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MANAfamily — Connexion</title>
+  <meta name="description" content="Se connecter à MANAfamily, la maison numérique privée de votre famille.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<!-- seo:auto:start -->
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="canonical" href="https://manafamily.org/connexion">
+  <meta property="og:site_name" content="MANAfamily">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MANAfamily — Connexion">
+  <meta property="og:description" content="Se connecter à MANAfamily, la maison numérique privée de votre famille.">
+  <meta property="og:url" content="https://manafamily.org/connexion">
+  <meta property="og:image" content="https://manafamily.org/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+<!-- seo:auto:end -->
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/" aria-label="MANAfamily — accueil"><img src="/logo.png" alt="" class="brand-logo">MANA<em>family</em></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="/souvenirs">Souvenirs</a>
+        <a href="/famille">Famille</a>
+        <a href="/agenda">Agenda</a>
+        <a href="/creer">Créer</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="bulle" style="max-width:520px;margin:2rem auto">
+      <h1 style="margin-top:0">Connexion</h1>
+      <form id="form-connexion">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" required autocomplete="email">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" required autocomplete="current-password">
+        <div class="actions" style="margin-top:1rem">
+          <button class="btn" type="submit">Se connecter</button>
+          <a class="btn btn-ghost" href="/inscription">Créer un compte</a>
+        </div>
+        <p class="erreur" id="err" hidden role="alert"></p>
+      </form>
+    </section></main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span class="brand-footer"><img src="/logo.png" alt="" class="brand-logo brand-logo-footer">MANA<em style="color:var(--or);font-style:normal">.family</em> — privé par défaut</span>
+      <nav class="nav"><a href="/mentions-legales">Mentions légales</a></nav>
+    </div>
+  </footer>
+  <script src="/app.js"></script>
+  <script src="/js/page-auth.js"></script>
+</body>
+</html>

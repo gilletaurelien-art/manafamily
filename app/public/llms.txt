@@ -1,0 +1,16 @@
+# MANAfamily
+
+> Maison numérique familiale privée — un espace réservé aux membres d'une même famille, jamais un réseau public.
+
+MANAfamily est une application autonome (Node.js, SQLite), distincte du
+reste de l'écosystème MANA (mana.bzh, mana.love). Aucune page de ce domaine
+n'est publique au-delà de l'inscription et de la connexion : le contenu
+familial (souvenirs, famille, agenda, creer) n'existe
+qu'après authentification et appartenance à une famille.
+
+## Pages publiques
+
+- [MANAfamily — La maison familiale](https://manafamily.org/) — Maison numérique familiale privée : souvenirs, famille, agenda et transmission.
+- [MANAfamily — Inscription](https://manafamily.org/inscription) — Créer votre compte MANAfamily pour rejoindre ou fonder la maison numérique de votre famille.
+- [MANAfamily — Connexion](https://manafamily.org/connexion) — Se connecter à MANAfamily, la maison numérique privée de votre famille.
+- [MANAfamily — Mentions légales](https://manafamily.org/mentions-legales) — Mentions légales de MANAfamily : éditeur, hébergement et traitement des données.
