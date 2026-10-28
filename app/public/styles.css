@@ -3,7 +3,8 @@
 :root {
   --encre: #1b2a4a;
   --or: #c9a227;
-  --sable: #faf8f3;
+  --ivoire: #f7f4ee;
+  --sable: #f7f4ee;
   --ecume: #e5e0d6;
   --largeur: 1080px;
   --sp-1: 0.5rem;
@@ -20,9 +21,8 @@ body {
   margin: 0;
   font-family: Rubik, sans-serif;
   color: var(--encre);
-  background-color: var(--sable);
-  background-image: linear-gradient(var(--ecume) 50%, var(--sable) 50%);
-  background-size: 100% 88px;
+  /* Ivoire chaleureux — papier des albums de famille */
+  background-color: var(--ivoire);
   min-height: 100vh;
 }
 
@@ -61,8 +61,22 @@ a { color: var(--encre); }
   font-size: 1.4rem;
   color: var(--sable);
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 .brand em { color: var(--or); font-style: normal; }
+.brand-logo {
+  width: 34px;
+  height: 34px;
+  display: inline-block;
+}
+.brand-logo-footer {
+  width: 26px;
+  height: 26px;
+  vertical-align: -6px;
+  margin-right: 0.25rem;
+}
 .nav {
   display: flex;
   gap: var(--sp-2);
