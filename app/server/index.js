@@ -109,8 +109,16 @@ function serveStatic(req, res, pathname) {
 // Démarrage direct (node server/index.js)
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const PORT = Number(process.env.PORT || 3000);
+  // ⚠️ 127.0.0.1 par défaut, jamais 0.0.0.0 : Caddy fait le reverse_proxy en
+  // loopback, et ufw n'ouvre pas le port applicatif. Sans ce `HOST` explicite,
+  // Node écoute sur toutes les interfaces — mesuré sur le KS-5 le 28/10/2026
+  // (ss -tlnp : `*:3100`) : ufw bloquait bien l'accès externe, mais c'était
+  // alors le SEUL étage de protection. Un `listen("127.0.0.1")` rend
+  // l'accident (règle ufw retirée par erreur, `ufw disable` de dépannage)
+  // sans conséquence au lieu de rendre l'app publique sans TLS ni en-têtes.
+  const HOST = process.env.HOST || "127.0.0.1";
   getDb();
-  buildServer().listen(PORT, () => {
-    console.log(`MANAfamily prêt sur http://localhost:${PORT}`);
+  buildServer().listen(PORT, HOST, () => {
+    console.log(`MANAfamily prêt sur http://${HOST}:${PORT}`);
   });
 }
