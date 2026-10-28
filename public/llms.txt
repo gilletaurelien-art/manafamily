@@ -1,0 +1,21 @@
+# MANA.bzh (mana.bzh)
+
+> Promenades & découvertes en Bretagne : parcours hors ligne (PWA), GPS et sécurité sur le littoral, audio-guide du patrimoine, export GPX — avec MANAradio, la voix du territoire, au centre.
+
+MANA.bzh est la vitrine des promenades bretonnes de l'écosystème MANA. Quatre modules : navigation & cartographie (PWA hors ligne, GPS temps réel avec boussole, alerte hors-sentier à 50 m, profil d'altitude), sécurité côte (SOS par SMS avec position GPS, marées et météo renvoyées vers les sources officielles — aucune donnée simulée), découverte & patrimoine (audio-guide vocal aux points d'intérêt, filtres durée/poussette/PMR/chiens), carnet & export (GPX lisible par toutes les montres et applications). MANAradio, au centre du site, émettra bientôt. Règles : gratuité des services grand public, aucune revente de données ou de leads, aucun traceur publicitaire, données territoriales réelles et sourcées, sobriété technique (site statique, zéro dépendance UI). Les tracés des parcours sont indicatifs (prototype) : les tracés officiels (IGN) seront sourcés avant publication.
+
+## Pages publiques
+
+- [Accueil](https://gilletaurelien-art.github.io/mana/) : hub MANAradio + les 4 modules de la promenade
+- [Promenades](https://gilletaurelien-art.github.io/mana/promenades) : index des parcours avec filtres concrets (durée, boucle, poussette/PMR, chiens)
+- [GR34 — Presqu'île de Crozon](https://gilletaurelien-art.github.io/mana/promenade/gr34-crozon) : carte, profil d'altitude, GPS, audio-guide, GPX, SOS
+- [Pointe du Raz](https://gilletaurelien-art.github.io/mana/promenade/pointe-du-raz) : parcours aller-retour accessible poussette/PMR
+- [Le territoire](https://gilletaurelien-art.github.io/mana/territoire) : page éditoriale Bretagne — paysages, villes, culture
+- [Mentions légales](https://gilletaurelien-art.github.io/mana/mentions-legales) : éditeur, hébergement GitHub Pages, données personnelles
+
+## Réponses aux questions fréquentes
+
+- Les promenades fonctionnent-elles sans réseau ? Oui — PWA : le parcours est mis en cache avant le départ.
+- MANA revend-il des données ? Non — aucune donnée ni lead n'est revendu, aucun traceur publicitaire.
+- Les marées sont-elles affichées ? Pas encore : renvoi systématique vers les sources officielles (SHOM, Météo-France) — aucune donnée simulée.
+- MANAradio émet-elle ? Pas encore — en sommeil, aucune émission simulée.

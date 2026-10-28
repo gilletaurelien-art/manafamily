@@ -1,0 +1,838 @@
+/* ===== MANA.bzh — design system « Terre & Lumière » =====
+   Encre, sable, or discret. L'intelligence se voit dans le service,
+   pas dans les effets visuels. Budget < 20 Ko, zéro dépendance UI. */
+
+:root {
+  --ink: #1b2a4a;
+  --primary: #b08a2e;
+  --primary-deep: #8f6d1f;
+  --sand: #faf8f3;
+  --blanc-chaud: #ffffff;
+  --ecume: #e5e0d6;
+  --or: #c9a227;
+
+  --t-xs: 0.875rem;
+  --t-s: 1rem;
+  --t-m: 1.125rem;
+  --t-l: 1.375rem;
+  --t-xl: 1.75rem;
+  --t-hero: 4rem;
+
+  --sp-1: 8px;
+  --sp-2: 16px;
+  --sp-3: 24px;
+  --sp-4: 32px;
+  --sp-6: 48px;
+  --sp-12: 96px;
+
+  --serif: "Marelle Baton 2", Georgia, serif;
+  --sans: "Rubik", system-ui, sans-serif;
+  /* Largeur commune : header, bulles, panneaux, footer */
+  --largeur: 860px;
+}
+
+* { box-sizing: border-box; }
+
+@font-face {
+  font-family: "Marelle Baton 2";
+  src: url("./fonts/MarelleBaton2-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Rubik";
+  src: url("./fonts/Rubik-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Rubik";
+  src: url("./fonts/Rubik-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: var(--t-s);
+  line-height: 1.6;
+  color: var(--ink);
+  hyphens: auto;
+}
+/* Bleu nuit en fond de tout le site : les bulles blanches
+   flottent dessus, comme le footer. Motif torsades dorées
+   (esprit pull ARMOR lux) posé en filigrane discret. */
+html {
+  background:
+    url("/mana/motif.svg") repeat fixed,
+    var(--ink);
+  background-attachment: fixed;
+}
+
+.wrap { max-width: var(--largeur); margin: 0 auto; padding: 0 var(--sp-4); }
+/* PWA/mobile : jamais plus large que l'écran réel */
+@media (max-width: 720px) {
+  .wrap { width: calc(100% - 2 * var(--sp-2)); padding: 0; }
+}
+
+/* ===== Header : pilule flottante fixe en bas d'écran ===== */
+.site-header {
+  position: fixed;
+  bottom: var(--sp-2);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--sp-2);
+}
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-4);
+  background: var(--sand);
+  border: 1px solid var(--or);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 2px 6px rgb(255 255 255 / 85%),
+    0 4px 12px rgb(27 42 74 / 10%),
+    0 0 0 4px rgb(201 162 39 / 14%),
+    0 36px 80px rgb(27 42 74 / 26%);
+  padding: var(--sp-1) var(--sp-4);
+  max-width: var(--largeur);
+  width: fit-content;
+}
+.brand {
+  font-family: "Marelle Baton 2", var(--serif);
+  font-size: var(--t-m);
+  font-weight: 400;
+  color: var(--ink);
+  margin: 0;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.brand em { color: var(--or); font-style: normal; }
+.nav { display: flex; gap: var(--sp-1); align-items: center; }
+.nav a {
+  color: var(--ink);
+  text-decoration: none;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--t-xs);
+  white-space: nowrap;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: box-shadow 160ms ease, transform 160ms ease, border-color 160ms ease;
+}
+.nav a:hover {
+  color: var(--primary);
+  border-color: var(--ecume);
+  box-shadow:
+    inset 0 1px 2px rgb(255 255 255 / 90%),
+    0 3px 8px rgb(27 42 74 / 12%);
+  transform: translateY(-1px);
+}
+.nav .nav-cta {
+  color: var(--primary);
+  background: rgb(255 255 255 / 70%);
+  border-color: var(--ecume);
+  box-shadow:
+    inset 0 1px 2px rgb(255 255 255 / 90%),
+    0 3px 10px rgb(27 42 74 / 14%);
+}
+.nav .nav-cta:hover {
+  box-shadow:
+    inset 0 1px 2px rgb(255 255 255 / 90%),
+    0 6px 16px rgb(27 42 74 / 20%);
+  transform: translateY(-1px);
+}
+/* Mobile : icônes seules — le libellé passe en sr-only */
+@media (max-width: 900px) {
+  .nav { gap: var(--sp-1); }
+  .site-header .wrap { padding-left: var(--sp-2); padding-right: var(--sp-2); }
+  .nav a > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}
+
+/* ===== Hero ===== */
+.hero {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  padding: var(--sp-6) 0 var(--sp-6);
+}
+.hero .wrap { position: relative; max-width: var(--largeur); }
+.hero-label {
+  font-size: var(--t-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin: 0 0 var(--sp-2);
+}
+.hero h1.brand-grand {
+  font-family: "Marelle Baton 2", var(--serif);
+  font-size: clamp(2.4rem, 7vw, 4.5rem);
+  white-space: nowrap;
+  line-height: 1.1;
+  font-weight: 400;
+  margin: 0 auto var(--sp-2);
+  color: var(--ink);
+}
+.hero h1.brand-grand em { color: var(--or); font-style: normal; }
+.hero .lede {
+  font-size: var(--t-m);
+  max-width: 46ch;
+  margin: 0 auto var(--sp-4);
+  opacity: 0.9;
+}
+
+/* ===== Système bulle : UNE seule bulle, identique partout =====
+   Forme synapse : blob organique (rayons mixtes), anneau or,
+   reflet supérieur, ombre de lévitation — la signature MANA. */
+.bulle,
+.bulle-xl {
+  background: var(--blanc-chaud);
+  border: 1px solid var(--or);
+  border-radius: 44px 56px 40px 52px / 52px 42px 56px 46px;
+  box-shadow:
+    inset 0 2px 6px rgb(255 255 255 / 85%),
+    0 4px 12px rgb(27 42 74 / 10%),
+    0 0 0 4px rgb(201 162 39 / 14%),
+    0 36px 80px rgb(27 42 74 / 26%);
+  padding: var(--sp-2) var(--sp-4) var(--sp-2);
+  text-align: center;
+  max-width: var(--largeur);
+  margin-left: auto;
+  margin-right: auto;
+}
+.bulle-xl { padding: var(--sp-4) var(--sp-6) var(--sp-6); }
+@media (max-width: 720px) {
+  .bulle, .bulle-xl {
+    border-radius: 28px 36px 24px 32px / 32px 26px 36px 30px;
+    padding: var(--sp-4);
+  }
+  .site-header .wrap {
+    justify-content: space-between;
+    gap: var(--sp-1);
+  }
+  .site-header { padding: 0; }
+  .bulle, .bulle-xl { max-width: 100%; }
+}
+.bulle .section-texte,
+.bulle .section-accroche {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 60ch;
+  line-height: 1.7;
+}
+.bulle .est-actions { justify-content: center; }
+.bulle.landing-section > *:not(.sous-bulle) {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin-left: 0;
+  margin-right: 0;
+  width: auto;
+  max-width: none;
+}
+
+/* ===== Sections ===== */
+.landing-section { padding: var(--sp-2) var(--sp-4); }
+.landing-section + .landing-section { margin-top: var(--sp-2); }
+.section-num {
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin: 0 0 var(--sp-2);
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: var(--t-xl);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin: 0 0 var(--sp-2);
+}
+.section-accroche {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: var(--t-m);
+  margin: 0 0 var(--sp-2);
+}
+.section-texte { margin: 0 0 var(--sp-2); opacity: 0.85; }
+
+/* Sous-bulle : l'accroche et le texte vivent dans une bulle
+   intérieure encre, posée dans la bulle de section */
+.sous-bulle {
+  background: rgb(27 42 74 / 82%);
+  border: 1px solid rgb(27 42 74 / 55%);
+  border-radius: 20px 26px 18px 24px;
+  box-shadow:
+    inset 0 1px 3px rgb(255 255 255 / 12%),
+    0 3px 10px rgb(27 42 74 / 14%);
+  padding: var(--sp-4);
+  margin: 0 auto;
+  max-width: 46ch;
+}
+@media (max-width: 720px) {
+  .sous-bulle {
+    max-width: none;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 16px 16px 24px 24px;
+  }
+  .bulle.landing-section { padding-bottom: var(--sp-2); }
+}
+.sous-bulle .section-accroche { font-size: var(--t-l); color: var(--sand); }
+.sous-bulle .section-texte { font-size: var(--t-s); color: #fff; opacity: 0.92; }
+.sous-bulle .est-actions { margin-bottom: 0; }
+
+/* ===== Boutons ===== */
+.btn {
+  display: inline-block;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: var(--t-s);
+  padding: 12px 26px;
+  border-radius: 999px;
+  border: 1px solid var(--primary);
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: inset 0 1px 2px rgb(255 255 255 / 25%);
+  transition: all 170ms ease;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-primary {
+  background: var(--ink);
+  color: var(--sand);
+  border-color: var(--ink);
+  box-shadow:
+    inset 0 1px 2px rgb(255 255 255 / 18%),
+    0 6px 18px rgb(27 42 74 / 22%);
+}
+.btn-primary:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.btn-ghost {
+  background: rgb(255 255 255 / 75%);
+  color: var(--primary);
+  border-color: var(--ecume);
+  box-shadow: inset 0 1px 2px rgb(255 255 255 / 85%);
+}
+.btn-ghost:hover {
+  background: var(--or);
+  color: #fff;
+  border-color: var(--or);
+  box-shadow:
+    inset 0 1px 2px rgb(255 255 255 / 25%),
+    0 6px 18px rgb(201 162 39 / 35%);
+}
+/* Boutons dans la sous-bulle encre : blanc plein et blanc contour */
+.btn-clair {
+  background: var(--blanc-chaud);
+  color: var(--ink);
+  border-color: var(--blanc-chaud);
+  box-shadow:
+    inset 0 1px 2px rgb(255 255 255 / 90%),
+    0 6px 18px rgb(27 42 74 / 25%);
+}
+.btn-clair:hover { background: var(--sand); color: var(--primary); border-color: var(--sand); }
+.btn-clair-ghost {
+  background: transparent;
+  color: var(--sand);
+  border-color: rgb(255 255 255 / 45%);
+}
+.btn-clair-ghost:hover {
+  background: rgb(255 255 255 / 12%);
+  color: #fff;
+  border-color: rgb(255 255 255 / 70%);
+}
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; transform: none; }
+.est-actions {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin: 0 0 var(--sp-3);
+}
+
+/* ===== Hero-moteur : la porte d'entrée EST le produit ===== */
+.moteur { max-width: 680px; margin: 0 auto var(--sp-2); }
+.moteur-categories {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-2);
+}
+.moteur-categorie-btn {
+  font: inherit;
+  font-size: var(--t-xs);
+  color: var(--ink);
+  background: rgb(255 255 255 / 55%);
+  border: 1px solid var(--ecume);
+  border-radius: 999px;
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+.moteur-categorie-btn:hover { border-color: var(--or); }
+.moteur-categorie-btn.on {
+  background: var(--ink);
+  color: var(--sand);
+  border-color: var(--ink);
+}
+.moteur-barre {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  background: var(--blanc-chaud);
+  border: 1px solid var(--ecume);
+  border-radius: 999px;
+  padding: 6px 6px 6px 18px;
+  box-shadow:
+    inset 0 2px 6px rgb(255 255 255 / 85%),
+    0 4px 12px rgb(27 42 74 / 8%),
+    0 0 0 4px rgb(201 162 39 / 10%);
+}
+.moteur-loupe {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0.8;
+}
+.moteur-barre input {
+  flex: 1 1 auto;
+  min-width: 0;
+  font: inherit;
+  font-size: var(--t-m);
+  border: none;
+  background: transparent;
+  padding: 10px 4px;
+}
+.moteur-barre input:focus { outline: none; }
+.moteur-barre:focus-within {
+  box-shadow:
+    inset 0 2px 6px rgb(255 255 255 / 85%),
+    0 4px 12px rgb(27 42 74 / 8%),
+    0 0 0 4px rgb(201 162 39 / 28%);
+}
+.moteur-note { font-size: var(--t-xs); opacity: 0.6; margin: var(--sp-2) 0 0; }
+@media (max-width: 720px) {
+  .moteur-barre { flex-wrap: nowrap; border-radius: 999px; padding: 6px; }
+  .moteur-loupe { display: none; }
+  .moteur-barre input { flex: 1 1 auto; min-width: 0; font-size: var(--t-s); padding: 10px 10px; border: none; }
+  .moteur-fleche { width: 44px; height: 44px; flex: 0 0 44px; }
+}
+/* Flèche de recherche : pilule or ronde, dans la barre après le champ */
+.moteur-fleche {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: var(--or);
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.moteur-fleche svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.moteur-fleche:hover {
+  transform: translateX(2px);
+  box-shadow: 0 4px 14px rgb(201 162 39 / 45%);
+}
+
+/* ===== Pages éditoriales ===== */
+.page { padding: var(--sp-6) 0 var(--sp-12); }
+.page-titre {
+  font-family: var(--serif);
+  font-size: var(--t-xl);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin: 0 0 var(--sp-4);
+}
+.apercu-label {
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin: 0 0 var(--sp-2);
+}
+.page-panel {
+  background: var(--blanc-chaud);
+  border: 1px solid var(--or);
+  border-radius: 12px;
+  padding: var(--sp-6);
+  max-width: var(--largeur);
+  margin: 0 auto var(--sp-4);
+}
+.page-intro {
+  font-family: var(--sans);
+  font-size: var(--t-l);
+  line-height: 1.6;
+  max-width: 56ch;
+  margin: 0;
+  color: var(--ink);
+}
+.page-texte { margin: 0; line-height: 1.7; }
+.page-note { font-size: var(--t-xs); opacity: 0.6; margin-top: var(--sp-4); max-width: 60ch; }
+
+/* ===== Footer bulle encre ===== */
+.site-footer {
+  border-top: none;
+  padding: var(--sp-2) 0 var(--sp-4);
+  font-size: var(--t-xs);
+}
+.site-footer > .wrap {
+  background: var(--ink);
+  border: 1px solid var(--ecume);
+  border-radius: 44px 56px 40px 52px / 52px 42px 56px 46px;
+  box-shadow:
+    inset 0 2px 6px rgb(255 255 255 / 85%),
+    0 4px 12px rgb(27 42 74 / 10%),
+    0 0 0 4px rgb(201 162 39 / 14%),
+    0 36px 80px rgb(27 42 74 / 26%);
+  padding: var(--sp-3) var(--sp-4);
+  max-width: var(--largeur);
+}
+@media (max-width: 720px) {
+  .site-footer > .wrap { padding: var(--sp-4); border-radius: 20px 28px 18px 26px; }
+}
+/* Sur desktop le wrap du footer garde son padding interne : le
+   panneau reprend ces 32px pour s'aligner sur le header */
+@media (min-width: 721px) {
+  .site-footer > .wrap { margin-left: auto; margin-right: auto; }
+}
+/* Desktop : colonne 1 = 2/3 (présentation+contact), colonne 2 = 1/3 (liens) */
+@media (min-width: 721px) {
+  .footer-colonnes > div:first-child {
+    flex: 2 2 0;
+    max-width: 64%;
+  }
+  .footer-colonnes .footer-nav {
+    flex: 1 1 0;
+    max-width: 32%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+.footer-colonnes {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  padding-bottom: var(--sp-2);
+  color: var(--sand);
+  align-items: flex-start;
+}
+.footer-colonnes > div,
+.footer-colonnes .footer-nav {
+  background: none;
+  border: none;
+  padding: 0;
+}
+.footer-colonnes .brand { font-size: var(--t-m); margin: 0 0 var(--sp-1); }
+.site-footer .brand { color: #fff; }
+.footer-note { font-size: var(--t-xs); opacity: 0.8; margin-top: var(--sp-1); max-width: 55ch; }
+.footer-nav { display: flex; flex-direction: column; gap: 6px; }
+.footer-nav a {
+  color: var(--sand);
+  text-decoration: none;
+  display: inline-block;
+  background: rgb(255 255 255 / 8%);
+  border: 1px solid rgb(255 255 255 / 25%);
+  border-radius: 14px 18px 12px 16px;
+  padding: 6px 14px;
+  font-size: var(--t-xs);
+  transition: all 160ms ease;
+}
+.footer-nav a:hover {
+  background: var(--sand);
+  color: var(--ink);
+  border-color: var(--sand);
+  transform: translateY(-1px);
+}
+
+/* ===== Formulaire de contact ===== */
+.contact-form { margin-top: var(--sp-2); text-align: left; }
+.contact-form .apercu-label { color: var(--primary); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); }
+@media (max-width: 720px) { .contact-grid { grid-template-columns: 1fr; } }
+.contact-form .champ { margin-bottom: var(--sp-2); }
+.contact-form .champ label {
+  display: block;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--sand);
+  margin-bottom: 4px;
+}
+.contact-form .champ input,
+.contact-form .champ textarea {
+  width: 100%;
+  font: inherit;
+  font-size: var(--t-s);
+  padding: 10px 14px;
+  border: 1px solid var(--ecume);
+  border-radius: 12px 16px 10px 14px;
+  background: var(--blanc-chaud);
+}
+.contact-form .champ input:focus,
+.contact-form .champ textarea:focus {
+  outline: 2px solid var(--or);
+  outline-offset: -1px;
+}
+.contact-merci {
+  font-size: var(--t-s);
+  color: var(--ink);
+  background: rgb(201 162 39 / 12%);
+  border: 1px solid var(--or);
+  border-radius: 14px 18px 12px 16px;
+  padding: var(--sp-2) var(--sp-4);
+}
+.contact-note { font-size: var(--t-xs); opacity: 0.6; margin-top: var(--sp-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+
+/* ===== Hub : MANAradio au centre, dans le hero ===== */
+.hub-radio { margin-top: var(--sp-4); max-width: 52ch; }
+.hub-radio .section-accroche { margin: var(--sp-2) 0 var(--sp-1); }
+
+/* ===== Fond bleu nuit : labels et titres de page en clair ===== */
+.page .hero-label { color: var(--or); }
+.page .page-titre { color: var(--sand); }
+
+/* ===== Swipe des balades : scroll manuel, jamais auto ===== */
+.swipe-balades {
+  display: flex;
+  gap: var(--sp-2);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: var(--sp-1) var(--sp-1) var(--sp-2);
+  max-width: 680px;
+  margin: 0 auto var(--sp-2);
+  scrollbar-width: thin;
+  scrollbar-color: var(--or) transparent;
+}
+.swipe-carte {
+  scroll-snap-align: center;
+  flex: 0 0 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+  text-decoration: none;
+  text-align: left;
+  color: var(--ink);
+  background: var(--blanc-chaud);
+  border: 1px solid var(--or);
+  border-radius: 18px 24px 16px 22px;
+  box-shadow: inset 0 1px 2px rgb(255 255 255 / 85%), 0 4px 12px rgb(27 42 74 / 12%);
+  padding: var(--sp-2);
+  min-height: 120px;
+  transition: transform 160ms ease;
+}
+.swipe-carte:hover { transform: translateY(-2px); }
+.swipe-lieu {
+  font-size: var(--t-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin: 0;
+}
+.swipe-titre { font-weight: 700; font-size: var(--t-s); margin: 0; line-height: 1.3; }
+.swipe-meta { font-size: var(--t-xs); opacity: 0.65; margin: 0; }
+
+/* Moteur de localité dans le hero : la barre dans la bulle */
+.hero-moteur .moteur-barre { max-width: 520px; margin: 0 auto var(--sp-2); }
+
+/* Header : brand centré dans la nav */
+.nav .brand { white-space: nowrap; padding: 0 var(--sp-1); }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* Brand dans la nav : garde son style Marelle, pas de pilule */
+.nav a.brand {
+  font-family: var(--serif);
+  font-size: var(--t-l);
+  font-weight: 400;
+  color: var(--ink);
+  border: none;
+  padding: 0 var(--sp-1);
+}
+.nav a.brand:hover {
+  color: var(--ink);
+  transform: none;
+  box-shadow: none;
+  border: none;
+}
+.nav a.brand em { color: var(--or); font-style: normal; }
+
+/* ===== La balade du hero : une seule, avec sa carte ===== */
+.balade-unique {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-decoration: none;
+  text-align: left;
+  color: var(--ink);
+  background: var(--blanc-chaud);
+  border: 1px solid var(--or);
+  border-radius: 18px 26px 16px 24px;
+  box-shadow: inset 0 1px 2px rgb(255 255 255 / 85%), 0 4px 12px rgb(27 42 74 / 12%);
+  padding: var(--sp-2);
+  max-width: 320px;
+  margin: 0 auto var(--sp-2);
+  transition: transform 160ms ease;
+}
+.balade-unique:hover { transform: translateY(-2px); }
+.balade-carte {
+  border-radius: 12px 18px 10px 16px;
+  overflow: hidden;
+  background: var(--sable);
+}
+
+/* Nav fixe en bas : réserve l'espace pour ne pas masquer le footer */
+body { padding-bottom: 84px; }
+
+/* ===== Croix & coeur sous la fiche balade ===== */
+.balade-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-1);
+}
+.balade-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--ecume);
+  background: var(--blanc-chaud);
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+.balade-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.balade-x { color: var(--ink); }
+.balade-x:hover {
+  background: var(--ecume);
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+.balade-coeur { color: var(--primary); }
+.balade-coeur:hover {
+  background: rgb(201 162 39 / 14%);
+  border-color: var(--or);
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+.balade-coeur svg { fill: rgb(201 162 39 / 18%); }
+
+/* ===== Page radio : player + titres en cours ===== */
+.radio-player {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+.radio-play {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  border: 1px solid var(--or);
+  background: var(--ink);
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgb(201 162 39 / 14%);
+  transition: transform 160ms ease;
+}
+.radio-play:hover { transform: translateY(-1px); }
+.radio-play svg {
+  width: 26px;
+  height: 26px;
+  fill: var(--sand);
+  stroke: none;
+}
+.radio-etat {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: var(--t-l);
+  margin: 0 0 4px;
+}
+.radio-note { font-size: var(--t-xs); opacity: 0.6; margin: 0; }
+
+/* Footer élégant et compact : liens en liste verticale nue */
+.footer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px !important;
+}
+.footer-nav a {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 2px 0 !important;
+  font-size: var(--t-xs);
+  color: var(--sand) !important;
+  opacity: 0.85;
+  text-decoration: none;
+  transition: opacity 140ms ease;
+}
+.footer-nav a:hover {
+  background: none !important;
+  transform: none !important;
+  color: var(--or) !important;
+  opacity: 1;
+}
+@media (min-width: 721px) {
+  .footer-colonnes { gap: var(--sp-6); padding-bottom: var(--sp-2); }
+  .footer-colonnes > div:first-child { max-width: 60%; }
+}
+.footer-note { max-width: 44ch; }

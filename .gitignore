@@ -1,0 +1,7 @@
+node_modules/
+site/
+.env
+.env.*
+*.pem
+.DS_Store
+tsconfig.tsbuildinfo
