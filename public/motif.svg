@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="120" height="160" viewBox="0 0 120 160">
-  <!-- Bandes horizontales blanches pleines, esprit marinière ARMOR
-       lux. Les 2 premières bandes du haut de page restent
-       supprimées : le motif démarre sur le bleu nuit. -->
-  <g fill="#ffffff">
-    <rect x="0" y="80" width="120" height="80"/>
-  </g>
-</svg>
