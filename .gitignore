@@ -5,3 +5,10 @@ site/
 *.pem
 .DS_Store
 tsconfig.tsbuildinfo
+node_modules/
+site/
+data/
+*.db
+*.db-shm
+*.db-wal
+.env
