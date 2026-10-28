@@ -4,10 +4,10 @@
 export function ContactForm() {
   return (
     <div className="contact-form">
-      <p className="apercu-label">Écrire à MANA.bzh</p>
+      <p className="apercu-label">Écrire à MANA.family</p>
       <div className="est-actions">
-        <a className="btn btn-primary" href="mailto:contact@mana.bzh">
-          contact@mana.bzh
+        <a className="btn btn-primary" href="mailto:contact@manafamily.bzh">
+          contact@manafamily.bzh
         </a>
       </div>
       <p className="contact-note">

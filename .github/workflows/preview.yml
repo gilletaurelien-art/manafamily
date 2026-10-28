@@ -27,9 +27,9 @@ jobs:
       - run: npm i --no-save playwright-core
       - run: npx playwright-core install --with-deps chromium
 
-      # Servir le build sous /mana/ (le base Vite) : en file:// les
+      # Servir le build sous /manafamily/ (le base Vite) : en file:// les
       # assets en chemin absolu donneraient une page blanche.
-      - run: mkdir -p _p && mv site _p/mana
+      - run: mkdir -p _p && mv site _p/manafamily
       - run: python3 -m http.server 8123 -d _p &
 
       - name: Capture desktop + mobile
@@ -37,7 +37,7 @@ jobs:
           cat > shot.mjs <<'EOF'
           import { chromium } from "playwright-core";
           const browser = await chromium.launch();
-          const url = "http://localhost:8123/mana/";
+          const url = "http://localhost:8123/manafamily/";
           const d = await browser.newPage({ viewport: { width: 1280, height: 900 } });
           await d.goto(url); await d.waitForTimeout(500);
           await d.screenshot({ path: "preview-desktop.png", fullPage: true });

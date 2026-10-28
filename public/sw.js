@@ -1,9 +1,11 @@
-// Service worker MANA.bzh — cache offline pour la brique Promenades.
-// Network-first pour le HTML : une mise à jour du site est visible
-// au rechargement, offline en secours. Cache-first pour les assets
-// hashés (polices, bundles stables entre versions).
+// Service worker MANA.family — cache offline pour la brique Balades.
+// Network-first pour le HTML : une mise à jour du site (nouveau thème,
+// nouveaux parcours) est visible au rechargement — leçon apprise :
+// cache-first sur le HTML = utilisateurs bloqués sur l'ancien design.
+// Cache-first pour les assets hashés (polices, bundles).
+// Règle : bump du cache à chaque changement de thème.
 
-const CACHE = "mana-bzh-v2";
+const CACHE = "mana-family-v1";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

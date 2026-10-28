@@ -1,7 +1,7 @@
 {
-  "name": "MANA.bzh — Promenades en Bretagne",
-  "short_name": "MANA.bzh",
-  "description": "La porte d'entrée de l'écosystème MANA en Bretagne : promenades, découvertes, territoire.",
+  "name": "MANA.family — Balades en famille en Bretagne",
+  "short_name": "MANA.family",
+  "description": "La déclinaison familiale de l'écosystème MANA en Bretagne : balades courtes, accessibles poussette/PMR, découvertes et territoire.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

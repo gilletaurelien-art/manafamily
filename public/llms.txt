@@ -1,21 +1,23 @@
-# MANA.bzh (mana.bzh)
+# MANA.family (gilletaurelien-art.github.io/manafamily)
 
-> Promenades & découvertes en Bretagne : parcours hors ligne (PWA), GPS et sécurité sur le littoral, audio-guide du patrimoine, export GPX — avec MANAradio, la voix du territoire, au centre.
+> Balades & découvertes en famille en Bretagne : parcours courts et accessibles poussette/PMR, hors ligne (PWA), GPS et alerte hors-sentier, export GPX — avec MANAradio, la voix du territoire, au centre.
 
-MANA.bzh est la vitrine des promenades bretonnes de l'écosystème MANA. Quatre modules : navigation & cartographie (PWA hors ligne, GPS temps réel avec boussole, alerte hors-sentier à 50 m, profil d'altitude), sécurité côte (SOS par SMS avec position GPS, marées et météo renvoyées vers les sources officielles — aucune donnée simulée), découverte & patrimoine (audio-guide vocal aux points d'intérêt, filtres durée/poussette/PMR/chiens), carnet & export (GPX lisible par toutes les montres et applications). MANAradio, au centre du site, émettra bientôt. Règles : gratuité des services grand public, aucune revente de données ou de leads, aucun traceur publicitaire, données territoriales réelles et sourcées, sobriété technique (site statique, zéro dépendance UI). Les tracés des parcours sont indicatifs (prototype) : les tracés officiels (IGN) seront sourcés avant publication.
+MANA.family est la déclinaison familiale de l'écosystème MANA : des promenades bretonnes pensées pour les familles — enfants, poussettes, accessibilité PMR, rythmes doux. Les parcours sont courts (≤ 2 h), souvent en boucle, avec aires de jeux et pauses gourmandes à proximité (données réelles uniquement). Fonctionnalités client-side, sans backend : PWA hors ligne (service worker), GPS temps réel avec boussole, alerte hors-sentier à 50 m, profil d'altitude, export GPX, SOS par SMS avec position GPS. Pas d'audio-guide, pas de visites guidées, pas de monétisation, pas d'espace membre. MANAradio, au centre du site, est « Hors antenne » — aucune émission simulée. Règles : gratuité des services grand public, aucune revente de données ou de leads, aucun traceur publicitaire, données territoriales réelles et sourcées (geo.api.gouv.fr), sobriété technique (site statique, zéro dépendance UI). Les tracés des parcours sont indicatifs (prototype) : les tracés officiels (IGN) seront sourcés avant publication.
 
 ## Pages publiques
 
-- [Accueil](https://gilletaurelien-art.github.io/mana/) : hub MANAradio + les 4 modules de la promenade
-- [Promenades](https://gilletaurelien-art.github.io/mana/promenades) : index des parcours avec filtres concrets (durée, boucle, poussette/PMR, chiens)
-- [GR34 — Presqu'île de Crozon](https://gilletaurelien-art.github.io/mana/promenade/gr34-crozon) : carte, profil d'altitude, GPS, audio-guide, GPX, SOS
-- [Pointe du Raz](https://gilletaurelien-art.github.io/mana/promenade/pointe-du-raz) : parcours aller-retour accessible poussette/PMR
-- [Le territoire](https://gilletaurelien-art.github.io/mana/territoire) : page éditoriale Bretagne — paysages, villes, culture
-- [Mentions légales](https://gilletaurelien-art.github.io/mana/mentions-legales) : éditeur, hébergement GitHub Pages, données personnelles
+- [Accueil](https://gilletaurelien-art.github.io/manafamily/) : hub MANAradio + les modules de la balade familiale
+- [Balades](https://gilletaurelien-art.github.io/manafamily/promenades) : index des parcours avec filtres concrets (poussette/PMR en premier, durée courte, boucle, chiens)
+- [Pointe du Raz — aller-retour](https://gilletaurelien-art.github.io/manafamily/promenade/pointe-du-raz) : parcours accessible poussette/PMR, carte, profil d'altitude, GPS, GPX, SOS
+- [Cap Fréhel — falaises & lande](https://gilletaurelien-art.github.io/manafamily/promenade/cap-frehel) : boucle courte, aire de jeux au départ, GPS, GPX, SOS
+- [Le territoire](https://gilletaurelien-art.github.io/manafamily/territoire) : page éditoriale Bretagne — paysages, villes, culture
+- [Radio](https://gilletaurelien-art.github.io/manafamily/radio) : MANAradio — état « Hors antenne », aucun flux simulé
+- [Mentions légales](https://gilletaurelien-art.github.io/manafamily/mentions-legales) : éditeur, hébergement GitHub Pages, données personnelles
 
 ## Réponses aux questions fréquentes
 
-- Les promenades fonctionnent-elles sans réseau ? Oui — PWA : le parcours est mis en cache avant le départ.
-- MANA revend-il des données ? Non — aucune donnée ni lead n'est revendu, aucun traceur publicitaire.
-- Les marées sont-elles affichées ? Pas encore : renvoi systématique vers les sources officielles (SHOM, Météo-France) — aucune donnée simulée.
-- MANAradio émet-elle ? Pas encore — en sommeil, aucune émission simulée.
+- Les balades fonctionnent-elles sans réseau ? Oui — PWA : le parcours est mis en cache avant le départ.
+- Les parcours conviennent-ils aux poussettes et aux PMR ? Un filtre dédié les met en avant ; chaque parcours affiche son accessibilité réelle.
+- MANA.family revend-il des données ? Non — aucune donnée ni lead n'est revendu, aucun traceur publicitaire.
+- MANAradio émet-elle ? Pas encore — hors antenne, aucune émission simulée.
+- Les parcours sont-ils définitifs ? Non — tracés indicatifs (prototype) ; les tracés officiels (IGN) seront sourcés avant publication.

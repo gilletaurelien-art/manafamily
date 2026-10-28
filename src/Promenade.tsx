@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { baseUrl } from "./router";
-import { WALKS, distAuTrace, distM } from "./walks";
+import { WALKS, distAuTrace } from "./walks";
 import type { WalkPoint } from "./walks";
 import { WalkMap } from "./WalkMap";
 import { AltitudeProfile } from "./Altitude";
 
-// Page promenade : GPS navigateur (position + boussole), alerte
+// Page balade : GPS navigateur (position + boussole), alerte
 // hors-sentier à 50 m, export GPX, SOS.
 // Tout client-side — zéro backend, zéro réseau en course.
 
@@ -16,7 +16,7 @@ function enGpx(walk: (typeof WALKS)[number]): string {
     .map((p) => `      <trkpt lat="${p.lat}" lon="${p.lon}"><ele>${p.ele}</ele></trkpt>`)
     .join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>
-<gpx version="1.1" creator="mana.bzh">
+<gpx version="1.1" creator="manafamily">
   <trk><name>${walk.titre}</name><trkseg>
 ${pts}
   </trkseg></trk>
@@ -44,9 +44,9 @@ export function Promenade({ slug }: { slug: string }) {
   const [horsLigne, setHorsLigne] = useState(!navigator.onLine);
 
   useEffect(() => {
-    document.title = `${walk.titre} — Promenades MANA.bzh`;
+    document.title = `${walk.titre} — Balades MANA.family`;
     return () => {
-      document.title = "MANA.bzh — La porte d'entrée de l'écosystème MANA en Bretagne";
+      document.title = "MANA.family — Balades & découvertes en famille en Bretagne";
     };
   }, [walk.titre]);
 
@@ -100,14 +100,14 @@ export function Promenade({ slug }: { slug: string }) {
 
   const sosHref = moi
     ? `sms:112?&body=${encodeURIComponent(
-        `Urgence — ma position GPS : ${moi.lat.toFixed(5)}, ${moi.lon.toFixed(5)} — parcours ${walk.titre} (mana.bzh).`
+        `Urgence — ma position GPS : ${moi.lat.toFixed(5)}, ${moi.lon.toFixed(5)} — balade ${walk.titre} (manafamily).`
       )}`
     : "sms:112";
 
   return (
     <main className="page">
       <div className="wrap">
-        <p className="hero-label">Promenade — prototype client-side</p>
+        <p className="hero-label">Balade — prototype client-side</p>
         <h1 className="page-titre">{walk.titre}</h1>
 
         <section className="page-panel">
@@ -116,8 +116,10 @@ export function Promenade({ slug }: { slug: string }) {
             {walk.distanceKm} km · {walk.dureeH} h · {walk.difficulte} ·{" "}
             {walk.boucle ? "boucle" : "aller-retour"} ·{" "}
             {walk.poussettePmr ? "accessible poussette/PMR" : "non accessible PMR"} ·
-            chiens {walk.chiens}. Tracé indicatif (prototype) : avant
-            publication, le tracé officiel (IGN) sera sourcé.
+            chiens {walk.chiens}.
+            {walk.aireDeJeux ? ` ${walk.aireDeJeux}.` : ""} Tracé indicatif
+            (prototype) : avant publication, le tracé officiel (IGN)
+            sera sourcé.
           </p>
           <div className="est-actions" style={{ marginTop: "var(--sp-2)" }}>
             <button
@@ -179,7 +181,7 @@ export function Promenade({ slug }: { slug: string }) {
           <p className="apercu-label">Points d'intérêt</p>
           {walk.waypoints.map((w) => (
             <p key={w.nom} className="page-texte">
-              <strong>{w.nom}</strong> — {w.audio}
+              <strong>{w.nom}</strong> — {w.note}
             </p>
           ))}
         </section>
@@ -196,7 +198,7 @@ export function Promenade({ slug }: { slug: string }) {
 
         <div className="est-actions">
           <a className="btn btn-ghost" href={`${B}/promenades`}>
-            Toutes les promenades
+            Toutes les balades
           </a>
           <a className="btn btn-primary" href={`${B}/`}>
             Retour à l'accueil

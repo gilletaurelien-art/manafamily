@@ -1,7 +1,9 @@
-// Données des promenades — PROTOTYPE.
-// Les tracés sont INDICATIFS : avant toute publication réelle, les
-// tracés officiels (IGN / data.gouv / FFRandonnée) doivent être
-// sourcés — règle : données territoriales réelles uniquement.
+// Balades en famille — points d'arrêt et découvertes.
+// PROTOTYPE : les tracés sont INDICATIFS. Avant toute publication
+// réelle, les tracés officiels (IGN / data.gouv / FFRandonnée)
+// doivent être sourcés — règle : données territoriales réelles
+// uniquement. Les aires de jeux et pauses gourmandes ne seront
+// affichées qu'avec des données réelles vérifiées.
 
 export interface WalkPoint {
   lat: number;
@@ -12,7 +14,7 @@ export interface WalkPoint {
 export interface Waypoint {
   nom: string;
   point: WalkPoint;
-  audio: string;
+  note: string;
 }
 
 export interface Walk {
@@ -25,10 +27,40 @@ export interface Walk {
   difficulte: "facile" | "moyen" | "sportif";
   boucle: boolean;
   poussettePmr: boolean;
+  aireDeJeux: string | null;
   chiens: "oui" | "laisse" | "non";
   points: WalkPoint[];
   waypoints: Waypoint[];
 }
+
+const traceRaz: WalkPoint[] = [
+  { lat: 48.0377, lon: -4.7401, ele: 42 },
+  { lat: 48.0364, lon: -4.7462, ele: 55 },
+  { lat: 48.0351, lon: -4.7523, ele: 71 },
+  { lat: 48.0342, lon: -4.7591, ele: 84 },
+  { lat: 48.0335, lon: -4.7662, ele: 96 },
+  { lat: 48.0326, lon: -4.7731, ele: 72 },
+  { lat: 48.0312, lon: -4.7792, ele: 38 },
+];
+
+const traceFrehel: WalkPoint[] = [
+  { lat: 48.6749, lon: -2.3226, ele: 30 },
+  { lat: 48.6772, lon: -2.3298, ele: 46 },
+  { lat: 48.6789, lon: -2.3379, ele: 62 },
+  { lat: 48.6796, lon: -2.3468, ele: 74 },
+  { lat: 48.6791, lon: -2.3557, ele: 68 },
+  { lat: 48.6774, lon: -2.3641, ele: 54 },
+  { lat: 48.6751, lon: -2.3718, ele: 41 },
+  { lat: 48.6726, lon: -2.3786, ele: 33 },
+  { lat: 48.6702, lon: -2.3849, ele: 27 },
+  { lat: 48.6681, lon: -2.3916, ele: 36 },
+  { lat: 48.6669, lon: -2.3992, ele: 49 },
+  { lat: 48.6666, lon: -2.4073, ele: 58 },
+  { lat: 48.6672, lon: -2.4154, ele: 44 },
+  { lat: 48.6688, lon: -2.4229, ele: 32 },
+  { lat: 48.6711, lon: -2.4297, ele: 26 },
+  { lat: 48.6749, lon: -2.3226, ele: 30 },
+];
 
 const traceCrozon: WalkPoint[] = [
   { lat: 48.2762, lon: -4.5976, ele: 8 },
@@ -65,119 +97,98 @@ const traceCrozon: WalkPoint[] = [
 
 export const WALKS: Walk[] = [
   {
+    slug: "pointe-du-raz",
+    titre: "Pointe du Raz — aller-retour",
+    lieu: "Plogoff, Finistère",
+    resume:
+      "Le bout du monde, à rythme d'enfant : du parking à la barre, un aller-retour large et praticable poussette/PMR, avec la lande d'ajoncs et le phare en point de mire.",
+    distanceKm: 5.2,
+    dureeH: 1.75,
+    difficulte: "facile",
+    boucle: false,
+    poussettePmr: true,
+    aireDeJeux: null,
+    chiens: "laisse",
+    points: traceRaz,
+    waypoints: [
+      {
+        nom: "Départ",
+        point: traceRaz[0],
+        note: "Départ du parking : chemin stabilisé, poussettes et fauteuils bienvenus. La lande d'ajoncs borde le sentier.",
+      },
+      {
+        nom: "Pointe",
+        point: traceRaz[traceRaz.length - 1],
+        note: "La pointe : le raz murmure en contrebas. Restez sur le sentier et tenez les enfants par la main côté falaise.",
+      },
+    ],
+  },
+  {
+    slug: "cap-frehel",
+    titre: "Cap Fréhel — boucle des falaises",
+    lieu: "Plévenon, Côtes-d'Armor",
+    resume:
+      "Une boucle courte sur la lande de bruyère, entre phare et falaises de grès rose. Large sentier familial, aire de jeux au parking de départ.",
+    distanceKm: 7.8,
+    dureeH: 2,
+    difficulte: "facile",
+    boucle: true,
+    poussettePmr: false,
+    aireDeJeux: "Aire de jeux au parking du cap (donnée à vérifier avant publication)",
+    chiens: "laisse",
+    points: traceFrehel,
+    waypoints: [
+      {
+        nom: "Départ — parking du cap",
+        point: traceFrehel[0],
+        note: "Départ près du phare : l'aire de jeux du parking est parfaite pour l'échauffement (à vérifier sur place).",
+      },
+      {
+        nom: "Falaises",
+        point: traceFrehel[3],
+        note: "Les falaises de grès rose : guettez les oiseaux marins. Gardez les enfants sur le sentier, les vagues soufflent fort.",
+      },
+      {
+        nom: "Retour par la lande",
+        point: traceFrehel[12],
+        note: "Descente douce dans la bruyère : la boucle se referme vers le phare.",
+      },
+    ],
+  },
+  {
     slug: "gr34-crozon",
-    titre: "GR34 — Presqu'île de Crozon",
+    titre: "GR34 — Camaret, boucle du port",
     lieu: "Camaret-sur-Mer, Finistère",
     resume:
-      "Le sentier des douaniers autour de la presqu'île : caps, grèves, pins maritimes. Le tracé prototype suit le littoral sud puis remonte par les crêtes.",
+      "Version famille du sentier des douaniers : port, grève et va-et-vient sur le littoral sud. Itinéraire indicatif, à découper selon l'âge des enfants.",
     distanceKm: 12.4,
-    dureeH: 3.5,
+    dureeH: 2,
     difficulte: "moyen",
     boucle: true,
     poussettePmr: false,
+    aireDeJeux: null,
     chiens: "laisse",
     points: traceCrozon,
     waypoints: [
       {
         nom: "Port de Camaret",
         point: traceCrozon[0],
-        audio:
-          "Bienvenue à Camaret. Le sentier part du port, entre les dunes et la baie.",
+        note: "Départ du port : les bateaux, la dune, la baie — de quoi occuper le regard dès les premiers pas.",
       },
       {
         nom: "Grève du sud",
         point: traceCrozon[6],
-        audio:
-          "Vous longez la grève. Attention aux marées : à haute mer, certains passages se referment.",
+        note: "La grève : idéal pour les galets et les grenouilles de mer. Attention aux marées — vérifiez les horaires.",
       },
       {
         nom: "Crêtes du nord",
         point: traceCrozon[16],
-        audio:
-          "Vous voilà sur les crêtes. Par temps clair, la pointe des Bretons se dévoile vers le large.",
+        note: "Les crêtes : parcours plus exigeant, à réserver aux grands marcheurs. Demi-tour possible à tout moment.",
       },
       {
         nom: "Retour vers Camaret",
         point: traceCrozon[26],
-        audio:
-          "Descente douce vers le port. La boucle se referme — bravo pour la balade.",
-      },
-    ],
-  },
-  {
-    slug: "pointe-du-raz",
-    titre: "Pointe du Raz — aller-retour",
-    lieu: "Plogoff, Finistère",
-    resume:
-      "Le bout du monde, depuis le parking jusqu'à la barre : raz de marée, phare et lande d'ajoncs.",
-    distanceKm: 5.2,
-    dureeH: 1.75,
-    difficulte: "facile",
-    boucle: false,
-    poussettePmr: true,
-    chiens: "laisse",
-    points: [
-      { lat: 48.0377, lon: -4.7401, ele: 42 },
-      { lat: 48.0364, lon: -4.7462, ele: 55 },
-      { lat: 48.0351, lon: -4.7523, ele: 71 },
-      { lat: 48.0342, lon: -4.7591, ele: 84 },
-      { lat: 48.0335, lon: -4.7662, ele: 96 },
-      { lat: 48.0326, lon: -4.7731, ele: 72 },
-      { lat: 48.0312, lon: -4.7792, ele: 38 },
-    ],
-    waypoints: [
-      {
-        nom: "Départ",
-        point: { lat: 48.0377, lon: -4.7401, ele: 42 },
-        audio: "Départ vers la pointe. La lande d'ajoncs borde le sentier.",
-      },
-      {
-        nom: "Pointe",
-        point: { lat: 48.0312, lon: -4.7792, ele: 38 },
-        audio: "La pointe. Le raz murmure en contrebas — restez sur le sentier.",
-      },
-    ],
-  },
-  {
-    slug: "cap-frehel",
-    titre: "Cap Fréhel — falaises & lande",
-    lieu: "Plévenon, Côtes-d'Armor",
-    resume:
-      "Les falaises de grès rose, le phare et la lande de bruyère : le souffle du Vent d'Ouest sur la Côte d'Émeraude.",
-    distanceKm: 7.8,
-    dureeH: 2.25,
-    difficulte: "moyen",
-    boucle: true,
-    poussettePmr: false,
-    chiens: "laisse",
-    points: [
-      { lat: 48.6749, lon: -2.3226, ele: 30 },
-      { lat: 48.6772, lon: -2.3298, ele: 46 },
-      { lat: 48.6789, lon: -2.3379, ele: 62 },
-      { lat: 48.6796, lon: -2.3468, ele: 74 },
-      { lat: 48.6791, lon: -2.3557, ele: 68 },
-      { lat: 48.6774, lon: -2.3641, ele: 54 },
-      { lat: 48.6751, lon: -2.3718, ele: 41 },
-      { lat: 48.6726, lon: -2.3786, ele: 33 },
-      { lat: 48.6702, lon: -2.3849, ele: 27 },
-      { lat: 48.6681, lon: -2.3916, ele: 36 },
-      { lat: 48.6669, lon: -2.3992, ele: 49 },
-      { lat: 48.6666, lon: -2.4073, ele: 58 },
-      { lat: 48.6672, lon: -2.4154, ele: 44 },
-      { lat: 48.6688, lon: -2.4229, ele: 32 },
-      { lat: 48.6711, lon: -2.4297, ele: 26 },
-      { lat: 48.6749, lon: -2.3226, ele: 30 },
-    ],
-    waypoints: [
-      {
-        nom: "Départ — parking du cap",
-        point: { lat: 48.6749, lon: -2.3226, ele: 30 },
-        audio: "Départ du cap. La lande sent le bruit de mer et la bruyère.",
-      },
-      {
-        nom: "Falaises",
-        point: { lat: 48.6796, lon: -2.3468, ele: 74 },
-        audio: "Les falaises de grès rose. Guettez les oiseaux marins — restez sur le sentier.",
+        note: "Descente douce vers le port : la boucle se referme — bravo à toute la famille.",
       },
     ],
   },

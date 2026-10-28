@@ -22,7 +22,7 @@ const B = baseUrl();
 // MANAradio : au centre du hub — la radio de l'écosystème, en
 // sommeil comme le backend (aucun flux simulé), mais positionnée.
 
-// Les 4 modules de la promenade, autour de la radio.
+// Les modules de la balade familiale, autour de la radio.
 const MODULES = [
   {
     glyphe: GlyphNavigation,
@@ -30,25 +30,25 @@ const MODULES = [
     titre: "Navigation & cartographie",
     accroche: "Le parcours dans la poche.",
     texte:
-      "Hors ligne (PWA) : carte et parcours restent sans réseau. GPS en temps réel avec boussole, alerte si vous vous éloignez de 50 m du sentier, profil d'altitude lisible.",
-    cta: { label: "Voir les parcours", href: "/promenades" },
+      "Hors ligne (PWA) : carte et parcours restent sans r\u00e9seau. GPS en temps r\u00e9el avec boussole, alerte si vous vous \u00e9loignez de 50 m du sentier — pratique pour garder le groupe rassembl\u00e9.",
+    cta: { label: "Voir les balades", href: "/promenades" },
   },
   {
     glyphe: GlyphSecurite,
     num: "02",
-    titre: "Sécurité côte",
-    accroche: "Prudence honnête.",
+    titre: "S\u00e9curit\u00e9 & s\u00e9r\u00e9nit\u00e9",
+    accroche: "Prudence honn\u00eate.",
     texte:
-      "SOS en un geste : position GPS partagée par SMS aux secours ou aux proches. Marées et météo : renvoi systématique vers les sources officielles — aucune donnée simulée.",
-    cta: { label: "Découvrir", href: "/promenade/gr34-crozon" },
+      "SOS en un geste : position GPS partag\u00e9e par SMS aux secours ou aux proches. Mar\u00e9es et m\u00e9t\u00e9o : renvoi syst\u00e9matique vers les sources officielles — aucune donn\u00e9e simul\u00e9e.",
+    cta: { label: "D\u00e9couvrir", href: "/promenade/pointe-du-raz" },
   },
   {
     glyphe: GlyphDecouverte,
     num: "03",
-    titre: "Découverte & patrimoine",
-    accroche: "La Bretagne racontée.",
+    titre: "Terrain familial",
+    accroche: "Pens\u00e9 pour les familles.",
     texte:
-      "Anecdotes du littoral, faune et flore, filtres concrets : durée, poussette/PMR, chiens, boucle ou aller-retour.",
+      "Accessibilit\u00e9 poussette/PMR en premier filtre, dur\u00e9es courtes (≤ 2 h), boucles, aires de jeux et pauses gourmandes \u00e0 proximit\u00e9 — donn\u00e9es r\u00e9elles uniquement, rien d'invent\u00e9.",
     cta: { label: "Explorer", href: "/promenades" },
   },
   {
@@ -57,8 +57,8 @@ const MODULES = [
     titre: "Carnet & export",
     accroche: "Gardez la trace.",
     texte:
-      "Export GPX en un clic, lisible par toutes les montres et applications. Fonctionne hors ligne, du cap à la grève — le réseau n'attendra pas, nous non plus.",
-    cta: { label: "Ouvrir un parcours", href: "/promenade/pointe-du-raz" },
+      "Export GPX en un clic, lisible par toutes les montres et applications. Fonctionne hors ligne, du cap \u00e0 la gr\u00e8ve — le r\u00e9seau n'attendra pas, nous non plus.",
+    cta: { label: "Ouvrir un parcours", href: "/promenade/cap-frehel" },
   },
 ];
 
@@ -89,7 +89,7 @@ export default function App() {
               <span>Radio</span>
             </a>
             <a className="brand" href={`${B}/`}>
-              MANA<em>.bzh</em>
+              MANA<em>.family</em>
             </a>
             <a href={`${B}/promenades`}>
               <GlyphSentier />
@@ -153,8 +153,8 @@ export default function App() {
             <h1 className="page-titre">Contact</h1>
             <section className="page-panel">
               <p className="page-intro">
-                Une question sur les promenades, le territoire, un
-                partenariat ? Écrivez-nous — nous répondons vite,
+                Une question sur les balades en famille, le territoire,
+                un partenariat ? Écrivez-nous — nous répondons vite,
                 honnêtement, sans prospection forcée.
               </p>
               <ContactForm />
@@ -165,9 +165,9 @@ export default function App() {
         <>
           <section className="hero">
             <div className="wrap bulle-xl hero-moteur">
-              <p className="hero-label">Terre, Mer & Lumière — Bretagne</p>
-              <h1 className="brand-grand">Promenades</h1>
-              <p className="hero-label">en Armor & Argoat</p>
+              <p className="hero-label">Terre, Mer &amp; Lumière — Bretagne</p>
+              <h1 className="brand-grand">En famille</h1>
+              <p className="hero-label">sur les chemins d'Armor &amp; Argoat</p>
 
               {/* Moteur de saisie de localité */}
               <div className="moteur-barre" role="search" aria-label="Rechercher une localité">
@@ -206,6 +206,7 @@ export default function App() {
                 <p className="swipe-titre">{walk.titre}</p>
                 <p className="swipe-meta">
                   {walk.distanceKm} km · {walk.dureeH} h · {walk.difficulte}
+                  {walk.poussettePmr ? " · poussette/PMR" : ""}
                 </p>
                 <div className="balade-actions">
                   <button
@@ -260,7 +261,7 @@ export default function App() {
               <div className="sous-bulle">
                 <p className="section-accroche">En ligne.</p>
                 <p className="section-texte">
-                  À écouter en marchant — ou au coin du feu.
+                  À écouter en marchant — ou au coin du feu, en famille.
                 </p>
                 <div className="est-actions">
                   <a className="btn btn-clair" href={`${B}/radio`}>
@@ -277,18 +278,19 @@ export default function App() {
         <div className="wrap footer-colonnes">
           <div>
             <p className="brand">
-              MANA<em>.bzh</em>
+              MANA<em>.family</em>
             </p>
             <p className="footer-note">
-              Promenades bretonnes — hors ligne, GPS, GPX. Gratuit,
-              sobre, aucune donnée revendue.
+              Balades bretonnes en famille — hors ligne, GPS, GPX.
+              Gratuit, sobre, aucune donnée revendue.
             </p>
             <ContactForm />
           </div>
           <nav className="footer-nav" aria-label="Pied de page">
             <a href={`${B}/promenades`}>Promenades</a>
-            <a href={`${B}/promenade/gr34-crozon`}>GR34 — Crozon</a>
             <a href={`${B}/promenade/pointe-du-raz`}>Pointe du Raz</a>
+            <a href={`${B}/promenade/cap-frehel`}>Cap Fréhel</a>
+            <a href={`${B}/promenade/gr34-crozon`}>GR34 — Camaret</a>
             <a href={`${B}/radio`}>MANAradio</a>
             <a href={`${B}/territoire`}>Le territoire</a>
             <a href={`${B}/contact`}>Contact</a>

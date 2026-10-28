@@ -29,9 +29,9 @@ const FACETTES = [
 
 export function Territoire() {
   useEffect(() => {
-    document.title = "Le territoire — MANA.bzh";
+    document.title = "Le territoire — MANA.family";
     return () => {
-      document.title = "MANA.bzh — La porte d'entrée de l'écosystème MANA en Bretagne";
+      document.title = "MANA.family — Balades & découvertes en famille en Bretagne";
     };
   }, []);
 
@@ -46,9 +46,9 @@ export function Territoire() {
         <section className="page-panel">
           <p className="page-intro">
             La Bretagne, par ceux qui y vivent et par ceux qui veulent y
-            venir. Une présentation honnête : ni carte postale figée, ni
-            compteur de vanité — des paysages, des villes, une culture, et
-            des services pour s'y installer durablement.
+            venir — en famille. Une présentation honnête : ni carte
+            postale figée, ni compteur de vanité — des paysages, des
+            villes, une culture, et des chemins praticables à tout âge.
           </p>
         </section>
 
@@ -60,13 +60,13 @@ export function Territoire() {
               Un territoire, des services.
             </p>
             <p className="section-texte">
-              Marcher, écouter, comprendre : chaque promenade MANA
+              Marcher, écouter, comprendre : chaque balade MANA.family
               s'appuie sur des données territoriales réelles, sourcées,
               vérifiées quand c'est possible.
             </p>
             <div className="est-actions">
               <a className="btn btn-clair" href={`${B}/promenades`}>
-                Découvrir les promenades
+                Découvrir les balades
               </a>
             </div>
           </div>
