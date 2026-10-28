@@ -60,14 +60,24 @@ body {
   color: var(--ink);
   hyphens: auto;
 }
-/* Bleu nuit en fond de tout le site : les bulles blanches
-   flottent dessus, comme le footer. Motif torsades dorées
-   (esprit pull ARMOR lux) posé en filigrane discret. */
+/* Fond ivoire chaleureux — papier des albums de famille — sur tout
+   le site ; bande bleu nuit à vagues en haut de page (la marée monte
+   puis laisse la page au sec). */
 html {
+  background: var(--sand);
+}
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 190px;
   background:
-    url("/manafamily/motif.svg") repeat fixed,
-    var(--ink);
-  background-attachment: fixed;
+    url("/manafamily/vagues.svg") bottom center / 100% 110px no-repeat,
+    linear-gradient(var(--ink), var(--ink));
+  background-repeat: no-repeat;
+  z-index: -1;
 }
 
 .wrap { max-width: var(--largeur); margin: 0 auto; padding: 0 var(--sp-4); }
@@ -112,8 +122,19 @@ html {
   margin: 0;
   text-decoration: none;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 .brand em { color: var(--or); font-style: normal; }
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+}
+@media (max-width: 720px) {
+  .brand-logo { width: 32px; height: 32px; }
+}
 .nav { display: flex; gap: var(--sp-1); align-items: center; }
 .nav a {
   color: var(--ink);
@@ -172,7 +193,7 @@ html {
   justify-content: center;
   text-align: center;
   position: relative;
-  padding: var(--sp-6) 0 var(--sp-6);
+  padding: calc(190px + var(--sp-4)) 0 var(--sp-6);
 }
 .hero .wrap { position: relative; max-width: var(--largeur); }
 .hero-label {

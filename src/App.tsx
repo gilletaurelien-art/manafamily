@@ -88,7 +88,8 @@ export default function App() {
               <GlyphRadio />
               <span>Radio</span>
             </a>
-            <a className="brand" href={`${B}/`}>
+            <a className="brand" href={`${B}/`} aria-label="MANA.family — accueil">
+              <img src={`${B}/logo.png`} alt="" className="brand-logo" />
               MANA<em>.family</em>
             </a>
             <a href={`${B}/promenades`}>
