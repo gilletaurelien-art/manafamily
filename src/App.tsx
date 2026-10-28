@@ -2,10 +2,11 @@ import { useState } from "react";
 import { usePath, baseUrl } from "./router";
 import {
   GlyphRecherche,
-  GlyphPorte,
-  GlyphDecouverte,
-  GlyphSentier,
-  GlyphTerritoire,
+  GlyphFamille,
+  GlyphSouvenirs,
+  GlyphAgenda,
+  GlyphCreer,
+  GlyphPrive,
 } from "./Glyphs";
 import { Souvenirs } from "./Souvenirs";
 import { Famille } from "./Famille";
@@ -23,7 +24,7 @@ const B = baseUrl();
 
 const MODULES = [
   {
-    glyphe: GlyphDecouverte,
+    glyphe: GlyphSouvenirs,
     num: "01",
     titre: "Souvenirs — la mémoire familiale",
     accroche: "Rien ne se perd.",
@@ -32,7 +33,7 @@ const MODULES = [
     cta: { label: "Voir les souvenirs", href: "/souvenirs" },
   },
   {
-    glyphe: GlyphPorte,
+    glyphe: GlyphFamille,
     num: "02",
     titre: "Famille — les personnes et les générations",
     accroche: "Relier les générations.",
@@ -41,7 +42,7 @@ const MODULES = [
     cta: { label: "Découvrir la famille", href: "/famille" },
   },
   {
-    glyphe: GlyphSentier,
+    glyphe: GlyphAgenda,
     num: "03",
     titre: "Agenda — les moments partagés",
     accroche: "Les rendez-vous de la maison.",
@@ -50,7 +51,7 @@ const MODULES = [
     cta: { label: "Ouvrir l'agenda", href: "/agenda" },
   },
   {
-    glyphe: GlyphTerritoire,
+    glyphe: GlyphCreer,
     num: "04",
     titre: "Créer — la transmission",
     accroche: "Des contenus deviennent des récits.",
@@ -83,19 +84,19 @@ export default function App() {
               MANA<em>.family</em>
             </a>
             <a href={`${B}/souvenirs`}>
-              <GlyphDecouverte />
+              <GlyphSouvenirs />
               <span>Souvenirs</span>
             </a>
             <a href={`${B}/famille`}>
-              <GlyphPorte />
+              <GlyphFamille />
               <span>Famille</span>
             </a>
             <a href={`${B}/agenda`}>
-              <GlyphSentier />
+              <GlyphAgenda />
               <span>Agenda</span>
             </a>
             <a href={`${B}/creer`}>
-              <GlyphTerritoire />
+              <GlyphCreer />
               <span>Créer</span>
             </a>
           </nav>
@@ -193,7 +194,7 @@ export default function App() {
             {/* 05 — Intimité et pérennité */}
             <section className="landing-section bulle">
               <p className="section-num">05</p>
-              <GlyphRecherche size={36} />
+              <GlyphPrive size={36} />
               <h2 className="section-title">Privé, et ça reste privé</h2>
               <div className="sous-bulle">
                 <p className="section-accroche">Vos données vous appartiennent.</p>

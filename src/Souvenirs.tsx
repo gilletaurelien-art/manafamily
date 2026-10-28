@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { baseUrl } from "./router";
-import { GlyphDecouverte } from "./Glyphs";
+import { GlyphSouvenirs } from "./Glyphs";
 
 // Souvenirs — vitrine descriptive de la mémoire familiale. Aucune
 // donnée simulée : la vitrine présente l'espace, l'application porte
@@ -61,7 +61,7 @@ export function Souvenirs() {
         </section>
 
         <section className="landing-section bulle" style={{ marginBottom: "var(--sp-4)" }}>
-          <GlyphDecouverte size={36} />
+          <GlyphSouvenirs size={36} />
           <h2 className="section-title">Organiser, retrouver</h2>
           <div className="sous-bulle">
             <p className="section-accroche">Rien ne se perd.</p>

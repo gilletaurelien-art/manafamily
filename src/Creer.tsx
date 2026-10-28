@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { baseUrl } from "./router";
-import { GlyphTerritoire } from "./Glyphs";
+import { GlyphCreer } from "./Glyphs";
 
 // Créer — la transmission : albums, chronologies, récits et le livre
 // de famille exportable en PDF. Chaque récit garde ses sources.
@@ -55,7 +55,7 @@ export function Creer() {
         </section>
 
         <section className="landing-section bulle" style={{ marginBottom: "var(--sp-4)" }}>
-          <GlyphTerritoire size={36} />
+          <GlyphCreer size={36} />
           <h2 className="section-title">Le livre de famille</h2>
           <div className="sous-bulle">
             <p className="section-accroche">Des contenus deviennent des récits.</p>

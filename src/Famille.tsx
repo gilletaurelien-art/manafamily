@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { baseUrl } from "./router";
-import { GlyphPorte } from "./Glyphs";
+import { GlyphFamille } from "./Glyphs";
 
 // Famille — les personnes et les générations. L'arbre est dérivé des
 // relations enregistrées, jamais l'inverse ; aucune parenté n'est
@@ -55,7 +55,7 @@ export function Famille() {
         </section>
 
         <section className="landing-section bulle" style={{ marginBottom: "var(--sp-4)" }}>
-          <GlyphPorte size={36} />
+          <GlyphFamille size={36} />
           <h2 className="section-title">La maison commune</h2>
           <div className="sous-bulle">
             <p className="section-accroche">Relier les générations.</p>

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { baseUrl } from "./router";
-import { GlyphSentier } from "./Glyphs";
+import { GlyphAgenda } from "./Glyphs";
 
 // Agenda — les moments partagés : anniversaires calculés depuis les
 // dates de naissance (jamais dupliqués), événements, participants.
@@ -54,7 +54,7 @@ export function Agenda() {
         </section>
 
         <section className="landing-section bulle" style={{ marginBottom: "var(--sp-4)" }}>
-          <GlyphSentier size={36} />
+          <GlyphAgenda size={36} />
           <h2 className="section-title">Les rendez-vous de la maison</h2>
           <div className="sous-bulle">
             <p className="section-accroche">Aucun anniversaire oublié.</p>
