@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MANAfamily — Livre de famille</title>
+  <meta name="description" content="MANAfamily — Connexion">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/" aria-label="MANAfamily — accueil"><img src="/logo.png" alt="" class="brand-logo">MANA<em>family</em></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="/souvenirs">Souvenirs</a>
+        <a href="/famille">Famille</a>
+        <a href="/agenda">Agenda</a>
+        <a href="/creer">Créer</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <h1>Livre de famille</h1>
+    <section class="bulle"><form id="form-livre">
+      <label for="titre">Titre du livre</label><input type="text" id="titre" required value="Notre histoire">
+      <label for="debut">Période</label>
+      <div class="actions"><input type="date" id="debut"> <span>→</span> <input type="date" id="fin"></div>
+      <h3>Personnes à inclure (facultatif)</h3>
+      <div id="choix-personnes"></div>
+      <div class="actions" style="margin-top:1rem">
+        <button class="btn btn-ghost" type="button" id="btn-apercu">Prévisualiser</button>
+        <button class="btn" type="submit">Exporter en PDF</button>
+      </div>
+      <p class="erreur" id="err" hidden role="alert"></p>
+    </form>
+    <div id="apercu" style="margin-top:1.5rem"></div></section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span class="brand-footer"><img src="/logo.png" alt="" class="brand-logo brand-logo-footer">MANA<em style="color:var(--or);font-style:normal">.family</em> — privé par défaut</span>
+      <nav class="nav"><a href="/mentions-legales">Mentions légales</a></nav>
+    </div>
+  </footer>
+  <script src="/app.js"></script>
+  <script src="/js/page-creer-livre.js"></script>
+</body>
+</html>

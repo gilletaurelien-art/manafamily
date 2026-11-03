@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MANAfamily — Famille</title>
+  <meta name="description" content="MANAfamily — Connexion">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/" aria-label="MANAfamily — accueil"><img src="/logo.png" alt="" class="brand-logo">MANA<em>family</em></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="/souvenirs">Souvenirs</a>
+        <a href="/famille">Famille</a>
+        <a href="/agenda">Agenda</a>
+        <a href="/creer">Créer</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="actions" style="justify-content:space-between;margin-bottom:1rem">
+      <h1 style="margin:0">Famille</h1>
+      <a class="btn" href="/famille?ajouter=1">Ajouter une personne</a>
+    </div>
+    <div id="arbre"></div>
+    <div id="liste-people"></div>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span class="brand-footer"><img src="/logo.png" alt="" class="brand-logo brand-logo-footer">MANA<em style="color:var(--or);font-style:normal">.family</em> — privé par défaut</span>
+      <nav class="nav"><a href="/mentions-legales">Mentions légales</a></nav>
+    </div>
+  </footer>
+  <script src="/app.js"></script>
+  <script src="/js/page-famille.js"></script>
+</body>
+</html>

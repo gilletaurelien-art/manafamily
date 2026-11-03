@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MANAfamily — Rejoindre une famille</title>
+  <meta name="description" content="Rejoindre la famille qui vous a invité sur MANAfamily, via un lien d'invitation.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<!-- seo:auto:start -->
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="canonical" href="https://manafamily.org/rejoindre">
+  <meta property="og:site_name" content="MANAfamily">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MANAfamily — Rejoindre une famille">
+  <meta property="og:description" content="Rejoindre la famille qui vous a invité sur MANAfamily, via un lien d'invitation.">
+  <meta property="og:url" content="https://manafamily.org/rejoindre">
+  <meta property="og:image" content="https://manafamily.org/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+<!-- seo:auto:end -->
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/" aria-label="MANAfamily — accueil"><img src="/logo.png" alt="" class="brand-logo">MANA<em>family</em></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="/souvenirs">Souvenirs</a>
+        <a href="/famille">Famille</a>
+        <a href="/agenda">Agenda</a>
+        <a href="/creer">Créer</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="bulle" style="max-width:520px;margin:2rem auto">
+      <h1 style="margin-top:0">Rejoindre une famille</h1>
+      <div id="info-invitation"><p class="chargement">Lecture de l'invitation…</p></div>
+      <form id="form-accept" hidden>
+        <div class="actions" style="margin-top:1rem">
+          <button class="btn" type="submit">Rejoindre la famille</button>
+        </div>
+        <p class="erreur" id="err" hidden role="alert"></p>
+      </form>
+    </section></main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span class="brand-footer"><img src="/logo.png" alt="" class="brand-logo brand-logo-footer">MANA<em style="color:var(--or);font-style:normal">.family</em> — privé par défaut</span>
+      <nav class="nav"><a href="/mentions-legales">Mentions légales</a></nav>
+    </div>
+  </footer>
+  <script src="/app.js"></script>
+  <script src="/js/page-rejoindre.js"></script>
+</body>
+</html>
