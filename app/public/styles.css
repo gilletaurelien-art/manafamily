@@ -270,3 +270,22 @@ dialog::backdrop { background: rgba(27, 42, 74, 0.45); }
   border: 0;
 }
 :focus-visible { outline: 2px solid var(--or); outline-offset: 2px; }
+
+/* --- MANAvibe : segments d'émission --- */
+.segment {
+  border: 1px solid var(--ecume);
+  border-radius: 16px;
+  background: #fff;
+  padding: var(--sp-2);
+  margin-bottom: var(--sp-1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.segment.mana { border-left: 4px solid var(--or); background: var(--sable); }
+.segment.chanson { border-left: 4px solid var(--encre); }
+.segment.voix { border-left: 4px solid var(--primary, #1b2a4a); }
+.segment.transition { align-items: center; color: var(--meta, #8a94a6); padding: var(--sp-1); }
+.segment-texte { margin: 0; font-size: 1.05rem; }
+.souvenir-lien { text-decoration: none; color: inherit; }
+.notice { font-style: italic; opacity: 0.75; }

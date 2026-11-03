@@ -36,7 +36,7 @@ const MIME = {
 // le 28/10/2026. `build-seo.mjs` filtre cette liste sur l'existence réelle
 // du fichier `public/<préfixe>.html` : ajouter la page suffit à faire
 // réapparaître le préfixe dans robots.txt/llms.txt, sans rien à éditer ici.
-export const AUTH_PAGE_PREFIXES = ["/souvenirs", "/famille", "/agenda", "/creer", "/albums", "/recits"];
+export const AUTH_PAGE_PREFIXES = ["/souvenirs", "/famille", "/agenda", "/creer", "/manavibe", "/albums", "/recits"];
 const AUTH_PAGES = new Set(["/parametres"]);
 function needsAuth(pathname) {
   return AUTH_PAGES.has(pathname) || AUTH_PAGE_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + "/"));

@@ -5,7 +5,7 @@
 MANAfamily est une application autonome (Node.js, SQLite), distincte du
 reste de l'écosystème MANA (mana.bzh, mana.love). Aucune page de ce domaine
 n'est publique au-delà de l'inscription et de la connexion : le contenu
-familial (souvenirs, famille, agenda, creer) n'existe
+familial (souvenirs, famille, agenda, creer, manavibe) n'existe
 qu'après authentification et appartenance à une famille.
 
 ## Pages publiques

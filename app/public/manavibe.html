@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MANAfamily — MANAvibe</title>
+  <meta name="description" content="MANAvibe — les émissions musicales de la famille : voix, souvenirs et chansons qui nous relient.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/" aria-label="MANAfamily — accueil"><img src="/logo.png" alt="" class="brand-logo">MANA<em>family</em></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="/souvenirs">Souvenirs</a>
+        <a href="/famille">Famille</a>
+        <a href="/agenda">Agenda</a>
+        <a href="/creer">Créer</a>
+        <a href="/manavibe">MANAvibe</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="actions" style="justify-content:space-between;margin-bottom:1rem">
+      <h1 style="margin:0">MANAvibe</h1>
+      <span class="badge badge-or" id="etat-connecteurs">connecteurs musicaux : hors ligne</span>
+    </div>
+    <p class="lede" style="margin-top:0">
+      Les émissions de la famille : les voix, les souvenirs et les chansons
+      qui nous relient. La mémoire est à nous — l'écoute intégrée des morceaux
+      commerciaux arrivera avec les connecteurs, plus tard.
+    </p>
+    <div id="liste"></div>
+    <section id="emission" class="panel" hidden>
+      <h2 id="emission-titre"></h2>
+      <p class="meta" id="emission-meta"></p>
+      <div id="timeline"></div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span class="brand-footer"><img src="/logo.png" alt="" class="brand-logo brand-logo-footer">MANA<em style="color:var(--or);font-style:normal">.family</em> — privé par défaut</span>
+      <nav class="nav"><a href="/mentions-legales">Mentions légales</a></nav>
+    </div>
+  </footer>
+  <script src="/app.js"></script>
+  <script src="/js/page-manavibe.js"></script>
+</body>
+</html>
