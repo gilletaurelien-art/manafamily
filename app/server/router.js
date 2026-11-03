@@ -16,6 +16,7 @@ import * as events from "./services/events.js";
 import * as home from "./services/home.js";
 import * as stories from "./services/stories.js";
 import * as books from "./services/books.js";
+import * as manavibe from "./services/manavibe.js";
 import { audit } from "./auth/auth.js";
 import { MAX_UPLOAD_BYTES } from "./lib/storage.js";
 
@@ -616,6 +617,106 @@ async function match(req, pathname) {
         .get(user.id, ctx.family.id);
       send(res, 200, row || { event_reminders: 1, birthdays: 1 });
     };
+
+  // ---------------------------------------------------------------------
+  // MANAvibe — studio de mémoire musicale (spec v1.2, connecteurs OFF)
+  // ---------------------------------------------------------------------
+
+  if (method === "POST" && pathname === "/api/manavibe/songs")
+    return async (req, res) => {
+      const user = requireUser(req);
+      const ctx = requireFamily(user, req);
+      const body = await readJson(req);
+      send(res, 201, manavibe.createSong(user, ctx, body));
+    };
+
+  if (method === "GET" && pathname === "/api/manavibe/songs")
+    return async (req, res) => {
+      const user = requireUser(req);
+      const ctx = requireFamily(user, req);
+      send(res, 200, { songs: manavibe.listSongs(ctx), connectors: manavibe.connectorStates() });
+    };
+
+  if (pathname.startsWith("/api/manavibe/songs/")) {
+    const id = parts[3];
+    if (method === "GET")
+      return async (req, res) => {
+        const user = requireUser(req);
+        const ctx = requireFamily(user, req);
+        send(res, 200, manavibe.getSongDetail(ctx, id));
+      };
+    if (method === "POST" && parts[4] === "recordings")
+      return async (req, res) => {
+        const user = requireUser(req);
+        const ctx = requireFamily(user, req);
+        const body = await readJson(req);
+        send(res, 201, manavibe.addRecording(user, ctx, id, body));
+      };
+    if (method === "POST" && parts[4] === "memories")
+      return async (req, res) => {
+        const user = requireUser(req);
+        const ctx = requireFamily(user, req);
+        const body = await readJson(req);
+        send(res, 200, manavibe.attachSongMemory(user, ctx, id, body));
+      };
+    if (method === "DELETE" && parts[4] === "recordings")
+      return async (req, res) => {
+        const user = requireUser(req);
+        const ctx = requireFamily(user, req);
+        const body = await readJson(req);
+        send(res, 200, manavibe.deleteRecording(ctx, id, body.recording_id));
+      };
+  }
+
+  if (method === "POST" && pathname === "/api/manavibe/programs")
+    return async (req, res) => {
+      const user = requireUser(req);
+      const ctx = requireFamily(user, req);
+      const body = await readJson(req);
+      send(res, 201, manavibe.createProgram(user, ctx, body));
+    };
+
+  if (method === "GET" && pathname === "/api/manavibe/programs")
+    return async (req, res) => {
+      const user = requireUser(req);
+      const ctx = requireFamily(user, req);
+      send(res, 200, { programs: manavibe.listPrograms(ctx) });
+    };
+
+  if (pathname.startsWith("/api/manavibe/programs/")) {
+    const id = parts[3];
+    if (method === "GET" && parts[4] === "timeline")
+      return async (req, res) => {
+        const user = requireUser(req);
+        const ctx = requireFamily(user, req);
+        send(res, 200, { timeline: manavibe.buildTimeline(ctx, id) });
+      };
+    if (method === "GET" && parts[4] === "archive")
+      return async (req, res) => {
+        const user = requireUser(req);
+        const ctx = requireFamily(user, req);
+        send(res, 200, manavibe.exportArchive(ctx, id));
+      };
+    if (method === "GET")
+      return async (req, res) => {
+        const user = requireUser(req);
+        const ctx = requireFamily(user, req);
+        send(res, 200, manavibe.getProgramDetail(ctx, id));
+      };
+    if (method === "PUT")
+      return async (req, res) => {
+        const user = requireUser(req);
+        const ctx = requireFamily(user, req);
+        const body = await readJson(req);
+        send(res, 200, manavibe.updateProgram(user, ctx, id, body));
+      };
+    if (method === "DELETE")
+      return async (req, res) => {
+        const user = requireUser(req);
+        const ctx = requireFamily(user, req);
+        send(res, 200, manavibe.deleteProgram(ctx, id));
+      };
+  }
 
   return null;
 }
