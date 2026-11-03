@@ -30,17 +30,15 @@ function render(programs) {
   }
   const grid = el("div", { class: "grille" });
   for (const p of programs) {
-    grid.append(
-      el("button", {
-        class: "carte",
-        style: "cursor:pointer;text-align:left",
-        onclick: () => openEmission(p.id),
-      },
-        el("div", { class: "corps" },
-          el("span", { class: "badge badge-or" }, "Émission"),
-          el("h3", {}, p.title),
-          el("span", { class: "meta" }, `créée le ${fmtDate(p.created_at)}`))))
-  );
+    const card = el("button", { class: "carte", style: "cursor:pointer;text-align:left" });
+    card.addEventListener("click", () => openEmission(p.id));
+    const corps = el("div", { class: "corps" });
+    corps.append(el("span", { class: "badge badge-or" }, "Émission"));
+    corps.append(el("h3", {}, p.title));
+    corps.append(el("span", { class: "meta" }, `créée le ${fmtDate(p.created_at)}`));
+    card.append(corps);
+    grid.append(card);
+  }
   liste.append(grid);
 }
 
@@ -103,12 +101,15 @@ function renderSegment(s) {
 
     // Le souvenir : LA valeur. Toujours rendu s'il existe.
     if (s.song.memories.length) {
-      for (const m of s.song.memories)
-        card.append(el("a", { class: "carte souvenir-lien", href: `/souvenirs/${m.id}` },
-          el("div", { class: "corps" },
-            el("span", { class: "badge" }, m.relation === "story" ? "Pourquoi cette chanson" : "Souvenir associé"),
-            el("h4", {}, m.title),
-            el("p", { class: "meta" }, (m.description || "").slice(0, 140)))));
+      for (const m of s.song.memories) {
+        const lien = el("a", { class: "carte souvenir-lien", href: `/souvenirs/${m.id}` });
+        const corps = el("div", { class: "corps" });
+        corps.append(el("span", { class: "badge" }, m.relation === "story" ? "Pourquoi cette chanson" : "Souvenir associé"));
+        corps.append(el("h4", {}, m.title));
+        corps.append(el("p", { class: "meta" }, (m.description || "").slice(0, 140)));
+        lien.append(corps);
+        card.append(lien);
+      }
     }
 
     // Repli honnête : l'écoute intégrée n'existe pas encore (règle 0),
