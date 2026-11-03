@@ -50,8 +50,11 @@ jobs:
           const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
           await ctx.addCookies([{ name, value, url: seed.base }]);
           const page = await ctx.newPage();
+          page.on("pageerror", (e) => console.log("PAGEERROR:", e.message));
+          page.on("console", (m) => { if (m.type() === "error") console.log("CONSOLE:", m.text()); });
           await page.goto(`${seed.base}/manavibe`);
-          await page.waitForTimeout(700);
+          await page.waitForTimeout(1500);
+          console.log("LISTE-HTML:", (await page.locator("#liste").innerHTML()).slice(0, 400));
           // ouvrir la première émission
           const card = page.locator(".carte").first();
           if (card) { await card.click().catch(() => {}); await page.waitForTimeout(700); }
