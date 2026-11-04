@@ -7,6 +7,7 @@ const mf = window.mf; // pas de déstructuration top-level : évite toute collis
 const liste = document.getElementById("liste");
 const emissionPanel = document.getElementById("emission");
 const timeline = document.getElementById("timeline");
+const rituelPanel = document.getElementById("rituel");
 
 async function load() {
   mf.showState(liste, { loading: true });
@@ -20,6 +21,134 @@ async function load() {
   } catch (e) {
     mf.showState(liste, { error: e.message });
   }
+  loadRituel();
+}
+
+// ---------------------------------------------------------------------
+// Le rituel hebdomadaire — une question posée par MANA, affichée en tête
+// de la page. Répondre réutilise les chemins souvenirs / chansons déjà
+// écrits : aucune nouvelle forme de stockage ici, juste l'habillage.
+// ---------------------------------------------------------------------
+
+async function loadRituel() {
+  let current;
+  try {
+    ({ current } = await mf.api("/api/rituel/current"));
+  } catch {
+    rituelPanel.hidden = true;
+    return;
+  }
+  if (!current) {
+    rituelPanel.hidden = true;
+    return;
+  }
+  rituelPanel.hidden = false;
+  rituelPanel.innerHTML = "";
+
+  const estChanson = current.category === "chanson";
+  rituelPanel.append(
+    mf.el("span", { class: "badge badge-or" }, estChanson ? "Question de la semaine — une chanson" : "Question de la semaine"),
+    mf.el("p", { class: "lede", style: "margin:0.5rem 0 1rem" }, current.text)
+  );
+
+  if (current.answered_at) {
+    rituelPanel.append(
+      mf.el("p", { class: "meta" }, `Vous avez répondu le ${mf.fmtDate(current.answered_at)}.`)
+    );
+  } else {
+    const btn = mf.el("button", { class: "btn" }, "Répondre");
+    btn.addEventListener("click", () => openRituelDialog(current));
+    rituelPanel.append(btn);
+  }
+}
+
+function openRituelDialog(current) {
+  const estChanson = current.category === "chanson";
+  const dlg = mf.el("dialog", { "aria-label": "Répondre à la question de la semaine" });
+  const champsChanson = estChanson
+    ? [
+        mf.el("label", { for: "rituel-chanson-titre" }, "Titre de la chanson (optionnel)"),
+        mf.el("input", { type: "text", id: "rituel-chanson-titre" }),
+        mf.el("label", { for: "rituel-chanson-artiste" }, "Artiste (optionnel)"),
+        mf.el("input", { type: "text", id: "rituel-chanson-artiste" }),
+      ]
+    : [];
+  const form = mf.el(
+    "form",
+    { id: "form-rituel" },
+    mf.el("h2", { style: "margin-top:0" }, "Nouveau souvenir"),
+    mf.el("p", { class: "meta" }, current.text),
+    ...champsChanson,
+    mf.el("label", { for: "rituel-texte" }, "Votre réponse, par écrit"),
+    mf.el("textarea", { id: "rituel-texte", placeholder: "Racontez…" }),
+    mf.el("label", { for: "rituel-audio" }, "Ou un message vocal (optionnel)"),
+    mf.el("input", { type: "file", id: "rituel-audio", accept: "audio/*" }),
+    mf.el(
+      "div",
+      { class: "actions", style: "margin-top:1rem" },
+      mf.el("button", { class: "btn", type: "submit" }, "Enregistrer"),
+      mf.el("button", { class: "btn btn-ghost", type: "button", onclick: () => dlg.close() }, "Annuler")
+    ),
+    mf.el("p", { class: "erreur", id: "rituel-err", hidden: true, role: "alert" })
+  );
+  dlg.append(form);
+  document.body.append(dlg);
+  dlg.showModal();
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector("button[type=submit]");
+    const errEl = form.querySelector("#rituel-err");
+    const texte = form["rituel-texte"].value.trim();
+    const fichier = form["rituel-audio"].files[0];
+    if (!texte && !fichier) {
+      errEl.textContent = "Écrivez quelques mots, ou joignez un message vocal.";
+      errEl.hidden = false;
+      return;
+    }
+    mf.spinner(btn, true);
+    errEl.hidden = true;
+    try {
+      const memoire = await mf.api("/api/memories", {
+        method: "POST",
+        body: {
+          title: `Réponse : ${current.text.slice(0, 60)}`,
+          kind: fichier ? "audio" : "text",
+          description: texte || null,
+        },
+      });
+      if (fichier) {
+        const donnees = new FormData();
+        donnees.append("file", fichier);
+        await mf.api(`/api/memories/${memoire.id}/media`, { method: "POST", body: donnees });
+      }
+
+      let songId = null;
+      const titreChanson = estChanson ? form["rituel-chanson-titre"]?.value.trim() : "";
+      if (titreChanson) {
+        const chanson = await mf.api("/api/manavibe/songs", {
+          method: "POST",
+          body: { title: titreChanson, primary_artist: form["rituel-chanson-artiste"]?.value.trim() || null },
+        });
+        await mf.api(`/api/manavibe/songs/${chanson.id}/memories`, {
+          method: "POST",
+          body: { memory_id: memoire.id, relation: "story" },
+        });
+        songId = chanson.id;
+      }
+
+      await mf.api(`/api/rituel/${current.id}/answer`, {
+        method: "POST",
+        body: { memory_id: memoire.id, song_id: songId },
+      });
+      dlg.close();
+      loadRituel();
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.hidden = false;
+      mf.spinner(btn, false);
+    }
+  });
 }
 
 function render(programs) {
