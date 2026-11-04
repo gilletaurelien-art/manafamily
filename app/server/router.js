@@ -17,6 +17,7 @@ import * as home from "./services/home.js";
 import * as stories from "./services/stories.js";
 import * as books from "./services/books.js";
 import * as manavibe from "./services/manavibe.js";
+import * as rituel from "./services/rituel.js";
 import { audit } from "./auth/auth.js";
 import { MAX_UPLOAD_BYTES } from "./lib/storage.js";
 
@@ -716,6 +717,36 @@ async function match(req, pathname) {
         const ctx = requireFamily(user, req);
         send(res, 200, manavibe.deleteProgram(ctx, id));
       };
+  }
+
+  // ---------------------------------------------------------------------
+  // Le rituel hebdomadaire — MANA pose une question, livrée à la lecture
+  // (pas de tâche planifiée), répondue via les chemins souvenirs/MANAvibe
+  // déjà existants.
+  // ---------------------------------------------------------------------
+
+  if (method === "GET" && pathname === "/api/rituel/current")
+    return async (req, res) => {
+      const user = requireUser(req);
+      const ctx = requireFamily(user, req);
+      send(res, 200, { current: rituel.ensureCurrentPrompt(ctx) });
+    };
+
+  if (method === "GET" && pathname === "/api/rituel/history")
+    return async (req, res) => {
+      const user = requireUser(req);
+      const ctx = requireFamily(user, req);
+      send(res, 200, { history: rituel.listHistory(ctx) });
+    };
+
+  if (pathname.startsWith("/api/rituel/") && parts[3] === "answer" && method === "POST") {
+    const id = parts[2];
+    return async (req, res) => {
+      const user = requireUser(req);
+      const ctx = requireFamily(user, req);
+      const body = await readJson(req);
+      send(res, 200, rituel.answerPrompt(user, ctx, id, { memoryId: body.memory_id, songId: body.song_id || null }));
+    };
   }
 
   return null;
