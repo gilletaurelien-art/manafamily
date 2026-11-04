@@ -1,0 +1,80 @@
+name: Preview app (MANAvibe)
+
+on:
+  push:
+    branches: [main, "vibe/manavibe-studio-78427f"]
+  workflow_dispatch:
+
+jobs:
+  screenshot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Les runners GitHub ont les libs système que la sandbox n'a pas :
+      # le rendu headless devient possible ici.
+      - run: npm i --no-save playwright-core
+        working-directory: app
+      - run: npx playwright-core install --with-deps chromium
+        working-directory: app
+
+      # Seed démo (contenu fictif) + serveur en arrière-plan
+      - name: Seed + serveur
+        working-directory: app
+        run: |
+          node scripts/demo-seed.mjs > /tmp/seed.json &
+          for i in $(seq 1 40); do [ -s /tmp/seed.json ] && break; sleep 1; done
+          cat /tmp/seed.json
+
+      - name: Captures
+        working-directory: app
+        run: |
+          SEED=$(cat /tmp/seed.json)
+          cat > shot.mjs <<'EOF'
+          import { chromium } from "playwright-core";
+          import fs from "node:fs";
+
+          // le seed imprime aussi les logs de migration : on ne garde que la ligne JSON
+          const raw = fs.readFileSync("/tmp/seed.json", "utf8")
+            .split("\n")
+            .find((l) => l.trim().startsWith("{"));
+          const seed = JSON.parse(raw);
+          const [name, value] = seed.cookie.split("=");
+          const browser = await chromium.launch();
+          const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+          await ctx.addCookies([{ name, value, url: seed.base }]);
+          const page = await ctx.newPage();
+          page.on("pageerror", (e) => console.log("PAGEERROR:", e.message));
+          page.on("console", (m) => { if (m.type() === "error") console.log("CONSOLE:", m.text()); });
+          await page.goto(`${seed.base}/manavibe`);
+          await page.waitForTimeout(1500);
+          console.log("LISTE-HTML:", (await page.locator("#liste").innerHTML()).slice(0, 400));
+          // ouvrir la première émission
+          const card = page.locator(".carte").first();
+          if (card) { await card.click().catch(() => {}); await page.waitForTimeout(700); }
+          await page.screenshot({ path: "app-desktop.png", fullPage: true });
+
+          const m = await browser.newContext({ viewport: { width: 390, height: 844 } });
+          await m.addCookies([{ name, value, url: seed.base }]);
+          const mp = await m.newPage();
+          await mp.goto(`${seed.base}/manavibe`);
+          await mp.waitForTimeout(700);
+          await mp.locator(".carte").first().click().catch(() => {});
+          await mp.waitForTimeout(700);
+          await mp.screenshot({ path: "app-mobile.png", fullPage: true });
+          await browser.close();
+          console.log("captures app ok");
+          EOF
+          node shot.mjs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: preview-app
+          path: app/app-*.png
+          retention-days: 30
