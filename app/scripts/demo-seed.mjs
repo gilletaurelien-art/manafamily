@@ -13,6 +13,19 @@ process.env.PORT = PORT;
 process.env.HTTPS = "0";
 if (!process.env.DATA_DIR) process.env.DATA_DIR = "/tmp/manafamily-demo";
 
+// ⛔ GARDE DUR, PAS SEULEMENT UN COMMENTAIRE. Ce script efface DATA_DIR avant
+// de le repeupler de contenu fictif. Si la variable est déjà posée dans
+// l'environnement (héritage de .env, shell de production...), un simple
+// commentaire ne l'arrête pas — on refuse plutôt que de deviner que c'est
+// sans risque.
+if (!/manafamily-demo/.test(process.env.DATA_DIR)) {
+  console.error(
+    `demo-seed: DATA_DIR="${process.env.DATA_DIR}" ne contient pas "manafamily-demo" — ` +
+      `refus d'effacer un répertoire qui pourrait être réel.`
+  );
+  process.exit(1);
+}
+
 fs.rmSync(process.env.DATA_DIR, { recursive: true, force: true });
 fs.mkdirSync(process.env.DATA_DIR, { recursive: true });
 
