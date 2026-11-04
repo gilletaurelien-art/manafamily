@@ -366,7 +366,8 @@ async function match(req, pathname) {
         const db = getDb();
         const memoriesOf = memories.listMemories(user, ctx, { personId: id });
         const comments = memories.listComments(user, ctx, "person", id);
-        send(res, 200, { person, memories: memoriesOf, comments });
+        const songs = manavibe.songsForPerson(ctx, id);
+        send(res, 200, { person, memories: memoriesOf, comments, songs });
       };
     if (method === "PUT")
       return async (req, res) => {

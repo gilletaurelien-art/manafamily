@@ -373,3 +373,23 @@ export function connectorStates() {
     deezer_preview: connectors.embeds.deezerPreview.enabled,
   };
 }
+
+// ---------------------------------------------------------------------------
+// « Les chansons de Papi » — croiser l'arbre et la mémoire musicale.
+// Aucune nouvelle donnée : une chanson est déjà liée à un souvenir
+// (song_memory) et un souvenir déjà lié à une personne (memory_person) ;
+// cette fonction ne fait que traverser les deux liens existants.
+// ---------------------------------------------------------------------------
+export function songsForPerson(ctx, personId) {
+  const db = getDb();
+  return db
+    .prepare(
+      `SELECT DISTINCT s.id, s.title, s.primary_artist
+         FROM song s
+         JOIN song_memory sm ON sm.song_id = s.id
+         JOIN memory_person mp ON mp.memory_id = sm.memory_id
+        WHERE mp.person_id = ? AND s.family_id = ?
+        ORDER BY s.created_at DESC`
+    )
+    .all(validId(personId, "Personne"), ctx.family.id);
+}

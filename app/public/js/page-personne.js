@@ -55,6 +55,19 @@ async function init() {
   }
   detail.append(memPanel);
 
+  // Chansons — croisement arbre × MANAvibe, aucune donnée propre à cette
+  // page : une chanson remonte ici dès qu'un souvenir qui la porte est
+  // associé à cette personne.
+  if (data.songs && data.songs.length) {
+    const songPanel = el("section", { class: "panel" });
+    songPanel.append(el("h3", {}, `Les chansons de ${p.first_name}`));
+    for (const s of data.songs) {
+      songPanel.append(el("p", { style: "margin:.3rem 0" },
+        el("a", { href: "/manavibe" }, s.title + (s.primary_artist ? " — " + s.primary_artist : ""))));
+    }
+    detail.append(songPanel);
+  }
+
   // Commentaires
   const comPanel = el("section", { class: "panel" });
   comPanel.append(el("h3", {}, "Témoignages"));
