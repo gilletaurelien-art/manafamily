@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MANAfamily — Composer une émission</title>
+  <meta name="description" content="Se connecter à MANAfamily, la maison numérique privée de votre famille.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/" aria-label="MANAfamily — accueil"><img src="/logo.png" alt="" class="brand-logo">MANA<em>family</em></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="/souvenirs">Souvenirs</a>
+        <a href="/famille">Famille</a>
+        <a href="/agenda">Agenda</a>
+        <a href="/creer">Créer</a>
+        <a href="/manavibe">MANAvibe</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <h1>Composer une émission</h1>
+    <p>Une émission MANAvibe : voix de MANA, messages vocaux, chansons, transitions, annonces — dans l'ordre que vous choisissez.</p>
+    <section class="bulle"><form id="form-emission">
+      <label for="titre">Titre de l'émission</label>
+      <input type="text" id="titre" required placeholder="Les chansons de notre histoire">
+
+      <h3>Segments</h3>
+      <div id="segments-liste"></div>
+      <p class="meta" id="segments-vide">Aucun segment pour l'instant — ajoutez-en un ci-dessous.</p>
+
+      <div class="bulle" style="margin-top:1rem">
+        <label for="seg-type">Ajouter un segment</label>
+        <select id="seg-type">
+          <option value="mana_voice">Voix de MANA (texte)</option>
+          <option value="family_voice">Message vocal de la famille</option>
+          <option value="song_ref">Une chanson</option>
+          <option value="transition">Transition</option>
+          <option value="announcement">Annonce</option>
+        </select>
+        <div id="seg-champs"></div>
+        <div class="actions" style="margin-top:.6rem">
+          <button class="btn btn-ghost" type="button" id="btn-ajouter-segment">Ajouter ce segment</button>
+        </div>
+      </div>
+
+      <div class="actions" style="margin-top:1.5rem">
+        <button class="btn" type="submit">Créer l'émission</button>
+      </div>
+      <p class="erreur" id="err" hidden role="alert"></p>
+    </form></section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <span class="brand-footer"><img src="/logo.png" alt="" class="brand-logo brand-logo-footer">MANA<em style="color:var(--or);font-style:normal">.family</em> — privé par défaut</span>
+      <nav class="nav"><a href="/mentions-legales">Mentions légales</a></nav>
+    </div>
+  </footer>
+  <script src="/app.js"></script>
+  <script src="/js/page-creer-emission.js"></script>
+</body>
+</html>

@@ -8,7 +8,16 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUB = path.join(__dirname, "..");
-const base = fs.readFileSync(path.join(PUB, "connexion.html"), "utf8");
+// ⚠️ connexion.html porte SON PROPRE bloc canonical/OG (injecté par
+// build-seo.mjs, car /connexion est dans la table de routes) — s'en servir
+// tel quel comme gabarit le recopierait dans toutes les autres pages
+// (canonical vers /connexion, og:title « Connexion »…). Latent tant que
+// personne ne relance ce script après le premier `build-seo.mjs` : relevé
+// le 05/11/2026 en générant une page neuve. On le retire avant de l'utiliser
+// — ce gabarit ne doit porter AUCUNE métadonnée propre à une page précise.
+const base = fs
+  .readFileSync(path.join(PUB, "connexion.html"), "utf8")
+  .replace(/<!-- seo:auto:start -->[\s\S]*?<!-- seo:auto:end -->\n?/, "");
 
 function make({ route, title, mainHtml, scripts, bodyClass = "" }) {
   let html = base.replace("<title>MANAfamily — Connexion</title>", `<title>${title}</title>`);
@@ -82,6 +91,7 @@ const pages = [
       <a class="carte" href="/creer-album"><div class="corps"><h3>Album thématique</h3><p class="meta">Organiser des souvenirs en collection.</p></div></a>
       <a class="carte" href="/creer-recit"><div class="corps"><h3>Récit familial</h3><p class="meta">Écrire une histoire à partir des souvenirs.</p></div></a>
       <a class="carte" href="/creer-livre"><div class="corps"><h3>Livre de famille (PDF)</h3><p class="meta">Composer et exporter un livre en PDF.</p></div></a>
+      <a class="carte" href="/creer-emission"><div class="corps"><h3>Émission MANAvibe</h3><p class="meta">Composer une émission : voix, chansons, souvenirs.</p></div></a>
     </div>`,
     scripts: [],
   },
@@ -137,6 +147,42 @@ const pages = [
     </form>
     <div id="apercu" style="margin-top:1.5rem"></div></section>`,
     scripts: ["/js/page-creer-livre.js"],
+  },
+  {
+    file: "creer-emission.html",
+    title: "MANAfamily — Composer une émission",
+    main: `
+    <h1>Composer une émission</h1>
+    <p>Une émission MANAvibe : voix de MANA, messages vocaux, chansons, transitions, annonces — dans l'ordre que vous choisissez.</p>
+    <section class="bulle"><form id="form-emission">
+      <label for="titre">Titre de l'émission</label>
+      <input type="text" id="titre" required placeholder="Les chansons de notre histoire">
+
+      <h3>Segments</h3>
+      <div id="segments-liste"></div>
+      <p class="meta" id="segments-vide">Aucun segment pour l'instant — ajoutez-en un ci-dessous.</p>
+
+      <div class="bulle" style="margin-top:1rem">
+        <label for="seg-type">Ajouter un segment</label>
+        <select id="seg-type">
+          <option value="mana_voice">Voix de MANA (texte)</option>
+          <option value="family_voice">Message vocal de la famille</option>
+          <option value="song_ref">Une chanson</option>
+          <option value="transition">Transition</option>
+          <option value="announcement">Annonce</option>
+        </select>
+        <div id="seg-champs"></div>
+        <div class="actions" style="margin-top:.6rem">
+          <button class="btn btn-ghost" type="button" id="btn-ajouter-segment">Ajouter ce segment</button>
+        </div>
+      </div>
+
+      <div class="actions" style="margin-top:1.5rem">
+        <button class="btn" type="submit">Créer l'émission</button>
+      </div>
+      <p class="erreur" id="err" hidden role="alert"></p>
+    </form></section>`,
+    scripts: ["/js/page-creer-emission.js"],
   },
   {
     file: "album.html",
