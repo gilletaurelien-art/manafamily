@@ -1,5 +1,5 @@
 // Agenda : liste groupée par jour + anniversaires calculés.
-const { api, el, fmtDate } = window.mf;
+const mf = window.mf; // pas de déstructuration top-level : évite toute collision de bindings globaux
 
 const agenda = document.getElementById("agenda");
 const anniv = document.getElementById("anniversaires");
@@ -11,29 +11,29 @@ async function init() {
 
 async function loadEvents() {
   agenda.innerHTML = "";
-  agenda.append(el("p", { class: "chargement" }, "Chargement…"));
+  agenda.append(mf.el("p", { class: "chargement" }, "Chargement…"));
   try {
-    const { events } = await api("/api/events");
+    const { events } = await mf.api("/api/events");
     agenda.innerHTML = "";
     if (!events.length) {
-      agenda.append(el("p", { class: "meta" }, "Aucun événement. « Ajouter un événement » pour créer le premier."));
+      agenda.append(mf.el("p", { class: "meta" }, "Aucun événement. « Ajouter un événement » pour créer le premier."));
       return;
     }
     let lastDay = "";
     for (const ev of events) {
       const day = ev.starts_at.slice(0, 10);
       if (day !== lastDay) {
-        agenda.append(el("h2", { class: "gen-titre" }, fmtDate(day)));
+        agenda.append(mf.el("h2", { class: "gen-titre" }, mf.fmtDate(day)));
         lastDay = day;
       }
-      const item = el("div", { class: "jour" },
-        el("strong", {}, ev.title),
-        el("span", { class: "meta" }, ` — ${ev.starts_at.slice(11, 16)}${ev.place ? " · " + ev.place : ""}${ev.participants ? " · " + ev.participants : ""}`)),
-        rel = el("div", { class: "actions", style: "gap:.3rem" },
-          el("button", { class: "btn btn-ghost", style: "padding:.2rem .8rem;font-size:.8rem", onclick: () => openEventForm(ev) }, "Modifier"),
-          el("button", { class: "btn btn-danger", style: "padding:.2rem .8rem;font-size:.8rem", onclick: async () => {
+      const item = mf.el("div", { class: "jour" },
+        mf.el("strong", {}, ev.title),
+        mf.el("span", { class: "meta" }, ` — ${ev.starts_at.slice(11, 16)}${ev.place ? " · " + ev.place : ""}${ev.participants ? " · " + ev.participants : ""}`)),
+        rel = mf.el("div", { class: "actions", style: "gap:.3rem" },
+          mf.el("button", { class: "btn btn-ghost", style: "padding:.2rem .8rem;font-size:.8rem", onclick: () => openEventForm(ev) }, "Modifier"),
+          mf.el("button", { class: "btn btn-danger", style: "padding:.2rem .8rem;font-size:.8rem", onclick: async () => {
             if (!confirm("Supprimer cet événement ?")) return;
-            await api(`/api/events/${ev.id}`, { method: "DELETE" });
+            await mf.api(`/api/events/${ev.id}`, { method: "DELETE" });
             loadEvents();
           } }, "Supprimer"));
       item.append(rel);
@@ -41,37 +41,37 @@ async function loadEvents() {
     }
   } catch (e) {
     agenda.innerHTML = "";
-    agenda.append(el("p", { class: "erreur" }, e.message));
+    agenda.append(mf.el("p", { class: "erreur" }, e.message));
   }
 }
 
 async function loadBirthdays() {
   anniv.innerHTML = "";
   try {
-    const { birthdays } = await api("/api/events");
+    const { birthdays } = await mf.api("/api/events");
     if (!birthdays.length) return;
-    const panel = el("section", { class: "panel" });
-    panel.append(el("h3", {}, "Anniversaires à venir"));
+    const panel = mf.el("section", { class: "panel" });
+    panel.append(mf.el("h3", {}, "Anniversaires à venir"));
     for (const b of birthdays) {
-      panel.append(el("p", { style: "margin:.2rem 0" },
-        el("strong", {}, b.name), ` — ${fmtDate(b.date)} (${b.age} ans)`));
+      panel.append(mf.el("p", { style: "margin:.2rem 0" },
+        mf.el("strong", {}, b.name), ` — ${mf.fmtDate(b.date)} (${b.age} ans)`));
     }
     anniv.append(panel);
   } catch { /* silencieux */ }
 }
 
 function openEventForm(event = null) {
-  const dlg = el("dialog", {});
-  const form = el("form", {},
-    el("h2", { style: "margin-top:0" }, event ? "Modifier l'événement" : "Nouvel événement"),
-    el("label", {}, "Titre"), el("input", { type: "text", id: "title", required: true, value: event?.title || "" }),
-    el("label", {}, "Début"), el("input", { type: "datetime-local", id: "starts", required: true, value: event?.starts_at?.slice(0, 16) || "" }),
-    el("label", {}, "Fin (optionnel)"), el("input", { type: "datetime-local", id: "ends", value: event?.ends_at?.slice(0, 16) || "" }),
-    el("label", {}, "Lieu (optionnel)"), el("input", { type: "text", id: "place", value: event?.place || "" }),
-    el("label", {}, "Description (optionnel)"), el("textarea", { id: "desc" }, event?.description || ""),
-    el("div", { class: "actions", style: "margin-top:1rem" },
-      el("button", { class: "btn", type: "submit" }, "Enregistrer"),
-      el("button", { class: "btn btn-ghost", type: "button", onclick: () => dlg.close() }, "Annuler")));
+  const dlg = mf.el("dialog", {});
+  const form = mf.el("form", {},
+    mf.el("h2", { style: "margin-top:0" }, event ? "Modifier l'événement" : "Nouvel événement"),
+    mf.el("label", {}, "Titre"), mf.el("input", { type: "text", id: "title", required: true, value: event?.title || "" }),
+    mf.el("label", {}, "Début"), mf.el("input", { type: "datetime-local", id: "starts", required: true, value: event?.starts_at?.slice(0, 16) || "" }),
+    mf.el("label", {}, "Fin (optionnel)"), mf.el("input", { type: "datetime-local", id: "ends", value: event?.ends_at?.slice(0, 16) || "" }),
+    mf.el("label", {}, "Lieu (optionnel)"), mf.el("input", { type: "text", id: "place", value: event?.place || "" }),
+    mf.el("label", {}, "Description (optionnel)"), mf.el("textarea", { id: "desc" }, event?.description || ""),
+    mf.el("div", { class: "actions", style: "margin-top:1rem" },
+      mf.el("button", { class: "btn", type: "submit" }, "Enregistrer"),
+      mf.el("button", { class: "btn btn-ghost", type: "button", onclick: () => dlg.close() }, "Annuler")));
   dlg.append(form);
   document.body.append(dlg);
   dlg.showModal();
@@ -84,8 +84,8 @@ function openEventForm(event = null) {
       place: form.place.value,
       description: form.desc.value,
     };
-    if (event) await api(`/api/events/${event.id}`, { method: "PUT", body });
-    else await api("/api/events", { method: "POST", body });
+    if (event) await mf.api(`/api/events/${event.id}`, { method: "PUT", body });
+    else await mf.api("/api/events", { method: "POST", body });
     dlg.close();
     loadEvents();
   });

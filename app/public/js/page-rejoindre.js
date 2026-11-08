@@ -1,5 +1,5 @@
 // Rejoindre une famille via invitation (token).
-const { api, el } = window.mf;
+const mf = window.mf; // pas de déstructuration top-level : évite toute collision de bindings globaux
 
 const token = new URLSearchParams(location.search).get("token") || "";
 const info = document.getElementById("info-invitation");
@@ -8,28 +8,28 @@ const form = document.getElementById("form-accept");
 async function init() {
   if (!token) {
     info.innerHTML = "";
-    info.append(el("p", { class: "erreur", role: "alert" }, "Aucune invitation fournie. Demandez un lien aux administrateurs de votre famille."));
+    info.append(mf.el("p", { class: "erreur", role: "alert" }, "Aucune invitation fournie. Demandez un lien aux administrateurs de votre famille."));
     return;
   }
   try {
-    const inv = await api("/api/invitation?token=" + encodeURIComponent(token));
+    const inv = await mf.api("/api/invitation?token=" + encodeURIComponent(token));
     info.innerHTML = "";
     if (inv.accepted) {
-      info.append(el("p", { class: "erreur" }, "Cette invitation a déjà été utilisée."));
+      info.append(mf.el("p", { class: "erreur" }, "Cette invitation a déjà été utilisée."));
       return;
     }
     if (inv.revoked || inv.expired) {
-      info.append(el("p", { class: "erreur" }, "Cette invitation n'est plus valable (révoquée ou expirée)."));
+      info.append(mf.el("p", { class: "erreur" }, "Cette invitation n'est plus valable (révoquée ou expirée)."));
       return;
     }
-    info.append(el("p", {}, `Vous êtes invité à rejoindre la famille « ${inv.familyName} ».`));
+    info.append(mf.el("p", {}, `Vous êtes invité à rejoindre la famille « ${inv.familyName} ».`));
     form.hidden = false;
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = form.querySelector("button");
       btn.disabled = true; btn.textContent = "…";
       try {
-        await api("/api/invitation/accept", { method: "POST", body: { token } });
+        await mf.api("/api/invitation/accept", { method: "POST", body: { token } });
         location.href = "/";
       } catch (err) {
         if (err.status === 401) {
@@ -45,7 +45,7 @@ async function init() {
     });
   } catch (e) {
     info.innerHTML = "";
-    info.append(el("p", { class: "erreur", role: "alert" }, e.message));
+    info.append(mf.el("p", { class: "erreur", role: "alert" }, e.message));
   }
 }
 
