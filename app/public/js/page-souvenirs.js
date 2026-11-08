@@ -1,38 +1,38 @@
 // Souvenirs : liste, filtres, création (dialog), recherche.
-const { api, el, escapeHtml, fmtDate, showState, coverHtml, kindLabel, confirmDelete } = window.mf;
+const mf = window.mf; // pas de déstructuration top-level : évite toute collision de bindings globaux
 
 const liste = document.getElementById("liste");
 const filtres = document.getElementById("filtres");
 
 async function load() {
-  showState(liste, { loading: true });
+  mf.showState(liste, { loading: true });
   const params = new URLSearchParams();
   if (filtres.q.value) params.set("q", filtres.q.value);
   if (filtres.kind.value) params.set("kind", filtres.kind.value);
   if (filtres.annee.value) params.set("year", filtres.annee.value);
   try {
-    const { memories } = await api("/api/memories?" + params.toString());
+    const { memories } = await mf.api("/api/memories?" + params.toString());
     render(memories);
   } catch (e) {
-    showState(liste, { error: e.message });
+    mf.showState(liste, { error: e.message });
   }
 }
 
 function render(memories) {
   liste.innerHTML = "";
   if (!memories.length) {
-    showState(liste, { empty: "Aucun souvenir pour ces critères. Le premier ? « Ajouter » en haut à droite." });
+    mf.showState(liste, { empty: "Aucun souvenir pour ces critères. Le premier ? « Ajouter » en haut à droite." });
     return;
   }
-  const grid = el("div", { class: "grille" });
+  const grid = mf.el("div", { class: "grille" });
   for (const m of memories) {
-    const card = el("a", { class: "carte", href: `/souvenirs/${m.id}` },
-      coverHtml(m),
-      el("div", { class: "corps" },
-        el("span", { class: "badge badge-or" }, kindLabel(m.kind)),
-        m.draft ? el("span", { class: "badge" }, "Brouillon") : null,
-        el("h3", {}, m.title),
-        el("span", { class: "meta" }, [fmtDate(m.happened_on), m.place].filter(Boolean).join(" · "))));
+    const card = mf.el("a", { class: "carte", href: `/souvenirs/${m.id}` },
+      mf.coverHtml(m),
+      mf.el("div", { class: "corps" },
+        mf.el("span", { class: "badge badge-or" }, mf.kindLabel(m.kind)),
+        m.draft ? mf.el("span", { class: "badge" }, "Brouillon") : null,
+        mf.el("h3", {}, m.title),
+        mf.el("span", { class: "meta" }, [mf.fmtDate(m.happened_on), m.place].filter(Boolean).join(" · "))));
     grid.append(card);
   }
   liste.append(grid);
@@ -43,10 +43,10 @@ filtres.addEventListener("submit", (e) => { e.preventDefault(); load(); });
 // Années disponibles (basées sur happened_on via une requête large).
 (async () => {
   try {
-    const { memories } = await api("/api/memories");
+    const { memories } = await mf.api("/api/memories");
     const years = [...new Set(memories.map((m) => m.happened_on?.slice(0, 4)).filter(Boolean))].sort().reverse();
     const sel = document.getElementById("annee");
-    for (const y of years) sel.append(el("option", { value: y }, y));
+    for (const y of years) sel.append(mf.el("option", { value: y }, y));
   } catch { /* silencieux : le filtre année restera vide */ }
   load();
 })();
@@ -56,30 +56,30 @@ const params = new URLSearchParams(location.search);
 if (params.get("ajouter")) openCreateDialog();
 
 function openCreateDialog() {
-  const dlg = el("dialog", { "aria-label": "Ajouter un souvenir" });
-  const form = el("form", { id: "form-souvenir" },
-    el("h2", { style: "margin-top:0" }, "Nouveau souvenir"),
-    el("label", { for: "titre" }, "Titre"),
-    el("input", { type: "text", id: "titre", required: true, placeholder: "L'été à Penven" }),
-    el("label", { for: "kind" }, "Type"),
-    el("select", { id: "kind" },
-      el("option", { value: "photo" }, "Photo"),
-      el("option", { value: "video" }, "Vidéo"),
-      el("option", { value: "text" }, "Texte / anecdote"),
-      el("option", { value: "audio" }, "Audio"),
-      el("option", { value: "letter" }, "Lettre / document"),
-      el("option", { value: "recipe" }, "Recette / tradition"),
-      el("option", { value: "other" }, "Autre")),
-    el("label", { for: "description" }, "Description (optionnel)"),
-    el("textarea", { id: "description" }),
-    el("label", { for: "happened_on" }, "Date du souvenir (optionnel)"),
-    el("input", { type: "date", id: "happened_on" }),
-    el("label", { for: "place" }, "Lieu (optionnel)"),
-    el("input", { type: "text", id: "place" }),
-    el("div", { class: "actions", style: "margin-top:1rem" },
-      el("button", { class: "btn", type: "submit" }, "Enregistrer"),
-      el("button", { class: "btn btn-ghost", type: "button", onclick: () => dlg.close() }, "Annuler")),
-    el("p", { class: "erreur", id: "err", hidden: true, role: "alert" }));
+  const dlg = mf.el("dialog", { "aria-label": "Ajouter un souvenir" });
+  const form = mf.el("form", { id: "form-souvenir" },
+    mf.el("h2", { style: "margin-top:0" }, "Nouveau souvenir"),
+    mf.el("label", { for: "titre" }, "Titre"),
+    mf.el("input", { type: "text", id: "titre", required: true, placeholder: "L'été à Penven" }),
+    mf.el("label", { for: "kind" }, "Type"),
+    mf.el("select", { id: "kind" },
+      mf.el("option", { value: "photo" }, "Photo"),
+      mf.el("option", { value: "video" }, "Vidéo"),
+      mf.el("option", { value: "text" }, "Texte / anecdote"),
+      mf.el("option", { value: "audio" }, "Audio"),
+      mf.el("option", { value: "letter" }, "Lettre / document"),
+      mf.el("option", { value: "recipe" }, "Recette / tradition"),
+      mf.el("option", { value: "other" }, "Autre")),
+    mf.el("label", { for: "description" }, "Description (optionnel)"),
+    mf.el("textarea", { id: "description" }),
+    mf.el("label", { for: "happened_on" }, "Date du souvenir (optionnel)"),
+    mf.el("input", { type: "date", id: "happened_on" }),
+    mf.el("label", { for: "place" }, "Lieu (optionnel)"),
+    mf.el("input", { type: "text", id: "place" }),
+    mf.el("div", { class: "actions", style: "margin-top:1rem" },
+      mf.el("button", { class: "btn", type: "submit" }, "Enregistrer"),
+      mf.el("button", { class: "btn btn-ghost", type: "button", onclick: () => dlg.close() }, "Annuler")),
+    mf.el("p", { class: "erreur", id: "err", hidden: true, role: "alert" }));
   dlg.append(form);
   document.body.append(dlg);
   dlg.showModal();
@@ -90,7 +90,7 @@ function openCreateDialog() {
     btn.disabled = true; btn.textContent = "…";
     const errEl = form.querySelector("#err");
     try {
-      const { id } = await api("/api/memories", {
+      const { id } = await mf.api("/api/memories", {
         method: "POST",
         body: {
           title: form.titre.value,

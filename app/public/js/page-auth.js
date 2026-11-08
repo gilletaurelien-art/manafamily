@@ -1,5 +1,5 @@
 // Connexion / inscription / création de famille.
-const { api, el } = window.mf;
+const mf = window.mf; // pas de déstructuration top-level : évite toute collision de bindings globaux
 
 function showErr(msg) {
   const err = document.getElementById("err");
@@ -15,7 +15,7 @@ if (fConnexion) {
     const btn = fConnexion.querySelector("button");
     btn.disabled = true; btn.textContent = "…";
     try {
-      await api("/api/auth/login", {
+      await mf.api("/api/auth/login", {
         method: "POST",
         body: {
           email: document.getElementById("email").value,
@@ -37,7 +37,7 @@ if (fInscription) {
     const btn = fInscription.querySelector("button");
     btn.disabled = true; btn.textContent = "…";
     try {
-      await api("/api/auth/register", {
+      await mf.api("/api/auth/register", {
         method: "POST",
         body: {
           display_name: document.getElementById("display_name").value,
@@ -60,7 +60,7 @@ if (fFamille) {
     const btn = fFamille.querySelector("button");
     btn.disabled = true; btn.textContent = "…";
     try {
-      await api("/api/families", {
+      await mf.api("/api/families", {
         method: "POST",
         body: { name: document.getElementById("name").value },
       });

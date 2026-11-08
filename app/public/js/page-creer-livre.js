@@ -1,5 +1,5 @@
 // Livre de famille : sélection, prévisualisation, export PDF réel.
-const { api, el, fmtDate } = window.mf;
+const mf = window.mf; // pas de déstructuration top-level : évite toute collision de bindings globaux
 
 const form = document.getElementById("form-livre");
 const personnes = document.getElementById("choix-personnes");
@@ -7,15 +7,15 @@ const apercu = document.getElementById("apercu");
 
 (async () => {
   try {
-    const { people } = await api("/api/people");
-    if (!people.length) personnes.append(el("p", { class: "meta" }, "Ajoutez d'abord des personnes dans la famille."));
+    const { people } = await mf.api("/api/people");
+    if (!people.length) personnes.append(mf.el("p", { class: "meta" }, "Ajoutez d'abord des personnes dans la famille."));
     for (const p of people) {
-      personnes.append(el("label", { style: "display:flex;gap:.5rem;font-weight:400" },
-        el("input", { type: "checkbox", value: p.id }),
+      personnes.append(mf.el("label", { style: "display:flex;gap:.5rem;font-weight:400" },
+        mf.el("input", { type: "checkbox", value: p.id }),
         `${p.first_name} ${p.last_name || ""}`.trim()));
     }
   } catch (e) {
-    personnes.append(el("p", { class: "erreur" }, e.message));
+    personnes.append(mf.el("p", { class: "erreur" }, e.message));
   }
 })();
 
@@ -30,23 +30,23 @@ function spec() {
 
 document.getElementById("btn-apercu").addEventListener("click", async () => {
   apercu.innerHTML = "";
-  apercu.append(el("p", { class: "chargement" }, "Composition…"));
+  apercu.append(mf.el("p", { class: "chargement" }, "Composition…"));
   const err = document.getElementById("err");
   err.hidden = true;
   try {
-    const book = await api("/api/books/preview", { method: "POST", body: spec() });
+    const book = await mf.api("/api/books/preview", { method: "POST", body: spec() });
     apercu.innerHTML = "";
-    const wrap = el("section", { class: "bulle" });
-    wrap.append(el("h2", {}, book.title));
-    if (book.subtitle) wrap.append(el("p", { class: "meta" }, book.subtitle));
-    wrap.append(el("p", { class: "meta" }, `${book.sections.length} chapitre(s) — modifiables via les souvenirs.`));
+    const wrap = mf.el("section", { class: "bulle" });
+    wrap.append(mf.el("h2", {}, book.title));
+    if (book.subtitle) wrap.append(mf.el("p", { class: "meta" }, book.subtitle));
+    wrap.append(mf.el("p", { class: "meta" }, `${book.sections.length} chapitre(s) — modifiables via les souvenirs.`));
     for (const s of book.sections) {
-      const panel = el("div", { class: "panel" });
-      panel.append(el("h3", { style: "margin:.2rem 0" }, s.title));
-      if (s.date) panel.append(el("p", { class: "meta" }, s.date));
-      if (s.image?.present) panel.append(el("p", { class: "meta" }, "Illustration incluse"));
-      if (s.body) panel.append(el("p", { style: "white-space:pre-wrap" }, s.body));
-      if (s.sources?.length) panel.append(el("p", { class: "meta" }, "Sources : " + s.sources.join(" · ")));
+      const panel = mf.el("div", { class: "panel" });
+      panel.append(mf.el("h3", { style: "margin:.2rem 0" }, s.title));
+      if (s.date) panel.append(mf.el("p", { class: "meta" }, s.date));
+      if (s.image?.present) panel.append(mf.el("p", { class: "meta" }, "Illustration incluse"));
+      if (s.body) panel.append(mf.el("p", { style: "white-space:pre-wrap" }, s.body));
+      if (s.sources?.length) panel.append(mf.el("p", { class: "meta" }, "Sources : " + s.sources.join(" · ")));
       wrap.append(panel);
     }
     apercu.append(wrap);
