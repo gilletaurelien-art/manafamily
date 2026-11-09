@@ -61,6 +61,26 @@ export function client(base) {
     rawGet(url) {
       return fetch(base + url, { headers: { cookie } });
     },
+    // files: [{ filename, content, mime }] — plusieurs parts "file" dans
+    // une seule requête multipart, pour tester les routes d'import en lot.
+    uploadMany(url, files) {
+      const boundary = "----testboundary" + Math.random().toString(36).slice(2);
+      const chunks = [];
+      for (const f of files) {
+        chunks.push(Buffer.from(`--${boundary}\r\ncontent-disposition: form-data; name="file"; filename="${f.filename}"\r\ncontent-type: ${f.mime}\r\n\r\n`));
+        chunks.push(Buffer.isBuffer(f.content) ? f.content : Buffer.from(f.content));
+        chunks.push(Buffer.from("\r\n"));
+      }
+      chunks.push(Buffer.from(`--${boundary}--\r\n`));
+      return fetch(base + url, {
+        method: "POST",
+        headers: { cookie, "content-type": `multipart/form-data; boundary=${boundary}` },
+        body: Buffer.concat(chunks),
+      }).then(async (res) => {
+        const ct = res.headers.get("content-type") || "";
+        return { status: res.status, data: ct.includes("application/json") ? await res.json() : null };
+      });
+    },
   };
 }
 

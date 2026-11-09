@@ -55,6 +55,47 @@ filtres.addEventListener("submit", (e) => { e.preventDefault(); load(); });
 const params = new URLSearchParams(location.search);
 if (params.get("ajouter")) openCreateDialog();
 
+// ---------------------------------------------------------------------
+// Import en lot : plusieurs fichiers à la fois, un souvenir par fichier,
+// titre et type déduits du fichier — sans passer par le formulaire.
+// ---------------------------------------------------------------------
+const fichierImport = document.getElementById("fichier-import");
+const importResultat = document.getElementById("import-resultat");
+
+document.getElementById("btn-importer").addEventListener("click", () => fichierImport.click());
+
+fichierImport.addEventListener("change", async () => {
+  const fichiers = [...fichierImport.files];
+  if (!fichiers.length) return;
+  const btn = document.getElementById("btn-importer");
+  const libelleInitial = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = `Import de ${fichiers.length} fichier${fichiers.length > 1 ? "s" : ""}…`;
+  importResultat.hidden = true;
+
+  const donnees = new FormData();
+  for (const f of fichiers) donnees.append("file", f, f.name);
+
+  try {
+    const { created, failed } = await mf.api("/api/memories/import", { method: "POST", body: donnees });
+    importResultat.hidden = false;
+    importResultat.className = failed.length ? "erreur" : "succes";
+    const parts = [];
+    if (created.length) parts.push(`${created.length} souvenir${created.length > 1 ? "s" : ""} importé${created.length > 1 ? "s" : ""}`);
+    if (failed.length) parts.push(`${failed.length} échec${failed.length > 1 ? "s" : ""} : ${failed.map((f) => `${f.filename} (${f.error})`).join(" · ")}`);
+    importResultat.textContent = parts.join(" — ");
+    load();
+  } catch (err) {
+    importResultat.hidden = false;
+    importResultat.className = "erreur";
+    importResultat.textContent = err.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = libelleInitial;
+    fichierImport.value = "";
+  }
+});
+
 function openCreateDialog() {
   const dlg = mf.el("dialog", { "aria-label": "Ajouter un souvenir" });
   const form = mf.el("form", { id: "form-souvenir" },

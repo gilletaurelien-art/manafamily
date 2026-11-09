@@ -234,6 +234,57 @@ test("préférences de notification", async () => {
   assert.equal(get.data.birthdays, 1);
 });
 
+test("import en lot : photo + vidéo + audio en une requête, un souvenir par fichier", async () => {
+  const before = (await c.get("/api/memories")).data.memories.length;
+
+  const r = await c.uploadMany("/api/memories/import", [
+    { filename: "plage-ete.jpg", content: jpegStub(), mime: "image/jpeg" },
+    { filename: "Anniversaire de Mamie.mp4", content: Buffer.from("video-bytes"), mime: "video/mp4" },
+    { filename: "message-vocal.mp3", content: Buffer.from("audio-bytes"), mime: "audio/mpeg" },
+  ]);
+  assert.equal(r.status, 201);
+  assert.equal(r.data.created.length, 3, "les trois fichiers sont importés");
+  assert.equal(r.data.failed.length, 0);
+
+  const byKind = Object.fromEntries(r.data.created.map((c2) => [c2.kind, c2]));
+  assert.ok(byKind.photo, "le type est déduit du MIME image/*");
+  assert.ok(byKind.video, "le type est déduit du MIME video/*");
+  assert.ok(byKind.audio, "le type est déduit du MIME audio/*");
+
+  const after = (await c.get("/api/memories")).data.memories;
+  assert.equal(after.length, before + 3, "trois nouveaux souvenirs, pas plus");
+
+  const videoMem = after.find((m) => m.id === byKind.video.memoryId);
+  assert.equal(videoMem.title, "Anniversaire de Mamie", "titre déduit du nom de fichier, sans l'extension");
+});
+
+test("import en lot : réussite partielle — un fichier refusé n'empêche pas les autres, et ne laisse pas de fiche fantôme", async () => {
+  const before = (await c.get("/api/memories")).data.memories.length;
+
+  const r = await c.uploadMany("/api/memories/import", [
+    { filename: "ok.png", content: png1x1(), mime: "image/png" },
+    { filename: "virus.exe", content: Buffer.from("MZ\x90\x00"), mime: "application/x-msdownload" },
+  ]);
+  assert.equal(r.status, 201, "réussite partielle : pas d'échec global");
+  assert.equal(r.data.created.length, 1, "le fichier valide est importé");
+  assert.equal(r.data.failed.length, 1, "le fichier refusé est rapporté");
+  assert.equal(r.data.failed[0].filename, "virus.exe");
+
+  const after = (await c.get("/api/memories")).data.memories;
+  assert.equal(after.length, before + 1, "aucune fiche fantôme pour le fichier refusé");
+});
+
+test("import en lot : refusé au-delà de 20 fichiers, rien n'est créé", async () => {
+  const before = (await c.get("/api/memories")).data.memories.length;
+  const fichiers = Array.from({ length: 21 }, (_, i) => ({ filename: `photo-${i}.png`, content: png1x1(), mime: "image/png" }));
+
+  const r = await c.uploadMany("/api/memories/import", fichiers);
+  assert.equal(r.status, 413);
+
+  const after = (await c.get("/api/memories")).data.memories.length;
+  assert.equal(after, before, "un lot refusé en bloc ne crée rien, même partiellement");
+});
+
 test("export et suppression de compte", async () => {
   const cX = client(app.base);
   await cX.post("/api/auth/register", { email: "zap@example.fr", password: "motdepasse8", display_name: "Zap" });

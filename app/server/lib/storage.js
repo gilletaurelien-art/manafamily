@@ -9,7 +9,10 @@ import { httpError } from "./http.js";
 
 const UPLOAD_DIR = path.join(DATA_DIR, "uploads");
 
-export const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
+export const MAX_UPLOAD_BYTES = 50 * 1024 * 1024; // photo / audio / document
+export const MAX_VIDEO_BYTES = 300 * 1024 * 1024; // vidéo — bien plus volumineuse
+export const MAX_IMPORT_FILES = 20; // par lot d'import
+export const MAX_IMPORT_BATCH_BYTES = 500 * 1024 * 1024; // tout le lot, mémoire du process
 
 // Types acceptés : images, vidéos, audio, documents. Pas d'exécutable.
 const ALLOWED = new Map([
