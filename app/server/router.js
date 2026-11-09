@@ -19,7 +19,7 @@ import * as books from "./services/books.js";
 import * as manavibe from "./services/manavibe.js";
 import * as rituel from "./services/rituel.js";
 import { audit } from "./auth/auth.js";
-import { MAX_UPLOAD_BYTES } from "./lib/storage.js";
+import { MAX_UPLOAD_BYTES, MAX_IMPORT_BATCH_BYTES } from "./lib/storage.js";
 
 export async function handleApi(req, res, pathname) {
   try {
@@ -247,6 +247,18 @@ async function match(req, pathname) {
           year: url.searchParams.get("year") || null,
         }),
       });
+    };
+
+  // Import en lot : un fichier = un souvenir (photo, vidéo ou audio).
+  // Chemin exact, vérifié AVANT le préfixe générique /api/memories/<id>
+  // ci-dessous — sinon "import" serait pris pour un identifiant de souvenir.
+  if (method === "POST" && pathname === "/api/memories/import")
+    return async (req, res) => {
+      const user = requireUser(req);
+      const ctx = requireFamily(user, req);
+      const parts_ = await parseMultipart(req, MAX_IMPORT_BATCH_BYTES);
+      const files = parts_.filter((x) => x.name === "file");
+      send(res, 201, media.importMedia(user, ctx, files));
     };
 
   if (pathname.startsWith("/api/memories/")) {

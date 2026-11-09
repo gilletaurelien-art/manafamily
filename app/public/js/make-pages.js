@@ -32,8 +32,13 @@ const pages = [
     main: `
     <div class="actions" style="justify-content:space-between;margin-bottom:1rem">
       <h1 style="margin:0">Souvenirs</h1>
-      <a class="btn" href="/souvenirs?ajouter=1" id="btn-ajouter">Ajouter</a>
+      <div class="actions">
+        <button class="btn btn-ghost" type="button" id="btn-importer">Importer des photos/vidéos/audio</button>
+        <a class="btn" href="/souvenirs?ajouter=1" id="btn-ajouter">Ajouter</a>
+      </div>
     </div>
+    <input type="file" id="fichier-import" accept="image/*,video/*,audio/*" multiple hidden>
+    <p class="meta" id="import-resultat" hidden role="status"></p>
     <section class="panel">
       <form id="filtres" class="actions">
         <input type="search" id="q" placeholder="Rechercher…" style="max-width:220px">
