@@ -3,7 +3,7 @@
 Monolithe modulaire — un seul process Node, des frontières métier claires.
 
 ```
-Navigateur (HTML/CSS/JS vanilla, charte Terre, Mer & Lumière)
+Navigateur (HTML/CSS/JS vanilla, identité visuelle encre/or, autonome)
    │  fetch JSON / multipart
    ▼
 server/index.js — HTTP : pages statiques protégées + délégation API

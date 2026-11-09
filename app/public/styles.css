@@ -1,16 +1,47 @@
-/* ===== MANAfamily — charte « Terre, Mer & Lumière » ===== */
+/* ===== MANAfamily — LE NÉODIGITALISME =====
+   On ne singe pas le passé, on en récupère les contraintes honnêtes. Le pixel
+   n'était pas un style : c'était la seule option — un bit allumé ou éteint,
+   pas de flou, pas de dégradé, pas de glace. L'aplat remplace le dégradé,
+   l'ombre dure remplace le flou — non par nostalgie, mais parce que ces
+   contraintes produisaient des interfaces honnêtes : ce qu'on voit est ce
+   qui est là, rien ne simule une profondeur qui n'existe pas. Pour un
+   produit qui garde la mémoire d'une famille plutôt que de capter son
+   attention, cette honnêteté est une valeur, pas un costume.
+
+   Noir sur blanc : aucune couleur de marque, juste de l'encre sur du papier.
+   Le papier est quadrillé — une vraie grille, comme celle d'un cahier ou
+   d'un arbre généalogique tracé à la main. Boutons pleins noirs à ombre dure
+   façon bouton de jeu 8-bit (s'enfoncent au clic). Une seule police, celle
+   du corps — aucune dépendance réseau, elle charge toujours, instantanément.
+   Les seules couleurs restantes sont fonctionnelles (erreur, succès), jamais
+   décoratives. Produit autonome : aucune référence au reste de l'écosystème
+   MANA. */
 
 :root {
-  --encre: #1b2a4a;
-  --or: #c9a227;
-  --ivoire: #f7f4ee;
-  --sable: #f7f4ee;
-  --ecume: #e5e0d6;
+  --encre: #1d1d1f;
+  --encre-douce: #6e6e73;
+
+  --fond: #ffffff;
+  --surface: #ffffff;
+  --ecume: #e3e3e6;
+
+  --alerte: #a23b3b;
+  --alerte-fond: #fbebe9;
+  --accord: #2f6b4a;
+  --accord-fond: #e9f3ec;
+
+  --font-texte: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
   --largeur: 1080px;
   --sp-1: 0.5rem;
   --sp-2: 1rem;
-  --sp-3: 1.75rem;
-  --sp-4: 3rem;
+  --sp-3: 1.5rem;
+  --sp-4: 2.5rem;
+
+  --radius: 6px;
+  --ombre-dure: 3px 3px 0 var(--encre);
+  /* Biseau façon fenêtre Mac OS classique : un trait net + un relief clair/sombre. */
+  --cadre: inset 1px 1px 0 #fff, inset -1px -1px 0 #9a9a9a, 0 0 0 1px var(--encre), var(--ombre-dure);
 }
 
 * { box-sizing: border-box; }
@@ -19,17 +50,28 @@ html { font-size: 16px; }
 
 body {
   margin: 0;
-  font-family: Rubik, sans-serif;
+  font-family: var(--font-texte);
   color: var(--encre);
-  /* Ivoire chaleureux — papier des albums de famille */
-  background-color: var(--ivoire);
+  background-color: var(--fond);
+  /* Un vrai quadrillage — pas des points : le papier d'un cahier, pas un motif décoratif. */
+  background-image:
+    linear-gradient(var(--ecume) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ecume) 1px, transparent 1px);
+  background-size: 22px 22px;
   min-height: 100vh;
 }
 
-h1, h2, h3, .brand, .titre-hero, button, label, .btn {
-  font-family: "Marelle Bâton 2", Rubik, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+h1, h2, h3, .titre-hero {
+  font-family: var(--font-texte);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: var(--encre);
+}
+
+button, label, .btn, .badge {
+  font-family: var(--font-texte);
+  font-weight: 700;
 }
 
 .wrap {
@@ -42,68 +84,66 @@ main { display: block; padding: var(--sp-4) 0 var(--sp-4); }
 
 a { color: var(--encre); }
 
-/* --- header --- */
+/* --- header : barre de titre façon fenêtre Mac OS classique --- */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: var(--encre);
-  color: var(--sable);
 }
 .site-header .wrap {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-2);
-  min-height: 64px;
+  gap: var(--sp-1);
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
-.brand {
-  font-size: 1.4rem;
-  color: var(--sable);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+.mac-dot {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  background: var(--surface);
+  box-shadow: var(--cadre);
+  border-radius: var(--radius);
 }
-.brand em { color: var(--or); font-style: normal; }
-.brand-logo {
-  width: 34px;
-  height: 34px;
-  display: inline-block;
-}
-.brand-logo-footer {
-  width: 26px;
-  height: 26px;
-  vertical-align: -6px;
-  margin-right: 0.25rem;
+.site-header .nav {
+  background: var(--surface);
+  box-shadow: var(--cadre);
+  padding: 2px 6px;
+  gap: 0;
+  border-radius: var(--radius);
 }
 .nav {
   display: flex;
-  gap: var(--sp-2);
+  gap: var(--sp-1);
   flex-wrap: wrap;
 }
 .nav a {
-  color: var(--ecume);
+  color: var(--encre-douce);
   text-decoration: none;
-  padding: 0.35rem 0.6rem;
-  border-radius: 20px;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+  font-weight: 600;
 }
-.nav a.active, .nav a:hover { background: rgba(201, 162, 39, 0.25); color: var(--or); }
+.nav a svg {
+  width: 12px;
+  height: 12px;
+  vertical-align: -1px;
+  margin-right: 0.3rem;
+}
+.nav-accueil svg {
+  width: 14px;
+  height: 14px;
+  margin-right: 0;
+}
+.nav a.active, .nav a:hover { background: rgba(0, 0, 0, 0.06); color: var(--encre); }
 
-/* --- bulles --- */
-.bulle {
-  background: #fff;
-  border: 2px solid var(--or);
-  border-radius: 44px 56px 40px 52px / 52px 42px 56px 46px;
-  box-shadow: 0 4px 14px rgba(27, 42, 74, 0.08), inset 0 0 0 4px rgba(201, 162, 39, 0.15);
+/* --- panneaux --- */
+.bulle, .panel {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--cadre);
   padding: var(--sp-3);
-  margin: 0 0 var(--sp-3);
-}
-.panel {
-  background: #fff;
-  border: 1px solid var(--ecume);
-  border-radius: 16px;
-  padding: var(--sp-2) var(--sp-3);
   margin: 0 0 var(--sp-2);
 }
 
@@ -114,36 +154,45 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
 input[type="date"], input[type="datetime-local"], select, textarea {
   width: 100%;
   padding: 0.6rem 0.8rem;
-  border: 1px solid var(--ecume);
-  border-radius: 10px;
-  font-family: Rubik, sans-serif;
+  border: 2px solid var(--ecume);
+  border-radius: var(--radius);
+  font-family: var(--font-texte);
   font-size: 1rem;
-  background: var(--sable);
+  background: var(--surface);
   color: var(--encre);
 }
 textarea { min-height: 8rem; resize: vertical; }
-input:focus, select:focus, textarea:focus, button:focus-visible {
-  outline: 2px solid var(--or);
-  outline-offset: 1px;
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--encre);
+}
+button:focus-visible {
+  outline: 2px solid var(--encre);
+  outline-offset: 2px;
 }
 
+/* Bouton « jeu 8-bit » — aplat, contour net, ombre dure qui disparaît au clic. */
 .btn {
   display: inline-block;
-  border: none;
-  border-radius: 999px;
-  padding: 0.55rem 1.4rem;
+  border: 2px solid var(--encre);
+  border-radius: var(--radius);
+  padding: 0.5rem 1.3rem;
   font-size: 1rem;
   cursor: pointer;
   text-decoration: none;
-  background: var(--or);
-  color: var(--encre);
+  background: var(--encre);
+  color: #fff;
   font-weight: 700;
+  box-shadow: var(--ombre-dure);
+  transform: translate(0, 0);
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
 }
-.btn:hover { filter: brightness(1.08); }
-.btn-ghost { background: transparent; border: 2px solid var(--or); }
-.btn-clair { background: var(--ecume); }
-.btn-danger { background: #b33; color: #fff; }
-.btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+.btn:hover { filter: brightness(1.05); }
+.btn:active { transform: translate(3px, 3px); box-shadow: none; }
+.btn-ghost { background: var(--surface); color: var(--encre); }
+.btn-clair { background: var(--ecume); color: var(--encre); }
+.btn-danger { background: var(--alerte); border-color: var(--alerte); color: #fff; }
+.btn[disabled] { opacity: 0.5; cursor: not-allowed; box-shadow: none; transform: none; }
 
 .actions { display: flex; gap: var(--sp-1); flex-wrap: wrap; align-items: center; }
 
@@ -153,21 +202,22 @@ input:focus, select:focus, textarea:focus, button:focus-visible {
   padding: var(--sp-4) var(--sp-2);
   color: var(--encre);
 }
-.vide .glyphe { font-size: 2.4rem; display: block; margin-bottom: var(--sp-1); }
+.vide .glyphe { display: inline-block; margin-bottom: var(--sp-1); color: var(--encre-douce); }
+.vide .glyphe svg { width: 56px; height: 56px; }
 .chargement { text-align: center; padding: var(--sp-3); color: var(--encre); opacity: 0.7; }
 .erreur {
-  background: #fdeaea;
-  border: 1px solid #d88;
-  color: #711;
-  border-radius: 10px;
+  background: var(--alerte-fond);
+  border: 2px solid var(--alerte);
+  color: var(--alerte);
+  border-radius: var(--radius);
   padding: var(--sp-1) var(--sp-2);
   margin: var(--sp-1) 0;
 }
 .succes {
-  background: #e8f5e9;
-  border: 1px solid #8c8;
-  color: #275;
-  border-radius: 10px;
+  background: var(--accord-fond);
+  border: 2px solid var(--accord);
+  color: var(--accord);
+  border-radius: var(--radius);
   padding: var(--sp-1) var(--sp-2);
   margin: var(--sp-1) 0;
 }
@@ -175,17 +225,18 @@ input:focus, select:focus, textarea:focus, button:focus-visible {
 /* --- cartes souvenirs / personnes --- */
 .grille {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: var(--sp-2);
 }
 .carte {
-  background: #fff;
-  border: 1px solid var(--ecume);
-  border-radius: 16px;
+  background: var(--surface);
+  border-radius: var(--radius);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: var(--cadre);
 }
+.carte:hover { box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #9a9a9a, 0 0 0 2px var(--encre), var(--ombre-dure); }
 .carte img, .carte .ph-media {
   width: 100%;
   height: 150px;
@@ -193,67 +244,78 @@ input:focus, select:focus, textarea:focus, button:focus-visible {
   background: var(--ecume);
 }
 .carte .corps { padding: var(--sp-1) var(--sp-2) var(--sp-2); flex: 1; }
-.carte h3 { margin: 0.2rem 0; font-size: 1.05rem; }
-.meta { color: #667; font-size: 0.85rem; }
+.carte h3 { margin: 0.2rem 0; }
+.meta { color: var(--encre-douce); font-size: 0.85rem; }
 .badge {
   display: inline-block;
   background: var(--ecume);
-  border-radius: 999px;
-  padding: 0.1rem 0.6rem;
-  font-size: 0.75rem;
+  border-radius: var(--radius);
+  padding: 0.15rem 0.6rem;
+  font-size: 0.72rem;
   margin-right: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
-.badge-or { background: rgba(201, 162, 39, 0.2); color: #8a6d10; }
+.badge-accent { background: var(--encre); color: #fff; }
 
 /* --- arbre --- */
 .arbre-gen { margin-bottom: var(--sp-3); }
-.gen-titre { color: var(--or); margin: var(--sp-2) 0 var(--sp-1); }
+.gen-titre { margin: var(--sp-2) 0 var(--sp-1); }
 .gen-ligne { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
 .noeud {
-  background: #fff;
-  border: 2px solid var(--or);
-  border-radius: 12px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--cadre);
   padding: 0.5rem 0.9rem;
   text-decoration: none;
   display: inline-block;
 }
-.noeud:hover { background: var(--ecume); }
-.noeud .dates { display: block; font-size: 0.75rem; color: #667; }
+.noeud:hover { box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #9a9a9a, 0 0 0 2px var(--encre), var(--ombre-dure); }
+.noeud .dates { display: block; font-size: 0.75rem; color: var(--encre-douce); }
 
 /* --- agenda --- */
 .jour {
-  background: #fff;
-  border-left: 4px solid var(--or);
-  border-radius: 8px;
+  background: var(--surface);
+  border-left: 4px solid var(--encre);
+  border-radius: var(--radius);
+  box-shadow: var(--cadre);
   padding: var(--sp-1) var(--sp-2);
   margin-bottom: var(--sp-1);
 }
 
 /* --- dialog modale --- */
 dialog {
-  border: 2px solid var(--or);
-  border-radius: 20px;
-  padding: var(--sp-3);
+  position: relative;
+  border: none;
+  border-radius: var(--radius);
+  padding: calc(var(--sp-3) + 16px) var(--sp-3) var(--sp-3);
   max-width: 640px;
   width: min(92vw, 640px);
-  background: var(--sable);
+  background: var(--surface);
+  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #9a9a9a, 0 0 0 1px var(--encre), 6px 6px 0 var(--encre);
 }
-dialog::backdrop { background: rgba(27, 42, 74, 0.45); }
+dialog::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 15px;
+  background: var(--encre);
+}
+dialog::backdrop { background: rgba(0, 0, 0, 0.45); }
 
 /* --- footer --- */
 .site-footer {
-  background: var(--encre);
-  color: var(--ecume);
+  color: var(--encre-douce);
   padding: var(--sp-3) 0;
   margin-top: var(--sp-4);
 }
-.site-footer a { color: var(--ecume); }
-.site-footer .wrap { display: flex; justify-content: space-between; gap: var(--sp-2); flex-wrap: wrap; }
+.site-footer a { color: var(--encre-douce); }
+.site-footer .wrap { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); flex-wrap: wrap; }
+.footer-site { font-weight: 700; font-size: 0.85rem; }
 
 /* --- responsive --- */
 @media (max-width: 700px) {
   .site-header .wrap { flex-direction: column; padding: var(--sp-1) 0; }
-  .bulle { padding: var(--sp-2); border-radius: 24px; }
   .grille { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 480px) {
@@ -269,23 +331,26 @@ dialog::backdrop { background: rgba(27, 42, 74, 0.45); }
   clip: rect(0 0 0 0);
   border: 0;
 }
-:focus-visible { outline: 2px solid var(--or); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--encre); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+}
 
 /* --- MANAvibe : segments d'émission --- */
 .segment {
-  border: 1px solid var(--ecume);
-  border-radius: 16px;
-  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--cadre);
+  background: var(--surface);
   padding: var(--sp-2);
   margin-bottom: var(--sp-1);
   display: flex;
   flex-direction: column;
   gap: var(--sp-1);
 }
-.segment.mana { border-left: 4px solid var(--or); background: var(--sable); }
+.segment.mana { border-left: 4px solid var(--encre); background: #f7f7f7; }
 .segment.chanson { border-left: 4px solid var(--encre); }
-.segment.voix { border-left: 4px solid var(--primary, #1b2a4a); }
-.segment.transition { align-items: center; color: var(--meta, #8a94a6); padding: var(--sp-1); }
+.segment.voix { border-left: 4px solid var(--encre-douce); }
+.segment.transition { align-items: center; color: var(--encre-douce); padding: var(--sp-1); }
 .segment-texte { margin: 0; font-size: 1.05rem; }
 .souvenir-lien { text-decoration: none; color: inherit; }
 .notice { font-style: italic; opacity: 0.75; }

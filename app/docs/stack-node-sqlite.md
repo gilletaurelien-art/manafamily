@@ -27,8 +27,9 @@ c'est le cas ici.
   La couche d'accès est isolée dans `server/db` : bascule possible sans
   toucher au reste.
 - Pas de framework : front vanilla en HTML/CSS/JS servis par le monolithe,
-  charte « Terre, Mer & Lumière » respectée (encre `#1b2a4a`, or `#c9a227`,
-  sable `#faf8f3`, écume `#e5e0d6`, Marelle Bâton 2 + Rubik self-hostées).
+  identité visuelle propre (encre `#1b2a4a`, or `#c9a227`, fond gris neutre
+  `#f1f2f4`, une seule police Rubik) — aucun lien visuel ou éditorial avec
+  le reste de l'écosystème MANA.
 - IA « MANA » : aucune fonction IA livrée. Un module `server/services/mana`
   n'existe pas tant qu'il n'y a rien de réel à y mettre — le socle
   fonctionne intégralement sans IA, aucune capacité simulée.

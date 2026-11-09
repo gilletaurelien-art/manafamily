@@ -50,7 +50,7 @@ server/
   services/       familles, personnes, souvenirs, médias, agenda,
                   albums, accueil, récits, livres
   lib/            http, validation, stockage privé, mots de passe, PDF
-public/           front (HTML/CSS/JS vanilla, charte Terre, Mer & Lumière)
+public/           front (HTML/CSS/JS vanilla, identité visuelle encre/or, autonome)
 tests/            tests de bout en bout (node:test)
 docs/             architecture, choix techniques, sauvegarde
 ```

@@ -27,7 +27,8 @@ async function init() {
 
   actions.append(
     mf.el("a", { class: "btn", href: "/souvenirs?ajouter=1" }, "Ajouter un souvenir"),
-    mf.el("a", { class: "btn btn-ghost", href: "/creer" }, "Créer un livre")
+    mf.el("a", { class: "btn btn-ghost", href: "/creer" }, "Créer un livre"),
+    mf.el("a", { class: "btn btn-ghost", href: "/manavibe" }, "MANAvibe")
   );
 
   mf.showState(feed, { loading: true });
@@ -110,7 +111,7 @@ async function init() {
       grid.append(mf.el("a", { class: "carte", href: `/souvenirs/${m.id}` },
         mf.coverHtml(m),
         mf.el("div", { class: "corps" },
-          mf.el("span", { class: "badge badge-or" }, mf.kindLabel(m.kind)),
+          mf.el("span", { class: "badge badge-accent" }, mf.kindLabel(m.kind)),
           mf.el("h3", {}, m.title),
           mf.el("span", { class: "meta" }, mf.fmtDate(m.happened_on)))));
     }

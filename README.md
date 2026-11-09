@@ -20,10 +20,10 @@ Cinq espaces :
 
 ## Développement
 
-React/TS + Vite, zéro dépendance UI, routeur maison, charte
-« Terre, Mer & Lumière » : fond ivoire, bande de vagues bleu nuit,
-bulles blanches bordées d'or, polices self-hostées Marelle Bâton 2 +
-Rubik (OFL).
+React/TS + Vite, zéro dépendance UI, routeur maison, identité visuelle
+nette et autonome : fond gris neutre, cartes blanches à coins nets,
+deux couleurs de marque (encre `#1b2a4a`, or `#c9a227`), une seule
+police (Rubik). Aucune référence au reste de l'écosystème MANA.
 
 ```bash
 npm install
