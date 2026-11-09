@@ -204,6 +204,74 @@ test("T7 : connecteurs désactivés par défaut", async () => {
 });
 
 // ---------------------------------------------------------------------------
+// T9 — Lien YouTube collé à la main : n'est pas un connecteur (T7 intact),
+//      mais rend le segment jouable. Tous les formats usuels normalisent
+//      vers le même identifiant ; un lien invalide est rejeté.
+// ---------------------------------------------------------------------------
+test("T9 : lien YouTube collé à la main — formats acceptés, normalisés, rend le segment jouable", async () => {
+  await setup();
+  const song = (await c.req("POST", "/api/manavibe/songs", { title: "Fly Me to the Moon", primary_artist: "Frank Sinatra" })).data;
+
+  const formats = [
+    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "https://youtu.be/dQw4w9WgXcQ",
+    "https://youtu.be/dQw4w9WgXcQ?si=abc123",
+    "https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PL123",
+    "https://m.youtube.com/watch?v=dQw4w9WgXcQ",
+    "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+    "  dQw4w9WgXcQ  ",
+  ];
+  for (const lien of formats) {
+    const r = await c.req("POST", `/api/manavibe/songs/${song.id}/recordings`, {
+      artist: "Frank Sinatra",
+      identifiers: { youtubeId: lien },
+    });
+    assert.equal(r.status, 201, `accepté : ${lien}`);
+    assert.equal(r.data.recording.identifiers.youtubeId, "dQw4w9WgXcQ", `normalisé depuis : ${lien}`);
+  }
+
+  for (const invalide of ["pas un lien", "https://vimeo.com/12345", "https://youtube.com/watch?v=trop-court"]) {
+    const r = await c.req("POST", `/api/manavibe/songs/${song.id}/recordings`, {
+      artist: "Frank Sinatra",
+      identifiers: { youtubeId: invalide },
+    });
+    assert.equal(r.status, 400, `rejeté : ${invalide}`);
+  }
+
+  // Jouable dès qu'un lien réel existe — et seulement dans ce cas (T7 intact).
+  const recAvecLien = (
+    await c.req("POST", `/api/manavibe/songs/${song.id}/recordings`, {
+      artist: "Frank Sinatra",
+      identifiers: { youtubeId: "https://youtu.be/dQw4w9WgXcQ" },
+    })
+  ).data.recording;
+  const recSansLien = (await c.req("POST", `/api/manavibe/songs/${song.id}/recordings`, { artist: "Reprise" })).data.recording;
+
+  const progAvec = (
+    await c.req("POST", "/api/manavibe/programs", {
+      title: "Avec lien",
+      segments: [{ type: "song_ref", song_id: song.id, chosen_recording_id: recAvecLien.id }],
+    })
+  ).data;
+  const tlAvec = (await c.req("GET", `/api/manavibe/programs/${progAvec.id}/timeline`)).data.timeline;
+  assert.equal(tlAvec[0].playable, true, "un lien YouTube réel rend le segment jouable");
+  assert.equal(tlAvec[0].chosen_recording.identifiers.youtubeId, "dQw4w9WgXcQ");
+
+  const progSans = (
+    await c.req("POST", "/api/manavibe/programs", {
+      title: "Sans lien",
+      segments: [{ type: "song_ref", song_id: song.id, chosen_recording_id: recSansLien.id }],
+    })
+  ).data;
+  const tlSans = (await c.req("GET", `/api/manavibe/programs/${progSans.id}/timeline`)).data.timeline;
+  assert.equal(tlSans[0].playable, false, "sans lien : toujours pas de lecture intégrée");
+
+  // Les connecteurs (recherche/preview via API tierce) restent désactivés (T7).
+  const list = (await c.req("GET", "/api/manavibe/songs")).data;
+  assert.equal(list.connectors.youtube_embed, false, "un lien manuel n'active aucun connecteur");
+});
+
+// ---------------------------------------------------------------------------
 // T8 — Traçabilité : aucune pochette ni métadonnée externe stockée ;
 //      la chanson ne conserve que des données saisies par la famille.
 // ---------------------------------------------------------------------------
