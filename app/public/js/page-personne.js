@@ -101,17 +101,22 @@ async function init() {
   const QUESTIONS_BIOGRAPHIE = [
     { id: "naissance", texte: "Où et dans quelles circonstances est-il/elle né(e) ?" },
     { id: "enfance", texte: "Comment décririez-vous son enfance ?" },
+    { id: "lieux", texte: "Où a-t-il/elle vécu au fil de sa vie ?" },
     { id: "metier-passion", texte: "Quel métier a-t-il/elle exercé, ou quelle a été sa plus grande passion ?" },
+    { id: "loisirs", texte: "Qu'aimait-il/elle faire de son temps libre ?" },
+    { id: "rencontre", texte: "Comment a-t-il/elle rencontré la personne qui a partagé sa vie, le cas échéant ?" },
+    { id: "habitude", texte: "Une expression, une phrase ou une habitude qui lui ressemblait ?" },
+    { id: "lieu-cher", texte: "Un lieu qui comptait particulièrement pour lui/elle ?" },
     { id: "anecdote", texte: "Une anecdote ou un souvenir qui le/la résume bien ?" },
     { id: "heritage", texte: "Qu'est-ce qu'on voudrait que les générations suivantes retiennent de lui/elle ?" },
   ];
 
   function ouvrirAssistantBiographie(person) {
-    const dlg = mf.el("dialog", { "aria-label": "Assistant biographie" });
+    const dlg = mf.el("dialog", { "aria-label": "Assistant biographie", style: "max-height:85vh; overflow-y:auto" });
     const questions = QUESTIONS_BIOGRAPHIE.map((q) =>
       mf.el("div", { style: "margin-bottom:1rem" },
         mf.el("label", { for: `q-${q.id}` }, q.texte),
-        mf.el("textarea", { id: `q-${q.id}`, placeholder: "…" })));
+        mf.el("textarea", { id: `q-${q.id}`, placeholder: "…", style: "min-height:3.5rem" })));
 
     const etapeQuestions = mf.el("div", {},
       mf.el("h2", { style: "margin-top:0" }, `Assistant biographie — ${person.first_name}`),
