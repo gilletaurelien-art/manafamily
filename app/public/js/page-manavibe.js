@@ -8,6 +8,7 @@ const liste = document.getElementById("liste");
 const emissionPanel = document.getElementById("emission");
 const timeline = document.getElementById("timeline");
 const rituelPanel = document.getElementById("rituel");
+const chansonsListe = document.getElementById("chansons-liste");
 
 async function load() {
   mf.showState(liste, { loading: true });
@@ -22,7 +23,145 @@ async function load() {
     mf.showState(liste, { error: e.message });
   }
   loadRituel();
+  loadChansons();
 }
+
+// ---------------------------------------------------------------------
+// Chansons — un lien YouTube collé à la main n'est pas un connecteur :
+// rien n'est recherché ni deviné, juste ce que la famille a fourni.
+// ---------------------------------------------------------------------
+
+async function loadChansons() {
+  mf.showState(chansonsListe, { loading: true });
+  try {
+    const { songs } = await mf.api("/api/manavibe/songs");
+    renderChansons(songs || []);
+  } catch (e) {
+    mf.showState(chansonsListe, { error: e.message });
+  }
+}
+
+function renderChansons(songs) {
+  chansonsListe.innerHTML = "";
+  if (!songs.length) {
+    mf.showState(chansonsListe, { empty: "Aucune chanson pour l'instant." });
+    return;
+  }
+  for (const song of songs) {
+    const carte = mf.el("div", { class: "panel", style: "margin-bottom:.5rem" });
+    const entete = mf.el("div", { class: "actions", style: "justify-content:space-between" },
+      mf.el("div", {},
+        mf.el("strong", {}, song.title),
+        song.primary_artist ? mf.el("span", { class: "meta" }, ` — ${song.primary_artist}`) : null),
+      mf.el("button", { class: "btn btn-ghost", type: "button" }, "+ Lien YouTube"));
+    entete.querySelector("button").addEventListener("click", () => openLienDialog(song));
+    carte.append(entete);
+    const recordingsBox = mf.el("div", { id: `recs-${song.id}` });
+    carte.append(recordingsBox);
+    chansonsListe.append(carte);
+    renderRecordings(recordingsBox, song.id);
+  }
+}
+
+async function renderRecordings(box, songId) {
+  box.innerHTML = "";
+  const song = await mf.api(`/api/manavibe/songs/${songId}`);
+  const avecLien = song.recordings.filter((r) => r.identifiers?.youtubeId);
+  if (!avecLien.length) return;
+  for (const r of avecLien) box.append(embedYoutube(r.identifiers.youtubeId));
+}
+
+// Cadre responsive 16:9, sans dépendance — l'iframe pointe chez YouTube,
+// MANAfamily n'héberge rien.
+function embedYoutube(id) {
+  return mf.el("div", { style: "position:relative;padding-top:56.25%;margin-top:.5rem" },
+    mf.el("iframe", {
+      src: `https://www.youtube-nocookie.com/embed/${id}`,
+      title: "Lecture YouTube",
+      allow: "encrypted-media; picture-in-picture",
+      allowfullscreen: true,
+      style: "position:absolute;inset:0;width:100%;height:100%;border:0",
+    }));
+}
+
+function openNouvelleChansonDialog() {
+  const dlg = mf.el("dialog", { "aria-label": "Nouvelle chanson" });
+  const form = mf.el("form", {},
+    mf.el("h2", { style: "margin-top:0" }, "Nouvelle chanson"),
+    mf.el("label", { for: "chanson-titre" }, "Titre"),
+    mf.el("input", { type: "text", id: "chanson-titre", required: true }),
+    mf.el("label", { for: "chanson-artiste" }, "Artiste (optionnel)"),
+    mf.el("input", { type: "text", id: "chanson-artiste" }),
+    mf.el("div", { class: "actions", style: "margin-top:1rem" },
+      mf.el("button", { class: "btn", type: "submit" }, "Créer"),
+      mf.el("button", { class: "btn btn-ghost", type: "button", onclick: () => dlg.close() }, "Annuler")),
+    mf.el("p", { class: "erreur", id: "chanson-err", hidden: true, role: "alert" }));
+  dlg.append(form);
+  document.body.append(dlg);
+  dlg.showModal();
+  dlg.addEventListener("close", () => dlg.remove());
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector("button[type=submit]");
+    const errEl = form.querySelector("#chanson-err");
+    mf.spinner(btn, true);
+    errEl.hidden = true;
+    try {
+      await mf.api("/api/manavibe/songs", {
+        method: "POST",
+        body: { title: form["chanson-titre"].value.trim(), primary_artist: form["chanson-artiste"].value.trim() || null },
+      });
+      dlg.close();
+      loadChansons();
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.hidden = false;
+      mf.spinner(btn, false);
+    }
+  });
+}
+
+function openLienDialog(song) {
+  const dlg = mf.el("dialog", { "aria-label": `Lien YouTube pour ${song.title}` });
+  const form = mf.el("form", {},
+    mf.el("h2", { style: "margin-top:0" }, song.title),
+    mf.el("label", { for: "lien-artiste" }, "Interprète de cet enregistrement"),
+    mf.el("input", { type: "text", id: "lien-artiste", value: song.primary_artist || "", required: true }),
+    mf.el("label", { for: "lien-url" }, "Lien YouTube"),
+    mf.el("input", { type: "text", id: "lien-url", placeholder: "https://www.youtube.com/watch?v=…", required: true }),
+    mf.el("p", { class: "meta" }, "Collez l'adresse telle qu'elle apparaît dans votre navigateur ou votre application YouTube."),
+    mf.el("div", { class: "actions", style: "margin-top:1rem" },
+      mf.el("button", { class: "btn", type: "submit" }, "Ajouter"),
+      mf.el("button", { class: "btn btn-ghost", type: "button", onclick: () => dlg.close() }, "Annuler")),
+    mf.el("p", { class: "erreur", id: "lien-err", hidden: true, role: "alert" }));
+  dlg.append(form);
+  document.body.append(dlg);
+  dlg.showModal();
+  dlg.addEventListener("close", () => dlg.remove());
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector("button[type=submit]");
+    const errEl = form.querySelector("#lien-err");
+    mf.spinner(btn, true);
+    errEl.hidden = true;
+    try {
+      await mf.api(`/api/manavibe/songs/${song.id}/recordings`, {
+        method: "POST",
+        body: { artist: form["lien-artiste"].value.trim(), identifiers: { youtubeId: form["lien-url"].value.trim() } },
+      });
+      dlg.close();
+      loadChansons();
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.hidden = false;
+      mf.spinner(btn, false);
+    }
+  });
+}
+
+document.getElementById("btn-nouvelle-chanson").addEventListener("click", openNouvelleChansonDialog);
 
 // ---------------------------------------------------------------------
 // Le rituel hebdomadaire — une question posée par MANA, affichée en tête
@@ -241,13 +380,15 @@ function renderSegment(s) {
       }
     }
 
-    // Repli honnête : l'écoute intégrée n'existe pas encore (règle 0),
-    // et MANA ne fabrique jamais de contenu.
-    if (!s.playable) {
+    // Jouable si et seulement si un lien réel a été collé à la main —
+    // jamais une recherche, jamais une métadonnée devinée.
+    if (s.playable && s.chosen_recording?.identifiers?.youtubeId) {
+      card.append(embedYoutube(s.chosen_recording.identifiers.youtubeId));
+    } else {
       card.append(mf.el("p", { class: "meta notice" },
         s.fallback?.kind === "replay_real_content"
           ? "Écoute intégrée indisponible — mais le souvenir de cette chanson se lit, lui."
-          : "Écoute intégrée : pas encore. Les connecteurs musicaux arriveront plus tard — le souvenir, lui, reste."));
+          : "Écoute intégrée indisponible — aucun lien YouTube n'a encore été ajouté à cette chanson. Le souvenir, lui, reste."));
     }
     return card;
   }

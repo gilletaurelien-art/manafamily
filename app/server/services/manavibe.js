@@ -2,12 +2,16 @@
 //
 // La mémoire appartient à la chanson (SongReference), le choix d'écoute
 // appartient à l'enregistrement (RecordingReference). Aucun connecteur
-// musical n'est développé à ce stade : ExternalPlaybackHost et
-// DeepLinkService sont des interfaces vides, désactivées par défaut.
+// musical (recherche/preview via une API tierce) n'est développé à ce
+// stade : ExternalPlaybackHost et DeepLinkService restent des interfaces
+// vides, désactivées par défaut (T7). Un lien YouTube collé à la main par
+// la famille n'est PAS un connecteur — aucune recherche, aucun appel API,
+// aucune métadonnée devinée : juste l'identifiant qu'on nous a donné.
 //
-// Invariants (SPEC-v1.2 §6) : aucun enregistrement commercial hébergé,
-// repli honnête sans contenu inventé, émission complète sans lecture
-// externe, identifiants externes tous facultatifs.
+// Invariants (SPEC-v1.2 §6) : aucun enregistrement commercial hébergé (la
+// vidéo reste chez YouTube, MANAfamily ne fait que pointer dessus), repli
+// honnête sans contenu inventé, émission complète même sans lien d'écoute,
+// identifiants externes tous facultatifs.
 
 import { getDb, newId } from "../db/db.js";
 import { httpError } from "../lib/http.js";
@@ -342,12 +346,45 @@ function parseRecording(row) {
 }
 
 function sanitizeIdentifiers(input) {
-  const allowed = ["spotifyId", "deezerId", "appleMusicId", "youtubeId"];
+  const allowed = ["spotifyId", "deezerId", "appleMusicId"];
   const out = {};
   if (!input || typeof input !== "object") return out;
   for (const key of allowed)
     if (typeof input[key] === "string" && input[key].length <= 128) out[key] = input[key];
+  if (typeof input.youtubeId === "string" && input.youtubeId.trim()) {
+    const id = parseYoutubeId(input.youtubeId);
+    if (!id) throw httpError(400, "Lien YouTube invalide — collez l'adresse telle qu'elle apparaît dans la barre d'adresse.");
+    out.youtubeId = id;
+  }
   return out;
+}
+
+// Accepte un lien YouTube dans ses formats courants (watch, youtu.be, shorts,
+// embed) ou directement l'identifiant brut (11 caractères) ; renvoie toujours
+// l'identifiant seul, jamais l'URL telle quelle — c'est ce que l'on stocke.
+function parseYoutubeId(raw) {
+  const trimmed = String(raw).trim();
+  if (/^[\w-]{11}$/.test(trimmed)) return trimmed;
+  let url;
+  try {
+    url = new URL(trimmed);
+  } catch {
+    return null;
+  }
+  const host = url.hostname.replace(/^www\.|^m\.|^music\./, "");
+  if (host === "youtu.be") {
+    const id = url.pathname.slice(1);
+    return /^[\w-]{11}$/.test(id) ? id : null;
+  }
+  if (host === "youtube.com") {
+    if (url.pathname === "/watch") {
+      const id = url.searchParams.get("v");
+      return id && /^[\w-]{11}$/.test(id) ? id : null;
+    }
+    const match = url.pathname.match(/^\/(?:shorts|embed|live)\/([\w-]{11})/);
+    if (match) return match[1];
+  }
+  return null;
 }
 
 function songSummary(row) {
@@ -361,10 +398,12 @@ function songSummary(row) {
   };
 }
 
-// Aucun connecteur n'étant actif (T7), rien n'est jamais « jouable » via
-// un lecteur intégré — par construction, pas par exception.
+// Un connecteur (recherche/preview via une API tierce) reste désactivé par
+// défaut (T7) — mais un lien YouTube collé à la main par la famille n'est
+// pas un connecteur : rien n'est recherché ni inventé, l'identifiant existe
+// parce que quelqu'un l'a fourni. Jouable si et seulement si ce lien existe.
 function connectorsAvailable(recording) {
-  return false;
+  return Boolean(recording?.identifiers?.youtubeId);
 }
 
 export function connectorStates() {
