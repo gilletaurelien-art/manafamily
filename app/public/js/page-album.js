@@ -35,7 +35,7 @@ async function init() {
     grid.append(mf.el("a", { class: "carte", href: `/souvenirs/${m.id}` },
       mf.coverHtml(m),
       mf.el("div", { class: "corps" },
-        mf.el("span", { class: "badge badge-or" }, mf.kindLabel(m.kind)),
+        mf.el("span", { class: "badge badge-accent" }, mf.kindLabel(m.kind)),
         mf.el("h3", {}, m.title),
         mf.el("span", { class: "meta" }, mf.fmtDate(m.happened_on)))));
   }

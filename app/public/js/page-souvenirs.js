@@ -29,7 +29,7 @@ function render(memories) {
     const card = mf.el("a", { class: "carte", href: `/souvenirs/${m.id}` },
       mf.coverHtml(m),
       mf.el("div", { class: "corps" },
-        mf.el("span", { class: "badge badge-or" }, mf.kindLabel(m.kind)),
+        mf.el("span", { class: "badge badge-accent" }, mf.kindLabel(m.kind)),
         m.draft ? mf.el("span", { class: "badge" }, "Brouillon") : null,
         mf.el("h3", {}, m.title),
         mf.el("span", { class: "meta" }, [mf.fmtDate(m.happened_on), m.place].filter(Boolean).join(" · "))));

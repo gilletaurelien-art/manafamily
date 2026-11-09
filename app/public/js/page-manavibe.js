@@ -47,7 +47,7 @@ async function loadRituel() {
 
   const estChanson = current.category === "chanson";
   rituelPanel.append(
-    mf.el("span", { class: "badge badge-or" }, estChanson ? "Question de la semaine — une chanson" : "Question de la semaine"),
+    mf.el("span", { class: "badge badge-accent" }, estChanson ? "Question de la semaine — une chanson" : "Question de la semaine"),
     mf.el("p", { class: "lede", style: "margin:0.5rem 0 1rem" }, current.text)
   );
 
@@ -162,7 +162,7 @@ function render(programs) {
     const card = mf.el("button", { class: "carte", style: "cursor:pointer;text-align:left" });
     card.addEventListener("click", () => openEmission(p.id));
     const corps = mf.el("div", { class: "corps" });
-    corps.append(mf.el("span", { class: "badge badge-or" }, "Émission"));
+    corps.append(mf.el("span", { class: "badge badge-accent" }, "Émission"));
     corps.append(mf.el("h3", {}, p.title));
     corps.append(mf.el("span", { class: "meta" }, `créée le ${mf.fmtDate(p.created_at)}`));
     card.append(corps);
@@ -194,7 +194,7 @@ function renderTimeline(segs) {
 function renderSegment(s) {
   if (s.type === "mana_voice")
     return mf.el("div", { class: "segment mana" },
-      mf.el("span", { class: "badge badge-or" }, "MANA"),
+      mf.el("span", { class: "badge badge-accent" }, "MANA"),
       mf.el("p", { class: "segment-texte" }, s.text));
 
   if (s.type === "announcement")
@@ -217,7 +217,7 @@ function renderSegment(s) {
 
   if (s.type === "song_ref") {
     const card = mf.el("div", { class: "segment chanson" });
-    card.append(mf.el("span", { class: "badge badge-or" }, "La chanson"));
+    card.append(mf.el("span", { class: "badge badge-accent" }, "La chanson"));
     card.append(mf.el("h3", {}, `${s.song.title}${s.song.primary_artist ? " — " + s.song.primary_artist : ""}`));
 
     if (s.song.recordings.length) {

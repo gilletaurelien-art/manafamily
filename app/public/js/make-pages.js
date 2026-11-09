@@ -221,7 +221,7 @@ const pages = [
     file: "404.html",
     title: "MANAfamily — Introuvable",
     main: `
-    <section class="vide"><span class="glyphe">🌊</span><h1>Page introuvable</h1><p><a class="btn" href="/">Retour à l'accueil</a></p></section>`,
+    <section class="vide"><span class="glyphe" aria-hidden="true"><svg viewBox="0 0 10 10" shape-rendering="crispEdges" role="img" aria-label="Rien ici"><rect x="0" y="0" width="10" height="10" fill="currentColor"/><rect x="1" y="1" width="8" height="8" fill="#fff"/><rect x="2" y="2" width="1" height="1" fill="currentColor"/><rect x="2" y="7" width="6" height="1" fill="currentColor"/><rect x="3" y="6" width="4" height="1" fill="currentColor"/><rect x="4" y="5" width="2" height="1" fill="currentColor"/></svg></span><h1>Page introuvable</h1><p><a class="btn" href="/">Retour à l'accueil</a></p></section>`,
     scripts: [],
   },
 ];

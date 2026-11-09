@@ -47,7 +47,18 @@ function fmtDate(s) {
   catch { return s; }
 }
 
-function showState(container, { loading, empty, error, emptyGlyph = "🌊" } = {}) {
+// Icône pixel-art (grille 10×10, crispEdges) — un repère discret, jamais un
+// emoji dont le rendu change d'un appareil à l'autre.
+const GLYPHE_VIDE = `<svg viewBox="0 0 10 10" shape-rendering="crispEdges" role="img" aria-label="Rien ici pour l'instant">
+  <rect x="0" y="0" width="10" height="10" fill="currentColor"/>
+  <rect x="1" y="1" width="8" height="8" fill="#fff"/>
+  <rect x="2" y="2" width="1" height="1" fill="currentColor"/>
+  <rect x="2" y="7" width="6" height="1" fill="currentColor"/>
+  <rect x="3" y="6" width="4" height="1" fill="currentColor"/>
+  <rect x="4" y="5" width="2" height="1" fill="currentColor"/>
+</svg>`;
+
+function showState(container, { loading, empty, error, emptyGlyph = GLYPHE_VIDE } = {}) {
   container.innerHTML = "";
   if (loading) {
     container.append(el("p", { class: "chargement", role: "status" }, "Chargement…"));
@@ -63,7 +74,7 @@ function showState(container, { loading, empty, error, emptyGlyph = "🌊" } = {
   }
   if (empty) {
     container.append(el("div", { class: "vide" },
-      el("span", { class: "glyphe", "aria-hidden": "true" }, emptyGlyph),
+      el("span", { class: "glyphe", "aria-hidden": "true", html: emptyGlyph }),
       el("p", {}, empty)));
   }
 }
