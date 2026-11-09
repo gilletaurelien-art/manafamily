@@ -102,6 +102,30 @@ test("personnes, relations, arbre dérivé", async () => {
   assert.equal((await c.post("/api/relationships", { kind: "parent", from_person_id: gId, to_person_id: "mem_faux" })).status, 400);
 });
 
+// L'assistant biographie (front-end, page-personne.js) n'ajoute aucune route :
+// il assemble les réponses d'un questionnaire puis les envoie via ce PUT,
+// exactement comme une biographie tapée à la main. Seul le chemin serveur
+// compte ici — vérifier qu'une mise à jour de la biographie ne touche à
+// rien d'autre (T : aucune perte de champ lors d'une mise à jour partielle
+// côté formulaire, qui doit toujours envoyer l'objet complet).
+test("biographie : mise à jour sans perdre le reste de la fiche", async () => {
+  const p = await c.post("/api/people", { first_name: "Yvonne", last_name: "Le Goff", birth_date: "1935-02-11", is_child: false });
+  const id = p.data.id;
+
+  const bio = "Née à Camaret-sur-Mer.\n\nA grandi au milieu des bateaux de pêche.\n\nCouturière toute sa vie.";
+  const upd = await c.req("PUT", `/api/people/${id}`, {
+    first_name: "Yvonne", last_name: "Le Goff", birth_date: "1935-02-11", death_date: null,
+    is_child: false, visibility: "family", biography: bio,
+  });
+  assert.equal(upd.status, 200);
+
+  const after = (await c.get(`/api/people/${id}`)).data.person;
+  assert.equal(after.biography, bio, "la biographie assemblée par l'assistant est enregistrée telle quelle");
+  assert.equal(after.first_name, "Yvonne", "le prénom n'est pas perdu");
+  assert.equal(after.last_name, "Le Goff", "le nom n'est pas perdu");
+  assert.equal(after.birth_date, "1935-02-11", "la date de naissance n'est pas perdue");
+});
+
 test("anniversaires calculés depuis les dates de naissance", async () => {
   // Personne dont l'anniversaire tombe dans ~30 jours : déterministe.
   const in30 = new Date(Date.now() + 30 * 86400_000);

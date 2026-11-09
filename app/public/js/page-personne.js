@@ -23,6 +23,7 @@ async function init() {
     mf.el("p", { class: "meta" }, [p.birth_date, p.death_date ? "† " + p.death_date : null, p.is_child ? "enfant" : null].filter(Boolean).join(" · ")),
     p.biography ? mf.el("p", { style: "white-space:pre-wrap" }, p.biography) : null,
     mf.el("div", { class: "actions", style: "margin-top:1rem" },
+      mf.el("button", { class: "btn btn-ghost", type: "button", onclick: () => ouvrirAssistantBiographie(p) }, "Assistant biographie"),
       mf.el("a", { class: "btn btn-ghost", href: "/famille?ajouter=1" }, "Modifier (via Famille)"),
       mf.el("button", { class: "btn btn-danger", onclick: () => supprimer(p) }, "Supprimer"))));
 
@@ -89,6 +90,100 @@ async function init() {
   function lien(nodes, id) {
     const n = nodes.find((x) => x.id === id);
     return mf.el("a", { href: `/famille/${id}` }, n ? `${n.firstName} ${n.lastName || ""}`.trim() : "…");
+  }
+
+  // ---------------------------------------------------------------------
+  // Assistant biographie — guidé, sans IA : une série de questions, et
+  // les réponses telles quelles deviennent la biographie. Rien n'est
+  // reformulé ni inventé ; l'assistant structure, il n'écrit pas à la
+  // place de la famille.
+  // ---------------------------------------------------------------------
+  const QUESTIONS_BIOGRAPHIE = [
+    { id: "naissance", texte: "Où et dans quelles circonstances est-il/elle né(e) ?" },
+    { id: "enfance", texte: "Comment décririez-vous son enfance ?" },
+    { id: "lieux", texte: "Où a-t-il/elle vécu au fil de sa vie ?" },
+    { id: "metier-passion", texte: "Quel métier a-t-il/elle exercé, ou quelle a été sa plus grande passion ?" },
+    { id: "loisirs", texte: "Qu'aimait-il/elle faire de son temps libre ?" },
+    { id: "rencontre", texte: "Comment a-t-il/elle rencontré la personne qui a partagé sa vie, le cas échéant ?" },
+    { id: "habitude", texte: "Une expression, une phrase ou une habitude qui lui ressemblait ?" },
+    { id: "lieu-cher", texte: "Un lieu qui comptait particulièrement pour lui/elle ?" },
+    { id: "anecdote", texte: "Une anecdote ou un souvenir qui le/la résume bien ?" },
+    { id: "heritage", texte: "Qu'est-ce qu'on voudrait que les générations suivantes retiennent de lui/elle ?" },
+  ];
+
+  function ouvrirAssistantBiographie(person) {
+    const dlg = mf.el("dialog", { "aria-label": "Assistant biographie", style: "max-height:85vh; overflow-y:auto" });
+    const questions = QUESTIONS_BIOGRAPHIE.map((q) =>
+      mf.el("div", { style: "margin-bottom:1rem" },
+        mf.el("label", { for: `q-${q.id}` }, q.texte),
+        mf.el("textarea", { id: `q-${q.id}`, placeholder: "…", style: "min-height:3.5rem" })));
+
+    const etapeQuestions = mf.el("div", {},
+      mf.el("h2", { style: "margin-top:0" }, `Assistant biographie — ${person.first_name}`),
+      person.biography
+        ? mf.el("p", { class: "meta" }, "Une biographie existe déjà. Les réponses ci-dessous composeront un nouveau texte, que vous pourrez ajuster avant qu'il ne remplace l'actuel.")
+        : mf.el("p", { class: "meta" }, "Répondez à ce qui vous inspire — laissez vide ce qui ne s'applique pas."),
+      ...questions,
+      mf.el("div", { class: "actions" },
+        mf.el("button", { class: "btn", type: "button", id: "btn-assembler" }, "Assembler la biographie"),
+        mf.el("button", { class: "btn btn-ghost", type: "button", onclick: () => dlg.close() }, "Annuler")));
+
+    const brouillon = mf.el("textarea", { id: "biographie-brouillon", style: "min-height:14rem" });
+    const etapeApercu = mf.el("div", { hidden: true },
+      mf.el("h2", { style: "margin-top:0" }, "Avant d'enregistrer"),
+      mf.el("p", { class: "meta" }, "Assemblé à partir de vos réponses — modifiez librement avant d'enregistrer."),
+      brouillon,
+      mf.el("div", { class: "actions", style: "margin-top:1rem" },
+        mf.el("button", { class: "btn", type: "button", id: "btn-enregistrer-bio" }, "Enregistrer"),
+        mf.el("button", { class: "btn btn-ghost", type: "button", id: "btn-retour-bio" }, "← Revoir les réponses")),
+      mf.el("p", { class: "erreur", id: "bio-err", hidden: true, role: "alert" }));
+
+    dlg.append(etapeQuestions, etapeApercu);
+    document.body.append(dlg);
+    dlg.showModal();
+    dlg.addEventListener("close", () => dlg.remove());
+
+    dlg.querySelector("#btn-assembler").addEventListener("click", () => {
+      const paragraphes = QUESTIONS_BIOGRAPHIE
+        .map((q) => dlg.querySelector(`#q-${q.id}`).value.trim())
+        .filter(Boolean);
+      if (!paragraphes.length) return;
+      brouillon.value = paragraphes.join("\n\n");
+      etapeQuestions.hidden = true;
+      etapeApercu.hidden = false;
+    });
+
+    dlg.querySelector("#btn-retour-bio").addEventListener("click", () => {
+      etapeApercu.hidden = true;
+      etapeQuestions.hidden = false;
+    });
+
+    dlg.querySelector("#btn-enregistrer-bio").addEventListener("click", async () => {
+      const btn = dlg.querySelector("#btn-enregistrer-bio");
+      const errEl = dlg.querySelector("#bio-err");
+      mf.spinner(btn, true);
+      errEl.hidden = true;
+      try {
+        await mf.api(`/api/people/${personId}`, {
+          method: "PUT",
+          body: {
+            first_name: person.first_name,
+            last_name: person.last_name,
+            birth_date: person.birth_date,
+            death_date: person.death_date,
+            is_child: !!person.is_child,
+            visibility: person.visibility,
+            biography: brouillon.value,
+          },
+        });
+        dlg.close();
+        init();
+      } catch (err) {
+        errEl.textContent = err.message;
+        errEl.hidden = false;
+        mf.spinner(btn, false);
+      }
+    });
   }
 
   function supprimer(person) {
