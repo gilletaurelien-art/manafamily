@@ -1,0 +1,45 @@
+name: Deploy KS-5 (le service réel)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-ks5
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # ═══════════════════════════════════════════════════════════════════
+      #  🔴 CE WORKFLOW EST NOUVEAU — « Deploy live » (deploy.yml) existant
+      #  déploie le site Vite racine sur GitHub Pages, et c'est LÉGITIME :
+      #  cette page n'a pas de domaine propre (Pages CNAME vide, vérifié le
+      #  17/11/2026) — contrairement à manatimebank.org/manahome.org, il n'y
+      #  a PAS de collision ici, donc ce workflow-ci n'est pas un remplacement,
+      #  c'est un AJOUT pour le vrai produit : le service Node qui sert
+      #  manafamily.org.
+      #
+      #  ⭐ ET LA DIRECTION EST INVERSÉE PAR RAPPORT AU RESTE DE
+      #  L'ÉCOSYSTÈME : ici GitHub est la source, le KS-5 la suit — vérifié
+      #  avant d'écrire quoi que ce soit (le checkout serveur n'a que
+      #  `origin = github`, déjà à l'exact HEAD de GitHub main).
+      #
+      #  ⚠️ `scripts/deployer-ks5.sh` fait tout : fetch, sauvegarde de la
+      #  base, redémarrage, vérification. Ce job ne fait que lui donner un
+      #  accès SSH — il ne duplique aucune logique.
+      - name: Déployer sur le KS-5 (redémarre le service)
+        run: |
+          install -m 600 /dev/null /tmp/mana_deploy_key
+          printf '%s\n' "${{ secrets.MANA_KS5_DEPLOY_KEY }}" > /tmp/mana_deploy_key
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.MANA_KS5_HOST_KEY }}" >> ~/.ssh/known_hosts
+          MANA_SSH_KEY=/tmp/mana_deploy_key bash scripts/deployer-ks5.sh "${{ github.sha }}"
+
+      - name: Retirer la clé privée du disque du runner
+        if: always()
+        run: shred -u /tmp/mana_deploy_key 2>/dev/null || rm -f /tmp/mana_deploy_key
