@@ -79,12 +79,19 @@ if [ "$AVANT" = "$APRES" ]; then
 fi
 
 # ── 2. Sauvegarde AVANT tout redémarrage ────────────────────────────────────
+# ⚠️ ROTATION, ET DANS LA MÊME COMMANDE QUE L'ÉCRITURE — pas un script à part
+#    qu'on pourrait oublier de poser. Sans elle, une copie de 300 Ko par
+#    déploiement s'accumule sans fin ; la nocturne (mana-sauvegarde-base.sh)
+#    a déjà sa propre rotation à 7, celle-ci n'en a aucune avant cette ligne.
 TS="$(date -u +%Y%m%d-%H%M%S)"
-dire "→ sauvegarde de la base avant redémarrage"
+dire "→ sauvegarde de la base avant redémarrage (rotation : 5 gardées)"
 ssh "${SSH_OPTS[@]}" "$HOTE" "
   sudo -u $UTILISATEUR_SERVICE node /usr/local/sbin/mana-sauvegarde-sqlite.mjs \
     /srv/manafamily/data/manafamily.db \
     /srv/manafamily/data/avant-deploiement-$TS.db
+  sudo -u $UTILISATEUR_SERVICE bash -c '
+    ls -1t /srv/manafamily/data/avant-deploiement-*.db 2>/dev/null | tail -n +6 | xargs -r rm -f
+  '
 "
 
 # ── 3. Redémarrer — les migrations se font SEULES, au premier accès DB ─────
